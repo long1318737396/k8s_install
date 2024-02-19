@@ -1,0 +1,86 @@
+---
+apiVersion: kubeadm.k8s.io/v1beta3
+bootstrapTokens:
+- groups:
+  - system:bootstrappers:kubeadm:default-node-token
+  token: abcdef.0123456789abcdef
+  ttl: 24h0m0s
+  usages:
+  - signing
+  - authentication
+kind: InitConfiguration
+certificateKey: 24dd608dcf62f3040e5ec3df4903739f02506f1b5bf1010e6167a8da9f8e569b
+localAPIEndpoint:
+  advertiseAddress: 192.168.1.116 
+  bindPort: 6443
+nodeRegistration:
+  criSocket: unix:///var/run/containerd/containerd.sock
+  imagePullPolicy: IfNotPresent
+  name: master1
+  taints: 
+  - effect: "NoSchedule"
+    key: "node-role.kubernetes.io/master"
+---
+apiServer:
+  timeoutForControlPlane: 4m0s
+  extraArgs:
+    authorization-mode: Node,RBAC
+  certSANs:
+  - vip.k8s.local
+  - 192.168.1.249 # VIP 地址
+  - 10.96.0.1  # service cidr的第一个ip
+  - 127.0.0.1 # 多个master的时候负载均衡出问题了能够快速使用localhost调试
+  - 192.168.1.116
+  - 192.168.1.115
+  - 192.168.1.114
+  - master1
+  - master2 
+  - master3
+  - kubernetes
+  - kubernetes.default
+  - kubernetes.default.svc
+  - kubernetes.default.svc.cluster.local
+  extraVolumes:
+  - hostPath: /etc/localtime
+    mountPath: /etc/localtime
+    name: timezone
+    readOnly: true
+apiVersion: kubeadm.k8s.io/v1beta3
+certificatesDir: /etc/kubernetes/pki
+clusterName: kubernetes
+controllerManager: 
+  extraArgs:
+    node-cidr-mask-size: 25
+  extraVolumes:
+  - hostPath: /etc/localtime
+    mountPath: /etc/localtime
+    name: timezone
+    readOnly: true
+dns: {}
+etcd:
+  local:
+    dataDir: /data/kubernetes/etcd
+imageRepository: registry.k8s.io
+kind: ClusterConfiguration
+kubernetesVersion: v1.29.0
+networking:
+  dnsDomain: cluster.local
+  serviceSubnet: 10.96.0.0/20
+  podSubnet: 10.244.0.0/16
+scheduler:
+  extraVolumes:
+  - hostPath: /etc/localtime
+    mountPath: /etc/localtime
+    name: timezone
+    readOnly: true
+controlPlaneEndpoint: 192.168.1.249:6443
+---
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+kind: KubeProxyConfiguration
+mode: ipvs
+ipvs:
+  strictARP: true
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+cgroupDriver: systemd

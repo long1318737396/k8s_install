@@ -1,0 +1,21 @@
+apiVersion: kubeadm.k8s.io/v1beta3
+discovery:
+  bootstrapToken:
+    apiServerEndpoint: 192.168.1.249:6443
+    token: abcdef.0123456789abcdef
+    unsafeSkipCAVerification: true
+  timeout: 5m0s
+  tlsBootstrapToken: abcdef.0123456789abcdef
+kind: JoinConfiguration
+nodeRegistration:
+  kubeletExtraArgs:
+    root-dir: /data/kubelet       
+  criSocket: unix:///var/run/containerd/containerd.sock
+  imagePullPolicy: IfNotPresent
+  name: node
+  taints: node-role.kubernetes.io/master=:NoSchedule 
+controlPlane:
+  localAPIEndpoint:
+    advertiseAddress: 192.168.1.116 
+    bindPort: 6443 
+  certificateKey: 24dd608dcf62f3040e5ec3df4903739f02506f1b5bf1010e6167a8da9f8e569b
