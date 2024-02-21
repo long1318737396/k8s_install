@@ -1,6 +1,0 @@
-hostname=myharbor.mtywcloud.com
-https_certificate=/data/harbor/
-https_private_key=/data/harbor/
-data_volume=/data/harbor
-harbor_version=2.9.2
-harbor_admin_password=S6ag4KXGS
