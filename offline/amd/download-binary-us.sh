@@ -1,3 +1,5 @@
+dir="$(cd "$(dirname "$0")" && pwd)"
+source "../${dir}/conf/config.sh"
 arch=amd64
 arch1="x86_64"
 save_dir="/data/kubernetes/packages/amd"
@@ -58,14 +60,14 @@ helm_url="https://get.helm.sh/helm-v${helm_version}-linux-$arch.tar.gz"
 kubernetes_server_url="https://storage.googleapis.com/kubernetes-release/release/v${kubernetes_server_version}/kubernetes-server-linux-$arch.tar.gz"
 nginx_url="http://nginx.org/download/nginx-${nginx_version}.tar.gz"
 cri_o_url="https://storage.googleapis.com/cri-o/artifacts/cri-o.$arch.${cri_o_version}.tar.gz"
-harbor_url="https://github.com/goharbor/harbor/releases/download/${harbor_version}/harbor-offline-installer-v${harbor_version}.tgz"
+harbor_url="https://github.com/goharbor/harbor/releases/download/${harbor_version}/harbor-offline-installer-${harbor_version}.tgz"
 docker_compose_url=https://github.com/docker/compose/releases/download/${docker_compose_version}/docker-compose-linux-$arch1
 calicoctl_url=https://github.com/projectcalico/calico/releases/download/v${calicoctl_version}/calicoctl-linux-$arch
 cilium_url=https://github.com/cilium/cilium-cli/releases/download/${cilium_version}/cilium-linux-$arch.tar.gz
 hubble_url=https://github.com/cilium/hubble/releases/download/$hubble_version/hubble-linux-$arch.tar.gz
 
 
-
+https://github.com/goharbor/harbor/releases/download/v2.9.2/harbor-offline-installer-v2.9.2.tgz
 packages=(
   #$kernel_url
   #$runc_url
@@ -99,3 +101,9 @@ for package_url in "${packages[@]}"; do
     exit 1
   fi
 done
+
+chmod +x docker-compose-linux-$arch1
+chmod +x calicoctl-linux-$arch
+chmod +x cfssl_${cfssl_version}_linux_$arch
+chmod +x cfssljson_${cfssl_version}_linux_$arch
+chmod +x cfssl-certinfo_${cfssl_version}_linux_$arch
