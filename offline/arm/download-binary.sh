@@ -1,8 +1,9 @@
+set -x
 dir="$(cd "$(dirname "$0")" && pwd)"
 source ../../conf/config.sh
 arch=arm64
 arch1="aarch64"
-save_dir="/data/kubernetes/packages/amd"
+save_dir="/data/kubernetes/packages/arm"
 mkdir -p ${save_dir}
 cd ${save_dir}
 exec > >(tee -a "$logfile") 2>&1

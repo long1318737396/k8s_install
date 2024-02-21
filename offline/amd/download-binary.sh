@@ -1,3 +1,4 @@
+set -x
 dir="$(cd "$(dirname "$0")" && pwd)"
 source ../../conf/config.sh
 arch=amd64
