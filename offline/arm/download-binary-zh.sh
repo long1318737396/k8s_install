@@ -1,7 +1,7 @@
 dir="$(cd "$(dirname "$0")" && pwd)"
 source ../../conf/config.sh
-arch=amd64
-arch1="x86_64"
+arch=arm64
+arch1="arm"
 save_dir="/data/kubernetes/packages/amd"
 mkdir -p ${save_dir}
 cd ${save_dir}
