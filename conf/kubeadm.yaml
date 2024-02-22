@@ -11,12 +11,12 @@ bootstrapTokens:
 kind: InitConfiguration
 certificateKey: 24dd608dcf62f3040e5ec3df4903739f02506f1b5bf1010e6167a8da9f8e569b
 localAPIEndpoint:
-  advertiseAddress: 192.168.1.116 
+  advertiseAddress: 192.168.1.203 
   bindPort: 6443
 nodeRegistration:
   criSocket: unix:///var/run/containerd/containerd.sock
   imagePullPolicy: IfNotPresent
-  name: master1
+  name: master203
   taints: 
   - effect: "NoSchedule"
     key: "node-role.kubernetes.io/master"
@@ -27,12 +27,12 @@ apiServer:
     authorization-mode: Node,RBAC
   certSANs:
   - vip.k8s.local
-  - 192.168.1.249 # VIP 地址
+  - 192.168.1.211 # VIP 地址
   - 10.96.0.1  # service cidr的第一个ip
   - 127.0.0.1 # 多个master的时候负载均衡出问题了能够快速使用localhost调试
-  - 192.168.1.116
-  - 192.168.1.115
-  - 192.168.1.114
+  - 192.168.1.203
+  - 192.168.1.204
+  - 192.168.1.205
   - master203
   - master204
   - master205
@@ -58,19 +58,19 @@ controllerManager:
     readOnly: true
 dns: {}
 etcd:
-  extraVolumes:
-  - name: timezone
-    hostPath: /etc/localtime
-    mountPath: /etc/localtime
-    readOnly: true
   local:
     dataDir: /data/kubernetes/etcd
-  serverCertSANs:
-  - "${HOST}"
-  peerCertSANs:
-  - "${HOST}"
+    imageTag: "3.5.12-0"
+    serverCertSANs:
+    - "192.168.1.203"
+    - "192.168.1.204"
+    - "192.168.1.205"
+    peerCertSANs:
+    - "192.168.1.203"
+    - "192.168.1.204"
+    - "192.168.1.205"
   extraArgs:
-    quota-backend-bytes: 32768000000
+     "quota-backend-bytes": "32768000000"
 imageRepository: registry.k8s.io
 kind: ClusterConfiguration
 kubernetesVersion: v1.29.2

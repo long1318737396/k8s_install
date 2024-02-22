@@ -41,6 +41,3 @@ local_dir="/data/kubernetes/software"
 arch="amd64"
 logfile=/var/log/k8s_install.log
 date_format=$(date +"%Y-%m-%d %H:%M:%S")
-
-
-
