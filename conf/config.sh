@@ -54,3 +54,5 @@ calicoctl_version=3.27.2
 cilium_version=v0.15.23
 hubble_version=v0.13.0
 velero_version=v1.13.0
+skopeo_version=v1.14.2
+yq_version=v4.41.1

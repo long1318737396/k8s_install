@@ -1,11 +1,6 @@
 set -x
 dir="$(cd "$(dirname "$0")" && pwd)"
-source ../../conf/config.sh
-arch=arm64
-arch1="aarch64"
-save_dir="/data/kubernetes/packages/arm"
-mkdir -p ${save_dir}
-cd ${save_dir}
+source ../../../conf/config.sh
 exec > >(tee -a "$logfile") 2>&1
 echo "$date_format"
 # https://github.com/containernetworking/plugins/releases/
@@ -50,7 +45,10 @@ calicoctl_url="https://github.com/projectcalico/calico/releases/download/v${cali
 cilium_url="https://github.com/cilium/cilium-cli/releases/download/${cilium_version}/cilium-linux-${arch}.tar.gz"
 hubble_url="https://github.com/cilium/hubble/releases/download/$hubble_version/hubble-linux-$arch.tar.gz"
 velero_url="https://github.com/vmware-tanzu/velero/releases/download/${velero_version}/velero-${velero_version}-linux-${arch}.tar.gz"
-
+skopeo_url="https://github.com/lework/skopeo-binary/releases/download/${skopeo_version}/skopeo-linux-${arch}"
+yq_url="https://github.com/mikefarah/yq/releases/download/${yq_version}/yq_linux_${arch}"
+wget  https://dl.min.io/server/minio/release/linux-arm64/minio
+wget https://dl.min.io/client/mc/release/linux-arm64/mc
 packages=(
   #$kernel_url
   #$runc_url
@@ -73,7 +71,9 @@ packages=(
   $calicoctl_url
   $cilium_url
   $hubble_url
-   $velero_url
+  $velero_url
+  $skopeo_url
+  $yq_url
 )
 
 for package_url in "${packages[@]}"; do

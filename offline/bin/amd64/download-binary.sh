@@ -47,7 +47,9 @@ calicoctl_url="https://github.com/projectcalico/calico/releases/download/v${cali
 cilium_url="https://github.com/cilium/cilium-cli/releases/download/${cilium_version}/cilium-linux-${arch}.tar.gz"
 hubble_url="https://github.com/cilium/hubble/releases/download/${hubble_version}/hubble-linux-${arch}.tar.gz"
 velero_url="https://github.com/vmware-tanzu/velero/releases/download/${velero_version}/velero-${velero_version}-linux-${arch}.tar.gz"
-wget wget https://dl.min.io/server/minio/release/linux-amd64/minio
+skopeo_url="https://github.com/lework/skopeo-binary/releases/download/${skopeo_version}/skopeo-linux-${arch}"
+yq_url="https://github.com/mikefarah/yq/releases/download/${yq_version}/yq_linux_${arch}"
+wget  https://dl.min.io/server/minio/release/linux-amd64/minio
 wget https://dl.min.io/client/mc/release/linux-amd64/mc
 packages=(
   #$kernel_url
@@ -72,6 +74,8 @@ packages=(
   $cilium_url
   $hubble_url
   $velero_url
+  $skopeo_url
+  $yq_url
 )
 
 for package_url in "${packages[@]}"; do

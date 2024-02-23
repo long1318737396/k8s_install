@@ -11,4 +11,8 @@ harbor-offline-installer-v2.9.2.tgz
 helm-v3.14.1-linux-amd64.tar.gz
 hubble-linux-amd64.tar.gz
 kubernetes-server-linux-amd64.tar.gz
+mc
+minio
 nerdctl-full-1.7.4-linux-amd64.tar.gz
+velero-v1.13.0-linux-amd64.tar.gz
+skopeo-linux-amd64
