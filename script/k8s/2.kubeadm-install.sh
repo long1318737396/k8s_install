@@ -1,24 +1,31 @@
-source config.sh
-mkdir -p "$kubeadm_dir"
+set -x
+dir="$(cd "$(dirname "$0")" && pwd)"
+cd $dir
+source ../../conf/config.sh
 
-tar -C $kubeadm_dir -xzf software/crictl-v${crictl_version}-linux-${arch}.tar.gz
+exec > >(tee -a "$logfile") 2>&1
+echo "$date_format"
+
+cd ../../offline/bin/${arch}
+
+tar -C $kubeadm_dir -xzf crictl-${crictl_version}-linux-${arch}.tar.gz
 
 #RELEASE="$(curl -sSL https://dl.k8s.io/release/stable.txt)"
 
-/bin/cp  software/{kubeadm,kubelet,kubectl} $kubeadm_dir/
+/bin/cp  {kubeadm,kubelet,kubectl} $kubeadm_dir/
 chmod +x $kubeadm_dir/{kubeadm,kubelet,kubectl}
 
-cat conf/kubelet.service | sed "s:/usr/bin:${kubeadm_dir}:g" |tee /etc/systemd/system/kubelet.service
+cat ../../conf/kubelet.service | sed "s:/usr/bin:${kubeadm_dir}:g" |tee /etc/systemd/system/kubelet.service
 mkdir -p /etc/systemd/system/kubelet.service.d
-cat conf/10-kubeadm.conf | sed "s:/usr/bin:${kubeadm_dir}:g" | tee /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+cat ../../conf/10-kubeadm.conf | sed "s:/usr/bin:${kubeadm_dir}:g" | tee /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 
 systemctl enable --now kubelet
 echo "source <(kubectl completion bash)" > /etc/profile.d/kubectl.sh
 echo "source <(kubeadm completion bash)" > /etc/profile.d/kubeadm.sh
 
-cd images/
-tar -zxvf base-image.tar.gz
-cd ../
-for i in `ls images/base-image`;do nerdctl load -i images/base-image/$i;done
+
 mkdir -p /etc/kubernetes/manifests/
-/bin/cp yaml/kube-vip.yaml /etc/kubernetes/manifests/kube-vip.yaml
+if [[ "$kube_vip_enable" == "true"]]
+  then
+    cat ../../yaml/first-master-kube-vip.yaml |sed -e "s/\${kube_vip}/${kube_vip}/g" -e "s/\{kube_vip_eth}/${kube_vip_eth}/g" |tee /etc/kubernetes/manifests/kube-vip.yaml
+fi

@@ -11,15 +11,11 @@ bootstrapTokens:
 kind: InitConfiguration
 certificateKey: 24dd608dcf62f3040e5ec3df4903739f02506f1b5bf1010e6167a8da9f8e569b
 localAPIEndpoint:
-  advertiseAddress: 192.168.1.203 
+  advertiseAddress: ${master1_ip}
   bindPort: 6443
 nodeRegistration:
   criSocket: unix:///var/run/containerd/containerd.sock
   imagePullPolicy: IfNotPresent
-  name: master203
-  taints: 
-  - effect: "NoSchedule"
-    key: "node-role.kubernetes.io/master"
 ---
 apiServer:
   timeoutForControlPlane: 4m0s
@@ -27,15 +23,15 @@ apiServer:
     authorization-mode: Node,RBAC
   certSANs:
   - vip.k8s.local
-  - 192.168.1.211 # VIP 地址
+  - ${loadbalancer_vip} # VIP 地址
   - 10.96.0.1  # service cidr的第一个ip
   - 127.0.0.1 # 多个master的时候负载均衡出问题了能够快速使用localhost调试
-  - 192.168.1.203
-  - 192.168.1.204
-  - 192.168.1.205
-  - master203
-  - master204
-  - master205
+  - ${master1_ip}
+  - ${master2_ip}
+  - ${master3_ip}
+  - master1
+  - master2
+  - master3
   - kubernetes
   - kubernetes.default
   - kubernetes.default.svc
@@ -50,7 +46,7 @@ certificatesDir: /etc/kubernetes/pki
 clusterName: kubernetes
 controllerManager: 
   extraArgs:
-    node-cidr-mask-size: "24"
+    node-cidr-mask-size: "${node-cidr-mask-size}"
   extraVolumes:
   - hostPath: /etc/localtime
     mountPath: /etc/localtime
@@ -59,16 +55,16 @@ controllerManager:
 dns: {}
 etcd:
   local:
-    dataDir: /data/kubernetes/etcd
+    dataDir: ${etcd_data_dir}
     imageTag: "3.5.12-0"
     serverCertSANs:
-    - "192.168.1.203"
-    - "192.168.1.204"
-    - "192.168.1.205"
+    - "${master1_ip}"
+    - "${master2_ip}"
+    - "${master3_ip}"
     peerCertSANs:
-    - "192.168.1.203"
-    - "192.168.1.204"
-    - "192.168.1.205"
+    - "${master1_ip}"
+    - "${master2_ip}"
+    - "${master3_ip}"
   extraArgs:
      "quota-backend-bytes": "32768000000"
 imageRepository: registry.k8s.io
@@ -76,15 +72,15 @@ kind: ClusterConfiguration
 kubernetesVersion: v1.29.2
 networking:
   dnsDomain: cluster.local
-  serviceSubnet: 10.96.0.0/20
-  podSubnet: 10.244.0.0/16
+  serviceSubnet: ${svc_dir}
+  podSubnet: ${pod_cidr}
 scheduler:
   extraVolumes:
   - hostPath: /etc/localtime
     mountPath: /etc/localtime
     name: timezone
     readOnly: true
-controlPlaneEndpoint: 192.168.1.211:6443
+controlPlaneEndpoint: ${loadbalancer_vip}:6443
 ---
 apiVersion: kubeproxy.config.k8s.io/v1alpha1
 kind: KubeProxyConfiguration
@@ -95,3 +91,22 @@ ipvs:
 apiVersion: kubelet.config.k8s.io/v1beta1
 kind: KubeletConfiguration
 cgroupDriver: systemd
+cpuManagerPolicy: none
+maxPods: 128
+podPidsLimit: 16384
+containerLogMaxSize: 100Mi
+containerLogMaxFiles: 10
+evictionHard:
+    imagefs.available: 15%
+    memory.available: 300Mi
+    nodefs.available: 10%
+    nodefs.inodesFree: 5%
+systemReserved:
+    cpu: 100m
+    memory: 1272Mi
+    pid: "1000"
+kubeReserved:
+    cpu: 100m
+    memory: 1272Mi
+    pid: "1000"
+serializeImagePulls: false

@@ -31,43 +31,5 @@ helm  install epis-frontend .  -n eworldcloud --create-namespace \
   --set image.repository=harbor.mtywcloud.com/publish
 ```
 ```bash
-#apollo安装
-helm upgrade --install --cleanup-on-fail apollo-service-pro \
-  --set configdb.host=192.168.1.46 \
-  --set configdb.dbName=ApolloConfigDB \
-  --set configdb.userName=sa \
-  --set configdb.password=tomtaw \
-  --set configdb.service.enabled=true \
-  --set configdb.port=3306 \
-  --set configService.replicaCount=1 \
-  --set adminService.replicaCount=1 \
-  --set configService.containerPort=8080 \
-  --set configService.service.type=NodePort \
-  --set configService.service.port=30012 \
-  --set configService.service.targetPort=8080 \
-  --set configService.service.nodePort=30012 \
-  -n environment \
-  ./apollo-service
 
-# 部署apollo-portal
-helm upgrade --install --cleanup-on-fail apollo-portal \
-  --set portaldb.host=192.168.1.46 \
-  --set portaldb.dbName=ApolloPortalDB \
-  --set portaldb.userName=sa \
-  --set portaldb.password=tomtaw \
-  --set portaldb.port=3306 \
-  --set portaldb.service.enabled=true \
-  --set config.envs="pro" \
-  --set config.metaServers.pro=http://apollo-service-pro-apollo-configservice:30012 \
-  --set replicaCount=1 \
-  --set service.type=NodePort \
-  --set service.nodePort=30011 \
-  -n environment \
-  ./apollo-portal
-
-
-Config service: http://apollo-service-pro-apollo-configservice.environment:30012
-Admin service: http://apollo-service-pro-apollo-adminservice.environment:8090
-Apollo Portal： http://192.168.1.196:30011
-用户名：apollo， 密码：admin
 ```

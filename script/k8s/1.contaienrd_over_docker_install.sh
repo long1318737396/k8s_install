@@ -1,18 +1,24 @@
-source config.sh
-mkdir -p ${local_dir}
+set -x
+dir="$(cd "$(dirname "$0")" && pwd)"
+cd $dir
+source ../../conf/config.sh
 
-cd software
-tar zxvf nerdctl-full-${containerd_version}-linux-amd64.tar.gz -C /usr/local/
+exec > >(tee -a "$logfile") 2>&1
+echo "$date_format"
+
+cd ../../offline/bin/${arch}
+tar zxvf nerdctl-full-${containerd_version}-linux-${arch}.tar.gz -C /usr/local/
 cp /usr/local/lib/systemd/system/*.service /etc/systemd/system/
 systemctl enable buildkit containerd 
 
 echo "source <(nerdctl completion bash)" > /etc/profile.d/nerdctl.sh
 
 mkdir -p /etc/containerd/
-cd ../
-/bin/cp conf/containerd.toml  /etc/containerd/config.toml
+
+/bin/cp ../../conf/containerd.toml  /etc/containerd/config.toml
 # containerd config default > /etc/containerd/config.toml
 # sed -i 's/SystemdCgroup\ =\ false/SystemdCgroup\ =\ true/g' /etc/containerd/config.toml
+sed -i "s/\${containerd_data_dir}/${containerd_data_dir}/g" /etc/containerd/config.toml
 systemctl start buildkit containerd 
 mkdir -p /opt/cni/bin
 cp /usr/local/libexec/cni/* /opt/cni/bin/
@@ -26,15 +32,15 @@ timeout: 10
 #debug: true"  > /etc/crictl.yaml
 
 mkdir -p /etc/buildkit
-/bin/cp conf/buildkitd.toml /etc/buildkit/buildkitd.toml
+/bin/cp ../../conf/buildkitd.toml /etc/buildkit/buildkitd.toml
 mkdir -p /etc/nerdctl/
-/bin/cp conf/nerdctl.toml /etc/nerdctl/nerdctl.toml
+/bin/cp ../../conf/nerdctl.toml /etc/nerdctl/nerdctl.toml
 
-/bin/cp software/docker-compose-linux-x86_64 /usr/local/bin/docker-compose
+/bin/cp docker-compose-linux-${arch1} /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 
 
-cd software
+
 tar -zxvf docker-${docker_version}.tgz 
 /bin/cp docker/docker* /usr/local/bin/
 
@@ -47,7 +53,7 @@ Wants=network-online.target
 [Service]
 Type=notify
 ExecStart=/usr/local/bin/dockerd
-ExecReload=/bin/kill -s HUP $MAINPID
+ExecReload=/bin/kill -s HUP \$MAINPID
 LimitNOFILE=infinity
 LimitNPROC=infinity
 LimitCORE=infinity
@@ -77,7 +83,7 @@ tee /etc/docker/daemon.json <<-'EOF'
     "live-restore": true
 }
 EOF
-
+sed -i "s/\${docker_data-root}/${docker_data-root}" /etc/docker/daemon.json
 systemctl enable docker --now
 docker completion bash > /etc/profile.d/docker.sh
 #source /etc/profile.d/docker.sh 

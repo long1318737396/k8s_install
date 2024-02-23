@@ -1,0 +1,17 @@
+set -x
+dir="$(cd "$(dirname "$0")" && pwd)"
+cd $dir
+source ../../conf/config.sh
+
+exec > >(tee -a "$logfile") 2>&1
+echo "$date_format"
+
+cd ../../offline/bin/${arch}
+tar -zxvf harbor-offline-installer-${harbor_version}.tgz 
+cd harbor
+/bin/cp ../harbor_pre.yml ./
+
+envsubst < harbor_pre.yml > harbor.yml
+
+./prepare
+./install.sh

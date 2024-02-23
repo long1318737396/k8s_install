@@ -1,43 +1,56 @@
 #------------harbor配置-----------
-hostname=myharbor.mtywcloud.com   #harbor的域名
-https_certificate=/data/harbor/   #https证书
-https_private_key=/data/harbor/   #https私钥
-data_volume=/data/harbor          #harbor数据目录
-harbor_version=2.9.2              #harbor版本
+harbor_hostname=myharbor.mtywcloud.com   #harbor的域名
+https_certificate=/etc/harbor/cert/${harbor_hostname}.crt   #https证书
+https_private_key=/etc/harbor/cert/${harbor_hostname}.key   #https私钥
+data_volume=/data/harbor/registry         #harbor数据目录
 harbor_admin_password=S6ag4KXGS   #harbor管理员密码
 #------------docker配置-----------
-docker_version="24.0.7"            #docker版本
 docker_data_root="/data/kubernetes/docker"       #docker数据目录
 #----------containerd配置---------
-containerd_version="1.7.1"          #containerd版本
 containerd_data_dir="/data/kubernetes/containerd"          #containerd数据目录
 #------------k8s配置--------------
-etcd_version="v3.5.10"             #etcd版本
-k8s_version="v1.29.0"              #k8s版本
-crictl_version="1.29.0"            #crictl版本
+master1_ip=192.168.1.211
+master2_ip=192.168.1.212
+master3_ip=192.168.1.213
 kubeadm_dir="/usr/local/bin"        #kubeadm目录
 etcd_data_dir="/data/kubernetes/etcd"     #etcd数据目录             
 pod_cidr="10.244.0.0/16"             #pod 网段
 svc_cidr="10.96.0.0/20"              #service网段
-kube_vip_enable=true                 #是否启用kube-vip，类似是否配置keepalived实现虚拟IP的高可用
-kube_vip=                            #kube-vip的虚拟IP
-kube_vip_eth="eth0"                  #kube-vip使用的网卡
+kube_vip_enable=true                 #是否启用kube-vip，类似是否配置keepalived实现虚拟IP的高可用,如果是true，则必须配置loadbalancer_vip，如果是外部负载均衡需要设置为false，但也需要配置loadbalancer_vip
+loadbalancer_vip=192.168.1.211        #kube-vip的虚拟IP
+kube_vip_eth="ens192"                  #kube-vip使用的网卡，启用kube-vip则必须配置
+node-cidr-mask-size=25
 #------------网络插件配置----------
-cilium_cli_version=""               #cilium-cli版本
-hubble_version=""                   #hubble版本
-calico_version="3.26.4"             #calico版本
-cni_version="1.4.0"                 #cni版本
 network_type="cilium"               #网络插件类型
-#------------组件配置--------------
-helm_version="3.13.3"               #helm版本
 #------------其他配置-------------
-download_ip=172.21.62.138
-download_software_url="http://${download_ip}:8089/${arch}/software"
-download_yaml_url="http://${download_ip}:8089/${arch}/yaml"
-download_conf_url="http://${download_ip}:8089/${arch}/conf"
-download_image_url="http://${download_ip}:8089/${arch}/images"
-registry="registry.mydomain.com:5000"
-local_dir="/data/kubernetes/software"
-arch="amd64"
+nfs-enabled=true   #是否部署nfs
+nfs-server=192.168.1.12  #nfs服务器地址
+nfs-path=/data/nfs/k8s   #nfs目录
+harbor_ip=172.21.62.138   #harbor的ip
 logfile=/var/log/k8s_install.log
 date_format=$(date +"%Y-%m-%d %H:%M:%S")
+#---------cpu架构配置------------
+arch="amd64"  #arm64
+arch1="x86_64"  #aarch64
+#------------组件版本配置--------------
+kernel_version='5.4.260'
+runc_version='1.1.12'
+docker_version='25.0.3'
+cni_plugins_version='v1.4.0'
+containerd_version='1.7.13'
+nerdctl_full_version='1.7.4'
+crictl_version='v1.29.0'
+cri_dockerd_version='0.3.10'
+etcd_version='v3.5.12'
+cfssl_version='1.6.4'
+helm_version='3.14.1'
+kubernetes_server_version='1.29.2'
+kubernetes_client_version='1.29.2'
+nginx_version='1.25.3'
+cri_o_version='V1.29.1'
+docker_compose_version='v2.24.6'
+harbor_version='v2.9.2'
+calicoctl_version=3.27.2
+cilium_version=v0.15.23
+hubble_version=v0.13.0
+velero_version=v1.13.0
