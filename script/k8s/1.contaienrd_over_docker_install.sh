@@ -86,4 +86,4 @@ EOF
 sed -i "s@\${docker_data_root}@${docker_data_root}@g" /etc/docker/daemon.json
 systemctl enable docker --now
 docker completion bash > /etc/profile.d/docker.sh
-#source /etc/profile.d/docker.sh 
+#source /etc/profile.d/docker.sh

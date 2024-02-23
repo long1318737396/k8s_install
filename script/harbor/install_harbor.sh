@@ -6,7 +6,7 @@ source ../../conf/config.sh
 exec > >(tee -a "$logfile") 2>&1
 echo "$date_format"
 
-cd ../../offline/bin/${arch}
+cp ../../offline/bin/${arch}/harbor-offline-installer-${harbor_version}.tgz ./
 tar -zxvf harbor-offline-installer-${harbor_version}.tgz 
 cd harbor
 /bin/cp ../harbor_pre.yml ./
