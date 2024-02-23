@@ -1,0 +1,14 @@
+FROM centos:8
+RUN rm -rf /etc/yum.repos.d/*
+WORKDIR /app
+COPY  CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
+RUN yum install -y createrepo python3-devel python3 gcc python3-createrepo_c libmodulemd git  
+RUN dnf install python3-gobject -y
+RUN git clone --branch modulemd-tools-0.11-1 https://github.com/rpm-software-management/modulemd-tools.git  \
+    && cd modulemd-tools/repo2module/ \
+    && python3 setup.py install --user 
+
+#COPY --from=build0 /rpms/* /rpms/
+RUN mkdir /rpms
+RUN cd /rpms && createrepo_c . && /root/.local/bin/repo2module  -s stable  . modules.yaml \
+    && modifyrepo_c --mdtype=modules modules.yaml repodata/ && ls -al /rpms
