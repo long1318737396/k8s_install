@@ -19,6 +19,12 @@ mkdir -p /etc/containerd/
 # containerd config default > /etc/containerd/config.toml
 # sed -i 's/SystemdCgroup\ =\ false/SystemdCgroup\ =\ true/g' /etc/containerd/config.toml
 sed -i "s@\${containerd_data_dir}@${containerd_data_dir}@g" /etc/containerd/config.toml
+
+
+mkdir -p /etc/containerd/certs.d/${harbor_hostname}
+/bin/cp ../../../conf/hosts.toml /etc/containerd/certs.d/${harbor_hostname}/
+sed -i "s@\${harbor_hostname}@${harbor_hostname}@g" /etc/containerd/certs.d/${harbor_hostname}/hosts.toml
+
 systemctl start buildkit containerd 
 mkdir -p /opt/cni/bin
 cp /usr/local/libexec/cni/* /opt/cni/bin/
@@ -71,7 +77,7 @@ mkdir /etc/docker
 tee /etc/docker/daemon.json <<-'EOF'
  {
     "exec-opts": ["native.cgroupdriver=systemd"],
-    "insecure-registries" : ["registry.mydomain.com:5000"],
+    "insecure-registries" : ["myharbor.mtywcloud.com"],
     "log-driver": "json-file",
     "data-root": "${docker_data_root}",
     "log-opts": {

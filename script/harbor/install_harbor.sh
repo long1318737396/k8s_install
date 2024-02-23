@@ -21,3 +21,6 @@ sed -i'' -e "s#\${harbor_hostname}#$harbor_hostname#g" \
 
 ./prepare
 ./install.sh
+
+
+echo "$harbor_ip $harbor_hostname" >> /etc/hosts
