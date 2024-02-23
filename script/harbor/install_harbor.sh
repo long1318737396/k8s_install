@@ -9,7 +9,7 @@ echo "$date_format"
 cp ../../offline/bin/${arch}/harbor-offline-installer-${harbor_version}.tgz ./
 tar -zxvf harbor-offline-installer-${harbor_version}.tgz 
 cd harbor
-souece ../../../conf/config.sh
+source ../../../conf/config.sh
 /bin/cp ../harbor_pre.yml ./
 
 envsubst < harbor_pre.yml > harbor.yml
