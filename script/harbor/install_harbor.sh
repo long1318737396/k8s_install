@@ -16,7 +16,7 @@ sed -i'' -e "s#\${harbor_hostname}#$harbor_hostname#g" \
            -e "s#\${https_certificate}#$https_certificate#g" \
            -e "s#\${https_private_key}#$https_private_key#g" \
            -e "s#\${harbor_admin_password}#$harbor_admin_password#g" \
-           -e "s#\${data_volume}#$data_volume#g" target_config.yml
+           -e "s#\${data_volume}#$data_volume#g" harbor.yml
 
 
 ./prepare
