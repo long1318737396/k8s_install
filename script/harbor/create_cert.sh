@@ -59,10 +59,10 @@ openssl x509 -inform PEM -in $domainname.crt -out $domainname.cert
 
 mkdir -p /etc/docker/certs.d/$domainname/
   
-cp $domainname.cert /etc/docker/certs.d/$domainname/
-cp $domainname.key /etc/docker/certs.d/$domainname/
-cp ca.crt /etc/docker/certs.d/$domainname/
-cp ca.crt /etc/pki/ca-trust/source/anchors
+/bin/cp $domainname.cert /etc/docker/certs.d/$domainname/
+/bin/cp $domainname.key /etc/docker/certs.d/$domainname/
+/bin/cp ca.crt /etc/docker/certs.d/$domainname/
+/bin/cp ca.crt /etc/pki/ca-trust/source/anchors
 
 update-ca-trust extract
 
@@ -73,5 +73,5 @@ systemctl restart docker
 # openssl req -new -newkey rsa:4096 -keyout server.key -out server.csr -nodes -subj "/CN=${harbor_hostname}"
 # openssl x509 -req -sha256 -days 365 -in server.csr -CA ca.crt -CAkey ca.key -set_serial 01 -out server.crt
 
-cp *.crt *.key $domainname.crt $domainname.key $domainname.cert /etc/harbor/cert
+/bin/cp *.crt *.key $domainname.crt $domainname.key $domainname.cert /etc/harbor/cert
 
