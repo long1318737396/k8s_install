@@ -83,7 +83,7 @@ tee /etc/docker/daemon.json <<-'EOF'
     "live-restore": true
 }
 EOF
-sed -i "s@\${docker_data-root}@${docker_data-root}@/g" /etc/docker/daemon.json
+sed -i "s@\${docker_data-root}@${docker_data-root}@g" /etc/docker/daemon.json
 systemctl enable docker --now
 docker completion bash > /etc/profile.d/docker.sh
 #source /etc/profile.d/docker.sh 
