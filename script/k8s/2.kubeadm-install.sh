@@ -13,7 +13,7 @@ tar -C $kubeadm_dir -xzf crictl-${crictl_version}-linux-${arch}.tar.gz
 #RELEASE="$(curl -sSL https://dl.k8s.io/release/stable.txt)"
 
 tar -zxvf kubernetes-server-linux-${arch}.tar.gz
-/bin/cp kubernetes/server/bin/{kubectl,kubeadm} $kubeadm_dir/
+/bin/cp kubernetes/server/bin/{kubelet,kubeadm} $kubeadm_dir/
 /bin/cp  kubeadm $kubeadm_dir/
 chmod +x $kubeadm_dir/{kubeadm,kubelet,kubectl}
 
@@ -27,7 +27,11 @@ echo "source <(kubeadm completion bash)" > /etc/profile.d/kubeadm.sh
 
 
 mkdir -p /etc/kubernetes/manifests/
-if [[ "$kube_vip_enable" == "true"]]
-  then
-    cat ../../../yaml/first-master-kube-vip.yaml |sed -e "s/\${kube_vip}/${kube_vip}/g" -e "s/\{kube_vip_eth}/${kube_vip_eth}/g" |tee /etc/kubernetes/manifests/kube-vip.yaml
+
+if [[ "$kube_vip_enable" == "true" ]]
+then
+    cat ../../../yaml/first-master-kube-vip.yaml \
+        | sed -e "s/\${kube_vip}/${kube_vip}/g" \
+              -e "s/\{kube_vip_eth}/${kube_vip_eth}/g" \
+        | tee /etc/kubernetes/manifests/kube-vip.yaml
 fi
