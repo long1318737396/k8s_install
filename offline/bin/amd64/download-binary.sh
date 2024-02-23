@@ -52,7 +52,7 @@ velero_url="https://github.com/vmware-tanzu/velero/releases/download/${velero_ve
 skopeo_url="https://github.com/lework/skopeo-binary/releases/download/${skopeo_version}/skopeo-linux-${arch}"
 yq_url="https://github.com/mikefarah/yq/releases/download/${yq_version}/yq_linux_${arch}"
 curl  -k -L -C - -o minio  https://dl.min.io/server/minio/release/linux-amd64/minio
-wgetcurl  -k -L -C - -o mc https://dl.min.io/client/mc/release/linux-amd64/mc
+curl  -k -L -C - -o mc https://dl.min.io/client/mc/release/linux-amd64/mc
 packages=(
   #$kernel_url
   #$runc_url

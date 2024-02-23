@@ -19,13 +19,13 @@ svc_cidr="10.96.0.0/20"              #service网段
 kube_vip_enable=true                 #是否启用kube-vip，类似是否配置keepalived实现虚拟IP的高可用,如果是true，则必须配置loadbalancer_vip，如果是外部负载均衡需要设置为false，但也需要配置loadbalancer_vip
 loadbalancer_vip=192.168.1.211        #kube-vip的虚拟IP
 kube_vip_eth="ens192"                  #kube-vip使用的网卡，启用kube-vip则必须配置
-node-cidr-mask-size="25"
+node_cidr_mask_size="25"
 #------------网络插件配置----------
 network_type="cilium"               #网络插件类型
 #------------其他配置-------------
-nfs-enabled="true"   #是否部署nfs
-nfs-server="192.168.1.12"  #nfs服务器地址
-nfs-path="/data/nfs/k8s"   #nfs目录
+nfs_enabled="true"   #是否部署nfs
+nfs_server="192.168.1.12"  #nfs服务器地址
+nfs_path="/data/nfs/k8s"   #nfs目录
 harbor_ip=172.21.62.138   #harbor的ip
 logfile=/var/log/k8s_install.log
 date_format=$(date +"%Y-%m-%d %H:%M:%S")

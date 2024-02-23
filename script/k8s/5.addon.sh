@@ -8,11 +8,11 @@ echo "$date_format"
 
 cd ../../yaml
 # nfs安装
-if [[ "$nfs-enabled" == "true "]]
+if [[ "$nfs_enabled" == "true "]]
     then 
         helm upgrade --install nfs-subdir-external-provisioner ./nfs-subdir-external-provisioner --namespace=environment --create-namespace \
-            --set nfs.server=${nfs-server} \
-            --set nfs.path="${nfs-path}" \
+            --set nfs.server=${nfs_server} \
+            --set nfs.path="${nfs_path}" \
             --set storageClass.name=nfs-client
 fi
 
