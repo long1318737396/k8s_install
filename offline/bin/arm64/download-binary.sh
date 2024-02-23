@@ -89,9 +89,3 @@ for package_url in "${packages[@]}"; do
     exit 1
   fi
 done
-
-chmod +x docker-compose-linux-$arch1
-chmod +x calicoctl-linux-$arch
-chmod +x cfssl_${cfssl_version}_linux_$arch
-chmod +x cfssljson_${cfssl_version}_linux_$arch
-chmod +x cfssl-certinfo_${cfssl_version}_linux_$arch
