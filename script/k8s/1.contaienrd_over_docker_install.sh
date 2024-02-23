@@ -73,7 +73,7 @@ tee /etc/docker/daemon.json <<-'EOF'
     "exec-opts": ["native.cgroupdriver=systemd"],
     "insecure-registries" : ["registry.mydomain.com:5000"],
     "log-driver": "json-file",
-    "data-root": "${docker_data-root}",
+    "data-root": "${docker_data_root}",
     "log-opts": {
         "max-size": "100m",
         "max-file": "10"
@@ -83,7 +83,7 @@ tee /etc/docker/daemon.json <<-'EOF'
     "live-restore": true
 }
 EOF
-sed -i "s@\${docker_data-root}@${docker_data-root}@g" /etc/docker/daemon.json
+sed -i "s@\${docker_data_root}@${docker_data_root}@g" /etc/docker/daemon.json
 systemctl enable docker --now
 docker completion bash > /etc/profile.d/docker.sh
 #source /etc/profile.d/docker.sh 
