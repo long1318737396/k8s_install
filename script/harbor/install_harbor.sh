@@ -12,7 +12,7 @@ cd harbor
 source ../../../conf/config.sh
 /bin/cp ../harbor_pre.yml ./
 
-envsubst < harbor_pre.yml > harbor.yml
+cat   harbor_pre.yml > harbor.yml
 
 ./prepare
 ./install.sh
