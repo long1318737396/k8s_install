@@ -1,8 +1,12 @@
 set -x
 dir="$(cd "$(dirname "$0")" && pwd)"
+cd ${dir}
 source ../../../conf/config.sh
+
 exec > >(tee -a "$logfile") 2>&1
 echo "$date_format"
+
+
 # https://github.com/containernetworking/plugins/releases/
 # https://github.com/containerd/containerd/releases/
 # https://github.com/containerd/nerdctl/releases
