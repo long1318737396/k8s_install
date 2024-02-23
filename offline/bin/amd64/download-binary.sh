@@ -1,10 +1,8 @@
 set -x
 dir="$(cd "$(dirname "$0")" && pwd)"
-source ../../conf/config.sh
-arch1="x86_64"
-save_dir="/data/kubernetes/packages/amd"
-mkdir -p ${save_dir}
-cd ${save_dir}
+cd ${dir}
+source ../../../conf/config.sh
+
 exec > >(tee -a "$logfile") 2>&1
 echo "$date_format"
 # https://github.com/containernetworking/plugins/releases/
@@ -44,10 +42,10 @@ kubernetes_client_url="https://dl.k8s.io/v${kubernetes_client_version}/kubernete
 nginx_url="http://nginx.org/download/nginx-${nginx_version}.tar.gz"
 cri_o_url="https://storage.googleapis.com/cri-o/artifacts/cri-o.${arch}.${cri_o_version}.tar.gz"
 harbor_url="https://github.com/goharbor/harbor/releases/download/${harbor_version}/harbor-offline-installer-${harbor_version}.tgz"
-docker_compose_url="https://github.com/docker/compose/releases/download/${docker_compose_version}/docker-compose-linux-$arch1}"
-calicoctl_url="https://github.com/projectcalico/calico/releases/download/v${calicoctl_version}/calicoctl-linux-$arch}"
+docker_compose_url="https://github.com/docker/compose/releases/download/${docker_compose_version}/docker-compose-linux-${arch1}"
+calicoctl_url="https://github.com/projectcalico/calico/releases/download/v${calicoctl_version}/calicoctl-linux-${arch}"
 cilium_url="https://github.com/cilium/cilium-cli/releases/download/${cilium_version}/cilium-linux-${arch}.tar.gz"
-hubble_url="https://github.com/cilium/hubble/releases/download/${hubble_version/hubble-linux-${arch}.tar.gz"
+hubble_url="https://github.com/cilium/hubble/releases/download/${hubble_version}/hubble-linux-${arch}.tar.gz"
 velero_url="https://github.com/vmware-tanzu/velero/releases/download/${velero_version}/velero-${velero_version}-linux-${arch}.tar.gz"
 wget wget https://dl.min.io/server/minio/release/linux-amd64/minio
 wget https://dl.min.io/client/mc/release/linux-amd64/mc
