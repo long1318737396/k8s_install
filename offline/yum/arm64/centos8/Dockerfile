@@ -2,7 +2,7 @@ FROM centos:8 as build0
 #########################################################################################
 ENV DOCKER_REPO=https://download.docker.com/linux/centos/docker-ce.repo
 COPY pkg.list /
-#COPY kubernetes.repo /etc/yum.repos.d/
+COPY kubernetes.repo /etc/yum.repos.d/
 RUN rm -rf /etc/yum.repos.d/*
 COPY  CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
 RUN yum clean all
