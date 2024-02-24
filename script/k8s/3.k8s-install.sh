@@ -5,8 +5,6 @@ source ../../conf/config.sh
 exec > >(tee -a "$logfile") 2>&1
 echo "$date_format"
 
-
-
 # 源配置文件
 SOURCE_ENV_FILE="../../conf/config.sh"
 # 目标配置文件
@@ -16,20 +14,17 @@ DEST_FILE="kubeadm-config.yaml"
 (
     # 从源配置文件中读取并设置环境变量
     set -a # 自动导出所有后续命令设置的环境变量
-    source "$SOURCE_ENV_FILE"
-    #!/bin/bash
 
-while IFS='=' read -r key value; do
-    # 忽略以井号（#）开头的行以及空行
-    if [[ $key =~ ^[[:space:]]*# ]]; then
-        continue
-    fi
+    # 将配置文件中的有效变量重新读取并导出到子 shell 中
+    while IFS='=' read -r key value; do
+        if [[ $key =~ ^[[:space:]]*# ]]; then
+            continue
+        fi
+        if [[ ! -z "$key" && -z "${key##*[![:space:]]*}" ]]; then
+            export "$key=$value"
+        fi
+    done < "$SOURCE_ENV_FILE"
 
-    # 只处理非空且非注释行
-    if [[ ! -z "$key" && -z "${key##*[![:space:]]*}" ]]; then
-        export "$key=$value"
-    fi
-done < ../../conf/config.sh
     # 使用 envsubst 替换目标文件中的环境变量
     envsubst < "$DEST_FILE" > "$DEST_FILE.tmp"
 
@@ -41,5 +36,5 @@ done < ../../conf/config.sh
 
 unset SOURCE_ENV_FILE DEST_FILE
 
-
-kubeadm init --config=kubeadm-config.yaml --upload-certs
+# 执行 kubeadm init 命令
+kubeadm init --config=kubeadm-config.yaml --upload-certs --v=5
