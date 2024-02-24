@@ -23,7 +23,7 @@ wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/stat
 wget https://raw.githubusercontent.com/stakater/Reloader/master/deployments/kubernetes/reloader.yaml
 wget https://raw.githubusercontent.com/projectcalico/calico/v3.27.2/manifests/calico.yaml
 wget https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.20.3 TARGET_ARCH=${arch1} sh -
+#curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.20.3 TARGET_ARCH=${arch1} sh -
 wget https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 curl -fsSL https://addons.kuboard.cn/kuboard/kuboard-static-pod.sh -o kuboard.sh
 git  clone https://github.com/prometheus-operator/kube-prometheus.git

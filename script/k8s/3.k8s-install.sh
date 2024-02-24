@@ -5,5 +5,28 @@ source ../../conf/config.sh
 exec > >(tee -a "$logfile") 2>&1
 echo "$date_format"
 
-envsubst < ../../conf/kubeadm.yaml > kubeadm-config.yaml
+
+
+# 源配置文件
+SOURCE_ENV_FILE="../../conf/config.sh"
+# 目标配置文件
+DEST_FILE="kubeadm-config.yaml"
+
+# 临时创建一个新的 shell 环境来加载和处理环境变量
+(
+    # 从源配置文件中读取并设置环境变量
+    set -a # 自动导出所有后续命令设置的环境变量
+    source "$SOURCE_ENV_FILE"
+
+    # 使用 envsubst 替换目标文件中的环境变量
+    envsubst < "$DEST_FILE" > "$DEST_FILE.tmp"
+
+    # 如果替换成功且无错误，则覆盖原文件
+    if [ $? -eq 0 ]; then
+        mv "$DEST_FILE.tmp" "$DEST_FILE"
+    fi
+)
+
+unset SOURCE_ENV_FILE DEST_FILE
+
 kubeadm init --config=kubeadm-config.yaml --upload-certs
