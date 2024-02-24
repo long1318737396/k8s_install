@@ -6,7 +6,26 @@ source ../../conf/config.sh
 exec > >(tee -a "$logfile") 2>&1
 echo "$date_format"
 
+
+
 cd ../../yaml
+
+    set -a # 自动导出所有后续命令设置的环境变量
+
+    # 将配置文件中的有效变量重新读取并导出到子 shell 中
+    while IFS='=' read -r key value; do
+        if [[ $key =~ ^[[:space:]]*# ]]; then
+            continue
+        fi
+        if [[ ! -z "$key" && -z "${key##*[![:space:]]*}" ]]; then
+            export "$key=$value"
+        fi
+    done < "../conf/config.sh"
+
+
+#metrics-server安装
+kubectl apply -f components.yaml
+
 # nfs安装
 if [[ "$nfs_enabled" == "true "]]
     then 
@@ -24,9 +43,11 @@ helm upgrade --install ingress-nginx ./ingress-nginx \
   --set controller.service.type=NodePort \
   --set controller.opentelemetry.enabled=true \
   --set controller.metrics.enabled=true \
-  --set controller.allowSnippetAnnotations=true
-
+  --set controller.allowSnippetAnnotations=true \
   --namespace environment --create-namespace
+
+# gateway api安装
+kubectl apply -f experimental-install.yaml
 
 #prometheus安装
 
@@ -90,7 +111,4 @@ helm upgrade --install --cleanup-on-fail apollo-portal \
   ./apollo-portal --create-namespace
 
 
-Config service: http://apollo-service-pro-apollo-configservice.environment:30012
-Admin service: http://apollo-service-pro-apollo-adminservice.environment:8090
-Apollo Portal： http://192.168.1.196:30011
-用户名：apollo， 密码：admin
+

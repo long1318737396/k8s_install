@@ -1,14 +1,3 @@
-#!/bin/bash
-
-ipaddr=$(ip addr | awk '/^[0-9]+: / {}; /inet.*global/ {print gensub(/(.*)\/(.*)/, "\\1", "g", $2)}' | awk 'NR==1{print}')
-
-echo "current ip address is ${ipaddr}"
-
-echo "create file /root/kuboard-sa.yaml"
-
-echo
-
-cat > /root/kuboard-sa.yaml << EOF
 ---
 kind: Namespace
 apiVersion: v1
@@ -56,18 +45,6 @@ subjects:
   - kind: ServiceAccount
     name: kuboard-viewer
     namespace: kuboard
-
-EOF
-
-echo "kubectl apply -f /root/kuboard-sa.yaml"
-
-kubectl apply -f /root/kuboard-sa.yaml
-
-echo
-echo "create file /etc/kubernetes/manifests/kuboard.yaml"
-echo
-
-cat > /etc/kubernetes/manifests/kuboard.yaml << EOF
 ---
 apiVersion: v1
 kind: Pod
@@ -78,6 +55,7 @@ metadata:
   name: kuboard-v3
   namespace: kuboard
 spec:
+  nodeName: master1
   containers:
     - env:
         - name: KUBOARD_ENDPOINT
@@ -136,9 +114,6 @@ spec:
   tolerations:
     - key: node-role.kubernetes.io/master
       operator: Exists
-EOF
-
-cat > /root/kuboard-svc.yaml << EOF
 ---
 apiVersion: v1
 kind: Service
@@ -156,16 +131,3 @@ spec:
     port: 80 
     targetPort: 80
     nodePort: 32766
-EOF
-
-echo "restart kubelet"
-
-systemctl restart kubelet
-
-host_name=$(hostname)
-
-echo
-echo "\033[34m检查状态\033[0m 待 kuboard-v3-${host_name} 的容器组变为 Running 状态后，则安装成功，可以通过 http://${ipaddr} 访问 kuboard 界面"
-echo
-
-kubectl get pods -n kuboard -o wide

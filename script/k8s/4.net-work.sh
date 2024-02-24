@@ -63,4 +63,3 @@ if [[ "$network_type" == "calico" ]]
                 --set egressGateway.enabled=true 
 
     fi
-kubectl apply -f yaml/metrics-sever.yaml
