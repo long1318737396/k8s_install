@@ -18,7 +18,7 @@ etcd_data_dir="/data/kubernetes/etcd"     #etcd数据目录
 pod_cidr="10.244.0.0/16"             #pod 网段
 svc_cidr="10.96.0.0/20"              #service网段
 kube_vip_enable=false                 #是否启用kube-vip，类似是否配置keepalived实现虚拟IP的高可用,如果是true，则必须配置loadbalancer_vip，如果是外部负载均衡需要设置为false，但也需要配置loadbalancer_vip
-loadbalancer_vip=192.168.1.211        #kube-vip的虚拟IP
+loadbalancer_vip=172.16.10.206        #kube-vip的虚拟IP
 kube_vip_eth="ens192"                  #kube-vip使用的网卡，启用kube-vip则必须配置
 node_cidr_mask_size="25"            #每个节点所分配的网段掩码
 #------------网络插件配置----------

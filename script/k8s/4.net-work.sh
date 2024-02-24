@@ -31,14 +31,14 @@ if [[ "$network_type" == "calico" ]]
     elif [[ "$network_type" == "calico" ]]
         then
             cd ../../yaml;
-            helm upgrade --install cilium cilium/cilium --namespace=kube-system  --version 1.15.1 \
+            helm upgrade --install cilium ./cilium --namespace=kube-system  --version 1.15.1 \
                 --set routingMode=native \
                 --set kubeProxyReplacement=strict \
                 --set bandwidthManager.enabled=true \
                 --set ipam.mode=kubernetes \
-                --set k8sServiceHost=192.168.198.128 \
+                --set k8sServiceHost=${loadbalancer_vip} \
                 --set k8sServicePort=6443 \
-                --set ipv4NativeRoutingCIDR=10.244.0.0/16 \
+                --set ipv4NativeRoutingCIDR=${pod_cidr} \
                 --set operate.pprof=true \
                 --set operate.prometheus.enabled=true \
                 --set prometheus.enabled=true \
@@ -49,11 +49,18 @@ if [[ "$network_type" == "calico" ]]
                 --set hubble.relay.prometheus.enabled=true \
                 --set hubble.relay.pprof.enabled=true \
                 --set hubble.ui.enabled=true \
+                --set hubble.ui.service.type=NodePort \
                 --set hubble.metrics.enabled="{dns:query;ignoreAAAA,drop,tcp,flow,icmp,http}" \
+                --set hubble.metrics.dashboards.enabled=true \
                 --set ingressController.enabled=true \
-                --set debug.enabled=true \
+                --set debug.enabled=false \
                 --set operator.replicas=1 \
                 --set bpf.masquerade=true \
-                --set autoDirectNodeRoutes=true 
+                --set autoDirectNodeRoutes=true \
+                --set gatewayAPI.enabled=true \
+                --set ingressController.enabled=true \
+                --set ingressController.service.type=NodePort \
+                --set egressGateway.enabled=true 
+
     fi
 kubectl apply -f yaml/metrics-sever.yaml

@@ -34,3 +34,7 @@ unset SOURCE_ENV_FILE DEST_FILE
 
 # 执行 kubeadm init 命令
 kubeadm init --config=kubeadm-config.yaml --upload-certs --v=5
+
+mkdir -p $HOME/.kube
+sudo /bin/cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config

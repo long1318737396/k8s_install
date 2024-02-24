@@ -1,0 +1,3 @@
+```bash
+kubeadm reset --force 
+```
