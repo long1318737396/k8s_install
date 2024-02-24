@@ -46,7 +46,7 @@ certificatesDir: /etc/kubernetes/pki
 clusterName: kubernetes
 controllerManager: 
   extraArgs:
-    node-cidr-mask-size: "${node_cidr_mask_size}"
+    node-cidr-mask-size: ${node_cidr_mask_size}
   extraVolumes:
   - hostPath: /etc/localtime
     mountPath: /etc/localtime
