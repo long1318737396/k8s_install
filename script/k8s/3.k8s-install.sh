@@ -8,7 +8,7 @@ echo "$date_format"
 # 源配置文件
 SOURCE_ENV_FILE="../../conf/config.sh"
 # 目标配置文件
-DEST_FILE="kubeadm-config.yaml"
+DEST_FILE="../../conf/kubeadm.yaml"
 
 # 临时创建一个新的 shell 环境来加载和处理环境变量
 (
@@ -26,12 +26,8 @@ DEST_FILE="kubeadm-config.yaml"
     done < "$SOURCE_ENV_FILE"
 
     # 使用 envsubst 替换目标文件中的环境变量
-    envsubst < "$DEST_FILE" > "$DEST_FILE.tmp"
+    envsubst < "$DEST_FILE" > "kubeadm-config.yaml"
 
-    # 如果替换成功且无错误，则覆盖原文件
-    if [ $? -eq 0 ]; then
-        mv "$DEST_FILE.tmp" "$DEST_FILE"
-    fi
 )
 
 unset SOURCE_ENV_FILE DEST_FILE
