@@ -22,18 +22,16 @@ cd ../../yaml
         fi
     done < "../conf/config.sh"
 
+kubectl create ns environment
 
 #metrics-server安装
 kubectl apply -f components.yaml
 
-# nfs安装
-if [[ "$nfs_enabled" == "true "]]
-    then 
-        helm upgrade --install nfs-subdir-external-provisioner ./nfs-subdir-external-provisioner --namespace=environment --create-namespace \
-            --set nfs.server=${nfs_server} \
-            --set nfs.path="${nfs_path}" \
-            --set storageClass.name=nfs-client
-fi
+# gateway api安装
+kubectl apply -f experimental-install.yaml
+
+#二层LB安装
+kubectl apply -f metallb-native.yaml
 
 # ingress安装
 helm upgrade --install ingress-nginx ./ingress-nginx \
@@ -46,25 +44,41 @@ helm upgrade --install ingress-nginx ./ingress-nginx \
   --set controller.allowSnippetAnnotations=true \
   --namespace environment --create-namespace
 
-# gateway api安装
-kubectl apply -f experimental-install.yaml
+# reloader.yaml安装
 
-#prometheus安装
-
-kubectl apply --server-side -f kube-prometheus/manifests/setup
-kubectl wait \
-	--for condition=Established \
-	--all CustomResourceDefinition \
-	--namespace=monitoring
-kubectl apply -f kube-prometheus/manifests/
+kubectl apply -f reloader.yaml
 
 # redis安装
 kubectl apply -f redis.yaml
 #kuboard安装
 bash   kuboard.sh
 
+#本地存储安装
+kubectl apply -f local-path-storage.yaml
+
+
+# nfs安装
+if [[ "$nfs_enabled" == "true "]]
+    then 
+        helm upgrade --install nfs-subdir-external-provisioner ./nfs-subdir-external-provisioner --namespace=environment --create-namespace \
+            --set nfs.server=${nfs_server} \
+            --set nfs.path="${nfs_path}" \
+            --set storageClass.name=nfs-client
+fi
+
+
+#prometheus安装
+
+kubectl apply --server-side -f kube-prometheus/manifests/setup
+# kubectl wait \
+# 	--for condition=Established \
+# 	--all CustomResourceDefinition \
+# 	--namespace=monitoring
+kubectl apply -f kube-prometheus/manifests/
+
+
+
 #loki安装
-kubectl create ns environment
 #helm  install grafana yaml/loki/grafana --namespace  environment 
 helm  upgrade --install loki ./loki-stack --namespace  environment --create-namespace \
     --set promtail.enabled=false \
@@ -72,8 +86,8 @@ helm  upgrade --install loki ./loki-stack --namespace  environment --create-name
     --set loki.persistence.enabled=true \
     --set loki.persistence.size=10Gi \
     --set loki.persistence.storageClassName=nfs-client
-#前端自动重启安装
-kubectl apply -f reloader.yaml
+
+
 
 
 #apollo安装
