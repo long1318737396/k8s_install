@@ -11,13 +11,13 @@ destination=myharbor.mtywcloud.com/library
 while read line; \
   do nerdctl tag $line ${destination}/${line##*/}; \
      echo "----nerdctl tag $line ${destination}/${line##*/}-----"; \
-    nerdctl push --insecure-registry ${destination}/${line##*/}; \
+    nerdctl push --insecure-registry ${destination}/${line##*/} --platform arm64; \
     echo "----nerdctl push --insecure-registry ${destination}/${line##*/}----"; \
   done <base-image.list
 
 while read line; \
   do nerdctl tag $line ${destination}/${line##*/}; \
      echo "----nerdctl tag $line ${destination}/${line##*/}-----"; \
-    nerdctl push --insecure-registry ${destination}/${line##*/}; \
+    nerdctl push --insecure-registry ${destination}/${line##*/} --platform arm64; \
     echo "----nerdctl push --insecure-registry ${destination}/${line##*/}----"; \
   done <addon-image.list
