@@ -7,7 +7,7 @@ exec > >(tee -a "$logfile") 2>&1
 echo "$date_format"
 
 
-destination=myharbor.mtywcloud.com
+destination=myharbor.mtywcloud.com/library
 while read line; \
   do nerdctl tag $line ${destination}/${line##*/}; \
      echo "----nerdctl tag $line ${destination}/${line##*/}-----"; \
