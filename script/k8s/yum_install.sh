@@ -11,4 +11,25 @@ cd ../../offline/yum/${arch}/centos8
 tar -zxvf rpms.tar.gz
 
 cd rpms
-yum localinstall wget* conntrack* socat* ipvsadm* ipset* nmap* telnet* bind-utils*  nfs-utils* unzip* bash-completion* tcpdump* mtr* nftables* iproute-tc*  --skip-broken -y
+packages=(
+    wget* 
+    vim* 
+    conntrack* 
+    socat* 
+    ipvsadm* 
+    ipset* 
+    nmap* 
+    telnet* 
+    bind-utils*  
+    nfs-utils* 
+    unzip* 
+    bash-completion* 
+    tcpdump* 
+    mtr* 
+    nftables* 
+    iproute-tc*
+)
+for i in ${packages[@]};do
+
+    yum localinstall $i  --skip-broken -y
+done

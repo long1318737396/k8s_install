@@ -9,7 +9,8 @@ echo "$date_format"
 
 mkdir -p ${nfs_path}
 chmod -R 777 ${nfs_path}
-echo "${nfs_path} *(rw,sync,no_root_squash,no_all_squash)" | sudo tee -a /etc/exports
+echo "${nfs_path} *(rw,sync,no_root_squash,no_subtree_check)" | sudo tee -a /etc/exports
 exportfs -ra
+systemctl enable rpcbind --now
 systemctl enable nfs-server
 systemctl start nfs-server

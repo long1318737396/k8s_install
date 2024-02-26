@@ -13,10 +13,14 @@ mkdir -p /etc/kubernetes/manifests/
 
 if [[ "$kube_vip_enable" == "true" ]]
 then
-    cat ../../../yaml/other-master-kube-vip.yaml \
+    cat ../../yaml/other-master-kube-vip.yaml \
         | sed -e "s/\${loadbalancer_vip}/${loadbalancer_vip}/g" \
-              -e "s/\{kube_vip_eth}/${kube_vip_eth}/g" \
+              -e "s/\${kube_vip_eth}/${kube_vip_eth}/g" \
         | tee /etc/kubernetes/manifests/kube-vip.yaml
 fi
 
-kubeadm init --config kubeadm-control-plane-join.yaml --v 5
+kubeadm join --config kubeadm-control-plane-join.yaml --v 5
+
+mkdir -p $HOME/.kube
+sudo /bin/cp  /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config

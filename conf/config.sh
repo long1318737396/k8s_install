@@ -1,5 +1,5 @@
 #------------harbor配置-----------
-harbor_ip=172.21.62.138
+harbor_ip=192.168.150.14
 harbor_hostname=myharbor.mtywcloud.com
 https_certificate=/etc/harbor/cert/${harbor_hostname}.crt
 https_private_key=/etc/harbor/cert/${harbor_hostname}.key
@@ -10,22 +10,22 @@ docker_data_root="/data/kubernetes/docker"
 #----------containerd配置---------
 containerd_data_dir="/data/kubernetes/containerd"
 #------------k8s配置--------------
-master1_ip=172.16.10.206
-master2_ip=192.168.1.212
-master3_ip=192.168.1.213
+master1_ip=192.168.150.10
+master2_ip=192.168.150.11
+master3_ip=192.168.150.12
 kubeadm_dir="/usr/local/bin"
 etcd_data_dir="/data/kubernetes/etcd"           
 pod_cidr="10.244.0.0/16"
 svc_cidr="10.96.0.0/20"
-kube_vip_enable=false
-loadbalancer_vip=172.16.10.206
-kube_vip_eth="ens192"
+kube_vip_enable=true
+loadbalancer_vip=192.168.150.15
+kube_vip_eth="ens160"
 node_cidr_mask_size="25"
 #------------网络插件配置----------
 network_type="cilium"
 #------------其他配置-------------
 nfs_enabled="true"
-nfs_server="192.168.1.12"
+nfs_server="192.168.150.14"
 nfs_path="/data/nfs/k8s"
 logfile=/var/log/k8s_install.log
 date_format=$(date +"%Y-%m-%d %H:%M:%S")

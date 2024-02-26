@@ -6,3 +6,4 @@ exec > >(tee -a "$logfile") 2>&1
 echo "$date_format"
 
 bash offline/images/${arch}/load.sh
+bash offline/images/${arch}/push.sh

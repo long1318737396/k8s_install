@@ -13,7 +13,7 @@ tar -C $kubeadm_dir -xzf crictl-${crictl_version}-linux-${arch}.tar.gz
 #RELEASE="$(curl -sSL https://dl.k8s.io/release/stable.txt)"
 
 tar -zxvf kubernetes-server-linux-${arch}.tar.gz
-/bin/cp kubernetes/server/bin/{kubelet,kubeadm} $kubeadm_dir/
+/bin/cp kubernetes/server/bin/{kubelet,kubectl} $kubeadm_dir/
 /bin/cp  kubeadm $kubeadm_dir/
 chmod +x $kubeadm_dir/{kubeadm,kubelet,kubectl}
 

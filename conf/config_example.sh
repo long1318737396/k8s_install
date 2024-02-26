@@ -10,9 +10,9 @@ docker_data_root="/data/kubernetes/docker"       #docker数据目录
 #----------containerd配置---------
 containerd_data_dir="/data/kubernetes/containerd"          #containerd数据目录
 #------------k8s配置--------------
-master1_ip=172.16.10.206
-master2_ip=192.168.1.212
-master3_ip=192.168.1.213
+master1_ip=172.16.10.206   #master1的ip
+master2_ip=192.168.1.212   #master2的ip
+master3_ip=192.168.1.213   #master3的ip
 kubeadm_dir="/usr/local/bin"        #kubeadm目录
 etcd_data_dir="/data/kubernetes/etcd"     #etcd数据目录             
 pod_cidr="10.244.0.0/16"             #pod 网段

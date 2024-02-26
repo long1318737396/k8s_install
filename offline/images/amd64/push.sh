@@ -1,6 +1,7 @@
 set -x
 dir="$(cd "$(dirname "$0")" && pwd)"
-source ../../conf/config.sh
+cd $dir
+source ../../../conf/config.sh
 
 
 exec > >(tee -a "$logfile") 2>&1

@@ -53,12 +53,12 @@ controllerManager:
     name: timezone
     readOnly: true
 dns: 
-  imageRepository: registry.k8s.io/coredns
+  imageRepository: ${harbor_hostname}/library
   imageTag: v1.11.1
 etcd:
   local:
     dataDir: ${etcd_data_dir}
-    imageRepository: registry.k8s.io
+    imageRepository: ${harbor_hostname}/library
     imageTag: "3.5.12-0"
     serverCertSANs:
     - "${master1_ip}"
@@ -69,9 +69,11 @@ etcd:
     - "${master2_ip}"
     - "${master3_ip}"
     extraArgs:
-      quota-backend-bytes: "32768000000"
-      auto-compaction-mode: periodic
-imageRepository: registry.k8s.io
+      "quota-backend-bytes": "32768000000"
+      "auto-compaction-mode": "periodic"
+      "auto-compaction-retention": "1000"
+      "auto-compaction-interval": "1h"
+imageRepository: ${harbor_hostname}/library
 kind: ClusterConfiguration
 kubernetesVersion: v1.29.2
 networking:
