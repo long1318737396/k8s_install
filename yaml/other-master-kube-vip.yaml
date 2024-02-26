@@ -14,7 +14,7 @@ spec:
     - name: port
       value: "6443"
     - name: vip_interface
-      value: ens160
+      value: ${kube_vip_eth}
     - name: vip_cidr
       value: "32"
     - name: cp_enable
@@ -34,7 +34,7 @@ spec:
     - name: vip_retryperiod
       value: "1"
     - name: address
-      value: 192.168.1.249
+      value: ${loadbalancer_vip}
     - name: prometheus_server
       value: :2112
     image: ghcr.io/kube-vip/kube-vip:v0.7.0
@@ -60,7 +60,7 @@ spec:
   hostNetwork: true
   volumes:
   - hostPath:
-      path: /etc/kubernetes/super-admin.conf
+      path: /etc/kubernetes/admin.conf
     name: kubeconfig
   - hostPath:
       path: /etc/localtime

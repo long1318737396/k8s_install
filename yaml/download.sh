@@ -17,6 +17,8 @@ helm repo add grafana https://grafana.github.io/helm-charts
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx 
 helm repo add metallb https://metallb.github.io/metallb
 helm repo add minio-operator https://operator.min.io
+helm repo add openebs https://openebs.github.io/charts
+
 
 wget https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/experimental-install.yaml
 wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/baremetal/deploy.yaml
@@ -44,4 +46,5 @@ helm pull grafana/loki-stack --untar
 helm pull ingress-nginx/ingress-nginx --untar
 helm pull metallb/metallb --untar
 helm pull minio-operator/operator --untar
+helm pull openebs/openebs --untar
 #helm install flannel --set podCidr="10.244.0.0/16" --namespace kube-flannel flannel/flannel

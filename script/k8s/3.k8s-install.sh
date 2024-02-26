@@ -32,6 +32,16 @@ DEST_FILE="../../conf/kubeadm.yaml"
 
 unset SOURCE_ENV_FILE DEST_FILE
 
+mkdir -p /etc/kubernetes/manifests/
+
+if [[ "$kube_vip_enable" == "true" ]]
+then
+    cat ../../../yaml/first-master-kube-vip.yaml \
+        | sed -e "s/\${loadbalancer_vip}/${loadbalancer_vip}/g" \
+              -e "s/\{kube_vip_eth}/${kube_vip_eth}/g" \
+        | tee /etc/kubernetes/manifests/kube-vip.yaml
+fi
+
 # 执行 kubeadm init 命令
 kubeadm init --config=kubeadm-config.yaml --upload-certs --v=5
 

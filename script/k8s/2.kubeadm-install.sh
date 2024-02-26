@@ -24,14 +24,3 @@ cat ../../../conf/10-kubeadm.conf | sed "s:/usr/bin:${kubeadm_dir}:g" | tee /etc
 systemctl enable --now kubelet
 echo "source <(kubectl completion bash)" > /etc/profile.d/kubectl.sh
 echo "source <(kubeadm completion bash)" > /etc/profile.d/kubeadm.sh
-
-
-mkdir -p /etc/kubernetes/manifests/
-
-if [[ "$kube_vip_enable" == "true" ]]
-then
-    cat ../../../yaml/first-master-kube-vip.yaml \
-        | sed -e "s/\${kube_vip}/${kube_vip}/g" \
-              -e "s/\{kube_vip_eth}/${kube_vip_eth}/g" \
-        | tee /etc/kubernetes/manifests/kube-vip.yaml
-fi
