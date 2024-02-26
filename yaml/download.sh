@@ -32,6 +32,7 @@ git  clone https://github.com/prometheus-operator/kube-prometheus.git
 wget https://raw.githubusercontent.com/metallb/metallb/v0.14.3/config/manifests/metallb-native.yaml
 wget https://raw.githubusercontent.com/kubernetes/kubernetes/master/cluster/addons/dns/nodelocaldns/nodelocaldns.yaml
 wget https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.26/deploy/local-path-storage.yaml
+#git clone --single-branch --branch v1.13.5 https://github.com/rook/rook.git
 
 helm repo update
 
