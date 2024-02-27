@@ -201,3 +201,4 @@ bash 3.docker_install.sh
 bash offline/images/amd64/load.sh
 bash 8.join_node.sh
 ```
+

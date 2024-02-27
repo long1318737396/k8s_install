@@ -1,14 +1,3 @@
-set -x
-dir="$(cd "$(dirname "$0")" && pwd)"
-cd $dir
-source ../../../conf/config.sh
-
-exec > >(tee -a "$logfile") 2>&1
-echo "$date_format"
-
-
-vi /usr/local/bin/kube-scripts/etcd-backup.sh
-
 #!/bin/bash
 
 set -o errexit
@@ -16,15 +5,15 @@ set -o nounset
 set -o pipefail
 
 ETCDCTL_PATH='/usr/local/bin/etcdctl'
-ENDPOINTS='https://172.16.10.205:2379'
-ETCD_DATA_DIR="/var/lib/etcd"
-BACKUP_DIR="/var/backups/kube_etcd/etcd-$(date +%Y-%m-%d-%H-%M-%S)"
+ENDPOINTS='https://127.0.0.1:2379'
+ETCD_DATA_DIR="/data/kubernetes/etcd"
+BACKUP_DIR="/data/kubernetes_backup_dontdelete/etcd/etcd-$(date +%Y-%m-%d-%H-%M-%S)"
 KEEPBACKUPNUMBER='6'
 ETCDBACKUPSCIPT='/usr/local/bin/kube-scripts'
 
-ETCDCTL_CERT="/etc/ssl/etcd/ssl/admin-node2.pem"
-ETCDCTL_KEY="/etc/ssl/etcd/ssl/admin-node2-key.pem"
-ETCDCTL_CA_FILE="/etc/ssl/etcd/ssl/ca.pem"
+ETCDCTL_CERT="/etc/kubernetes/pki/etcd/server.crt"
+ETCDCTL_KEY="/etc/kubernetes/pki/etcd/server.key"
+ETCDCTL_CA_FILE="/etc/kubernetes/pki/etcd/ca.crt"
 
 [ ! -d $BACKUP_DIR ] && mkdir -p $BACKUP_DIR
 
@@ -43,12 +32,4 @@ sleep 3
 
 cd $BACKUP_DIR/../ && ls -lt |awk '{if(NR > '$KEEPBACKUPNUMBER'){print "rm -rf "$9}}'|sh
 
-
-tee /etc/systemd/system/backup-etcd.service <EOF
-[Unit]
-Description=Backup ETCD
-[Service]
-Type=oneshot
-ExecStart=/usr/local/bin/kube-scripts/etcd-backup.sh
-EOF
 
