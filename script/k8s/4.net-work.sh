@@ -28,7 +28,7 @@ chmod +x /usr/local/bin/cilium
 if [[ "$network_type" == "calico" ]]
     then
         kubectl apply -f ../../yaml/calico.yaml 
-    elif [[ "$network_type" == "calico" ]]
+    elif [[ "$network_type" == "cilium" ]]
         then
             cd ../../yaml;
             helm upgrade --install cilium ./cilium --namespace=kube-system  --version 1.15.1 \
