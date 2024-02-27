@@ -10,7 +10,21 @@ cd ../../offline/yum/${arch}/centos8
 
 tar -zxvf rpms.tar.gz
 
-cd rpms
+local_repo=$(pwd)/rpms
+timestamp=$(date +"%Y-%m-%d-%H-%M-%S")
+
+mv /etc/yum.repos.d /etc/yum.repos.d_bak_old_$timestamp
+mkdir /etc/yum.repos.d
+
+tee /etc/yum.repos.d/local.repo <<EOF
+[local]
+name=local
+baseurl=file://$local_repo
+gpgcheck=0
+enabled=1
+EOF
+
+yum makecache
 packages=(
     wget* 
     vim* 
@@ -29,7 +43,8 @@ packages=(
     nftables* 
     iproute-tc*
 )
+
 for i in ${packages[@]};do
 
-    yum localinstall $i  --skip-broken -y
+    yum install $i  --skip-broken -y
 done
