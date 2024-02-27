@@ -8,4 +8,7 @@ wget --no-check-certificate https://dl.k8s.io/release/${k8s_version}/bin/linux/a
 /bin/cp kubeadm /usr/local/bin/
 chmod +x /usr/local/bin/kubeadm
 bash 6.k8s_install.sh
+if [ $? -eq 0 ]; then
+  kubectl taint  node  master node-role.kubernetes.io/control-plane:NoSchedule-
+fi
 bash 9.addon_install.sh
