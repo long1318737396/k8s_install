@@ -42,8 +42,11 @@ then
         | tee /etc/kubernetes/manifests/kube-vip.yaml
 fi
 
+set -e
 # 执行 kubeadm init 命令
 kubeadm init --config=kubeadm-config.yaml --upload-certs --v=5
+
+trap "echo Command executed successfully." EXIT
 
 mkdir -p $HOME/.kube
 sudo /bin/cp  /etc/kubernetes/admin.conf $HOME/.kube/config
