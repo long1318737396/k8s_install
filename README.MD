@@ -1,3 +1,5 @@
+> 离线安装 | [在线](README_online.md)
+
 ## 将软件包上传至harbor服务器
 
 ```bash
@@ -184,7 +186,7 @@ bash 8.join_node.sh
 - 参考node1服务器加入到集群中
 
 ```bash
-#配置node1服务器的hosts解析
+#配置node2服务器的hosts解析
 hostnamectl set-hostname node2
 harbor_ip=192.168.150.14
 curl -L -o k8s_install.tar.gz $harbor_ip:38088/k8s_install.tar.gz
