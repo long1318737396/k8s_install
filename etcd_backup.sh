@@ -1,9 +1,9 @@
 mkdir -p /usr/local/bin/kube-scripts
 
-/bin/cp scripts/k8s/etcd/etcd_backup.sh /usr/local/bin/kube-scripts/etcd_backup.sh
+/bin/cp script/k8s/etcd/etcd_backup.sh /usr/local/bin/kube-scripts/etcd_backup.sh
 
 
-tee /etc/systemd/system/backup-etcd.service <EOF
+tee /etc/systemd/system/backup-etcd.service <<EOF
 [Unit]
 Description=Backup ETCD
 [Service]
@@ -12,7 +12,7 @@ ExecStart=/usr/local/bin/kube-scripts/etcd_backup.sh
 EOF
 systemctl enable backup-etcd.service
 
-tee/etc/systemd/system/backup-etcd.timer <<EOF
+tee /etc/systemd/system/backup-etcd.timer <<EOF
 [Unit]
 Description=Timer to backup ETCD
 [Timer]
