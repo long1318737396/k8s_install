@@ -8,7 +8,7 @@ echo "$date_format"
 # 源配置文件
 SOURCE_ENV_FILE="../../conf/config.sh"
 # 目标配置文件
-DEST_FILE="../../conf/kubeadm.yaml"
+DEST_FILE="../../conf/kubeadm-custom-image-zh.yaml"
 
 # 临时创建一个新的 shell 环境来加载和处理环境变量
 (
