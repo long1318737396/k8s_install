@@ -1,0 +1,116 @@
+---
+apiVersion: kubeadm.k8s.io/v1beta3
+bootstrapTokens:
+- groups:
+  - system:bootstrappers:kubeadm:default-node-token
+  token: abcdef.0123456789abcdef
+  ttl: 24h0m0s
+  usages:
+  - signing
+  - authentication
+kind: InitConfiguration
+certificateKey: 24dd608dcf62f3040e5ec3df4903739f02506f1b5bf1010e6167a8da9f8e569b
+localAPIEndpoint:
+  advertiseAddress: ${master1_ip}
+  bindPort: 6443
+nodeRegistration:
+  criSocket: unix:///var/run/containerd/containerd.sock
+  imagePullPolicy: IfNotPresent
+---
+apiServer:
+  timeoutForControlPlane: 4m0s
+  extraArgs:
+    authorization-mode: Node,RBAC
+  certSANs:
+  - vip.k8s.local
+  - ${loadbalancer_vip} # VIP 地址
+  - 10.96.0.1  # service cidr的第一个ip
+  - 127.0.0.1 # 多个master的时候负载均衡出问题了能够快速使用localhost调试
+  - ${master1_ip}
+  - ${master2_ip}
+  - ${master3_ip}
+  - master1
+  - master2
+  - master3
+  - kubernetes
+  - kubernetes.default
+  - kubernetes.default.svc
+  - kubernetes.default.svc.cluster.local
+  extraVolumes:
+  - hostPath: /etc/localtime
+    mountPath: /etc/localtime
+    name: timezone
+    readOnly: true
+apiVersion: kubeadm.k8s.io/v1beta3
+certificatesDir: /etc/kubernetes/pki
+clusterName: kubernetes
+controllerManager: 
+  extraArgs:
+    node-cidr-mask-size: ${node_cidr_mask_size}
+  extraVolumes:
+  - hostPath: /etc/localtime
+    mountPath: /etc/localtime
+    name: timezone
+    readOnly: true
+dns: 
+  imageRepository: registry.aliyuncs.com/google_containers
+  imageTag: v1.11.1
+etcd:
+  local:
+    dataDir: ${etcd_data_dir}
+    imageRepository: registry.aliyuncs.com/google_containers
+    imageTag: "3.5.12-0"
+    serverCertSANs:
+    - "${master1_ip}"
+    - "${master2_ip}"
+    - "${master3_ip}"
+    peerCertSANs:
+    - "${master1_ip}"
+    - "${master2_ip}"
+    - "${master3_ip}"
+    extraArgs:
+      quota-backend-bytes: "32768000000"
+      auto-compaction-mode: periodic
+imageRepository: registry.aliyuncs.com/google_containers
+kind: ClusterConfiguration
+kubernetesVersion: v1.29.2
+networking:
+  dnsDomain: cluster.local
+  serviceSubnet: ${svc_dir}
+  podSubnet: ${pod_cidr}
+scheduler:
+  extraVolumes:
+  - hostPath: /etc/localtime
+    mountPath: /etc/localtime
+    name: timezone
+    readOnly: true
+controlPlaneEndpoint: ${loadbalancer_vip}:6443
+---
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+kind: KubeProxyConfiguration
+mode: ipvs
+ipvs:
+  strictARP: true
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+cgroupDriver: systemd
+cpuManagerPolicy: none
+maxPods: 128
+podPidsLimit: 16384
+containerLogMaxSize: 100Mi
+containerLogMaxFiles: 10
+evictionHard:
+    imagefs.available: 15%
+    memory.available: 300Mi
+    nodefs.available: 10%
+    nodefs.inodesFree: 5%
+systemReserved:
+    cpu: 100m
+    memory: 1272Mi
+    pid: "1000"
+kubeReserved:
+    cpu: 100m
+    memory: 1272Mi
+    pid: "1000"
+serializeImagePulls: false
