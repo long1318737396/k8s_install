@@ -14,9 +14,9 @@ registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.10.1
 registry.k8s.io/prometheus-adapter/prometheus-adapter:v0.11.2
 registry.k8s.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
 docker.io/library/nginx:latest
-docker.io/apolloconfig/apollo-portal:2.0.0
-docker.io/apolloconfig/apollo-configservice:2.0.0
-docker.io/apolloconfig/apollo-adminservice:2.0.0
+docker.io/apolloconfig/apollo-portal:2.2.0
+docker.io/apolloconfig/apollo-configservice:2.2.0
+docker.io/apolloconfig/apollo-adminservice:2.2.0
 docker.io/openebs/cspc-operator:3.6.0
 docker.io/openebs/cstor-csi-driver:3.6.0
 docker.io/openebs/cstor-webhook:3.6.0
