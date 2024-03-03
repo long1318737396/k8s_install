@@ -51,23 +51,23 @@ hubble_url="https://github.com/cilium/hubble/releases/download/${hubble_version}
 velero_url="https://github.com/vmware-tanzu/velero/releases/download/${velero_version}/velero-${velero_version}-linux-${arch}.tar.gz"
 skopeo_url="https://github.com/lework/skopeo-binary/releases/download/${skopeo_version}/skopeo-linux-${arch}"
 yq_url="https://github.com/mikefarah/yq/releases/download/${yq_version}/yq_linux_${arch}"
-curl  -k -L -C - -o minio  https://dl.min.io/server/minio/release/linux-amd64/minio
-curl  -k -L -C - -o mc https://dl.min.io/client/mc/release/linux-amd64/mc
+#curl  -k -L -C - -o minio  https://dl.min.io/server/minio/release/linux-amd64/minio
+#curl  -k -L -C - -o mc https://dl.min.io/client/mc/release/linux-amd64/mc
 packages=(
   #$kernel_url
   #$runc_url
   $docker_url
-  #$cni_plugins_url
-  #$containerd_url
-  ${nerdctl_full_url}
-  $crictl_url
-  #$cri_dockerd_url
-  $etcd_url
-  $cfssl_url
-  $cfssljson_url
-  $cfssl_certinfo
-  $helm_url
-  $kubernetes_server_url
+  # #$cni_plugins_url
+  # #$containerd_url
+  # ${nerdctl_full_url}
+  # $crictl_url
+  # #$cri_dockerd_url
+  # $etcd_url
+  # $cfssl_url
+  # $cfssljson_url
+  # $cfssl_certinfo
+  # $helm_url
+  # $kubernetes_server_url
   #$nginx_url
   #${cri_o_url}
   # $harbor_url
