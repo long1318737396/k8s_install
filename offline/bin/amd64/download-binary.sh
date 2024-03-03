@@ -70,14 +70,14 @@ packages=(
   $kubernetes_server_url
   #$nginx_url
   #${cri_o_url}
-  $harbor_url
-  $docker_compose_url
-  $calicoctl_url
-  $cilium_url
-  $hubble_url
-  $velero_url
-  $skopeo_url
-  $yq_url
+  # $harbor_url
+  # $docker_compose_url
+  # $calicoctl_url
+  # $cilium_url
+  # $hubble_url
+  # $velero_url
+  # $skopeo_url
+  # $yq_url
 )
 
 for package_url in "${packages[@]}"; do
