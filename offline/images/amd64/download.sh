@@ -6,7 +6,7 @@ source ../../../conf/config.sh
 exec > >(tee -a "$logfile") 2>&1
 echo "$date_format"
 
-
+set +e
 while read line;do docker pull $line ;done < base-image.list
 
 
