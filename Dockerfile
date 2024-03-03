@@ -34,8 +34,7 @@ RUN --mount=type=bind,source=requirements.txt,target=requirements.txt \
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-RUN --mount=type=bind,source=roles/kubespray-defaults/defaults/main/main.yml,target=roles/kubespray-defaults/defaults/main/main.yml \
-    KUBE_VERSION=$(sed -n 's/^kube_version: //p' roles/kubespray-defaults/defaults/main/main.yml) \
+RUN KUBE_VERSION=$(curl -Ls https://dl.k8s.io/release/stable.txt) \
     OS_ARCHITECTURE=$(dpkg --print-architecture) \
     && curl -L "https://dl.k8s.io/release/${KUBE_VERSION}/bin/linux/${OS_ARCHITECTURE}/kubectl" -o /usr/local/bin/kubectl \
     && echo "$(curl -L "https://dl.k8s.io/release/${KUBE_VERSION}/bin/linux/${OS_ARCHITECTURE}/kubectl.sha256")" /usr/local/bin/kubectl | sha256sum --check \
