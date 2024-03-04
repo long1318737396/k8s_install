@@ -213,3 +213,7 @@ bash 9.addon_install.sh
 ## 查看搭建集群时脚本会关闭节点上防火墙，集群搭建完毕后会使用到如下表列出的端口 [端口](docs/port.md)
 
 ## 查看grafana以及kuboard等默认密码 [密码](docs/admin.md)
+
+## etcd常见命令 [etcd](docs/etcd.md)
+
+## kubectl常见命令 [kubectl](docs/kubectl.md)
