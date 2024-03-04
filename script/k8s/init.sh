@@ -69,4 +69,13 @@ EOF
 sysctl -p /etc/sysctl.d/95-k8s-sysctl.conf
 
 
-
+if [[  -f /etc/resolv.conf ]]
+then
+  echo "resolv is existing"
+else
+  tee /etc/resolv.conf <<EOF
+nameserver 10.96.0.11
+search default.svc.cluster.local svc.cluster.local
+options timeout:2 attempts:3 rotate single-request-reopen
+EOF
+fi
