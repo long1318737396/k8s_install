@@ -92,12 +92,12 @@ helm  upgrade --install loki ./loki-stack --namespace  environment --create-name
 
 #apollo安装
 helm upgrade --install --cleanup-on-fail apollo-service-pro \
-  --set configdb.host=1.1.1.1 \
-  --set configdb.dbName=ApolloConfigDB \
-  --set configdb.userName=sa \
-  --set configdb.password=123 \
+  --set configdb.host=${apollo_db_host} \
+  --set configdb.dbName=${apollo_configdb_name} \
+  --set configdb.userName=${apollo_db_username} \
+  --set configdb.password=${apollo_db_password} \
   --set configdb.service.enabled=true \
-  --set configdb.port=3306 \
+  --set configdb.port=${apollo_db_port} \
   --set configService.replicaCount=1 \
   --set adminService.replicaCount=1 \
   --set configService.containerPort=8080 \
@@ -110,11 +110,11 @@ helm upgrade --install --cleanup-on-fail apollo-service-pro \
 
 # 部署apollo-portal
 helm upgrade --install --cleanup-on-fail apollo-portal \
-  --set portaldb.host=1.1.1.1 \
-  --set portaldb.dbName=ApolloPortalDB \
-  --set portaldb.userName=sa \
-  --set portaldb.password=123 \
-  --set portaldb.port=3306 \
+  --set portaldb.host=${apollo_db_host} \
+  --set portaldb.dbName=${apollo_portdb_name} \
+  --set portaldb.userName=${apollo_db_username} \
+  --set portaldb.password=${apollo_db_password} \
+  --set portaldb.port=${apollo_db_port} \
   --set portaldb.service.enabled=true \
   --set config.envs="pro" \
   --set config.metaServers.pro=http://apollo-service-pro-apollo-configservice:30012 \

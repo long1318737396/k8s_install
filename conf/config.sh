@@ -29,6 +29,14 @@ nfs_server="192.168.150.14"
 nfs_path="/data/nfs/k8s"
 logfile=/var/log/k8s_install.log
 date_format=$(date +"%Y-%m-%d %H:%M:%S")
+#----------apollo安装配置------------
+apollo_db_host=1.1.1.1
+apollo_db_username=sa
+apollo_db_password=test
+apollo_db_port=3306
+apollo_configdb_name=ApolloConfigDB
+apollo_portdb_name=ApolloPortalDB
+apollo_
 #---------cpu架构配置------------
 arch="amd64"
 arch1="x86_64"
