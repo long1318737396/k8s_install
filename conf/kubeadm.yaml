@@ -21,6 +21,8 @@ apiServer:
   timeoutForControlPlane: 4m0s
   extraArgs:
     authorization-mode: Node,RBAC
+    default-not-ready-toleration-seconds: "300"
+    default-unreachable-toleration-seconds: "300"
   certSANs:
   - vip.k8s.local
   - ${loadbalancer_vip} # VIP 地址
@@ -114,3 +116,5 @@ kubeReserved:
     memory: 1272Mi
     pid: "1000"
 serializeImagePulls: false
+rotateCertificates: true
+staticPodPath: /etc/kubernetes/manifests
