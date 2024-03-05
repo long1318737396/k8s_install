@@ -190,7 +190,29 @@ $ kubectl scale --replicas=3 -f foo.yaml
 $ kubectl scale --current-replicas=2 --replicas=3 deployment/mysql  
 
 # Scale multiple replication controllers
-$ kubectl scale --replicas=5 rc/foo rc/bar rc/baz   
+$ kubectl scale --replicas=5 rc/foo rc/bar rc/baz
+
+# 基于内存的使用率
+kubectl apply -f - <<EOF
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nginx
+spec:
+  maxReplicas: 4
+  minReplicas: 1
+  metrics:
+  - resource:
+      name: memory
+      target:
+        averageUtilization: 70
+        type: Utilization
+    type: Resource
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nginx
+EOF
 ```
 ## 删除资源
 ```bash
