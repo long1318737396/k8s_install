@@ -36,7 +36,6 @@ apollo_db_password=test
 apollo_db_port=3306
 apollo_configdb_name=ApolloConfigDB
 apollo_portdb_name=ApolloPortalDB
-apollo_
 #---------cpu架构配置------------
 arch="amd64"
 arch1="x86_64"
