@@ -39,7 +39,7 @@ helm upgrade --install ingress-nginx ./ingress-nginx \
   --set controller.ingressClass=nginx \
   --set controller.kind=DaemonSet \
   --set controller.service.type=NodePort \
-  --set controller.opentelemetry.enabled=true \
+  --set controller.opentelemetry.enabled=false \
   --set controller.metrics.enabled=true \
   --set controller.allowSnippetAnnotations=true \
   --namespace environment --create-namespace
@@ -101,10 +101,9 @@ helm upgrade --install --cleanup-on-fail apollo-service-pro \
   --set configService.replicaCount=1 \
   --set adminService.replicaCount=1 \
   --set configService.containerPort=8080 \
-  --set configService.service.type=NodePort \
+  --set configService.service.type=ClusterIP \
   --set configService.service.port=30012 \
   --set configService.service.targetPort=8080 \
-  --set configService.service.nodePort=30012 \
   -n environment \
   ./apollo-service --create-namespace
 
