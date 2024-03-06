@@ -26,8 +26,13 @@ mkdir -p /etc/containerd/certs.d/${harbor_hostname}
 sed -i "s@\${harbor_hostname}@${harbor_hostname}@g" /etc/containerd/certs.d/${harbor_hostname}/hosts.toml
 
 systemctl start buildkit containerd 
+if [ $? -ne 0 ]; then
+  echo "Command failed. Exiting..."
+  exit 1
+fi
 mkdir -p /opt/cni/bin
 cp /usr/local/libexec/cni/* /opt/cni/bin/
+
 
 echo "source <(crictl completion bash)" > /etc/profile.d/crictl.sh
 
@@ -91,5 +96,10 @@ tee /etc/docker/daemon.json <<-'EOF'
 EOF
 sed -i "s@\${docker_data_root}@${docker_data_root}@g" /etc/docker/daemon.json
 systemctl enable docker --now
+if [ $? -ne 0 ]; then
+  echo "Command failed. Exiting..."
+  exit 1
+fi
 docker completion bash > /etc/profile.d/docker.sh
 #source /etc/profile.d/docker.sh
+

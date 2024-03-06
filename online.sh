@@ -4,11 +4,19 @@ bash offline/bin/amd64/download-binary-online.sh
 hostnamectl set-hostname master1
 bash 2.init.sh
 bash 3.docker_install.sh
+if [ $? -ne 0 ]; then
+  echo "Command failed. Exiting..."
+  exit 1
+fi
 k8s_version=v1.29.2
 wget --no-check-certificate https://dl.k8s.io/release/${k8s_version}/bin/linux/amd64/kubeadm
 /bin/cp kubeadm /usr/local/bin/
 chmod +x /usr/local/bin/kubeadm
 bash 6.k8s_install.sh
+if [ $? -ne 0 ]; then
+  echo "Command failed. Exiting..."
+  exit 1
+fi
 if [ $? -eq 0 ]; then
   kubectl taint  node  master1 node-role.kubernetes.io/control-plane:NoSchedule-
 fi
