@@ -1,10 +1,77 @@
 if [ -f /etc/debian_version ]; then
   apt update
-  apt install conntrack socat ipvsadm ipset git telnet dnsutils nfs-kernel-server nfs-common bash-completion iptables wget -y
+   packages=(
+    wget* 
+    vim* 
+    conntrack* 
+    socat* 
+    ipvsadm* 
+    ipset* 
+    nmap* 
+    telnet* 
+    dnsutils*  
+    nfs-kernel-server
+    nfs-common
+    unzip* 
+    bash-completion* 
+    tcpdump* 
+    mtr* 
+    nftables* 
+    iproute-tc*
+    iptables
+    curl
+    git
+  )
+
+  for i in ${packages[@]};do
+      apt install $i   -y
+  done
 elif [ -f /etc/redhat-release ]; then
-  yum install conntrack socat ipvsadm ipset git telnet dns-utils nfs-utils bash-completion  wget -y
+  packages=(
+    wget* 
+    vim* 
+    conntrack* 
+    socat* 
+    ipvsadm* 
+    ipset* 
+    nmap* 
+    telnet* 
+    bind-utils*  
+    nfs-utils* 
+    unzip* 
+    bash-completion* 
+    tcpdump* 
+    mtr* 
+    nftables* 
+    iproute-tc*
+  )
+
+  for i in ${packages[@]};do
+      yum install $i  --skip-broken -y
+  done
 else
-    yum install conntrack socat ipvsadm ipset git telnet dns-utils nfs-utils bash-completion  wget -y
+    packages=(
+    wget* 
+    vim* 
+    conntrack* 
+    socat* 
+    ipvsadm* 
+    ipset* 
+    nmap* 
+    telnet* 
+    bind-utils*  
+    nfs-utils* 
+    unzip* 
+    bash-completion* 
+    tcpdump* 
+    mtr* 
+    nftables* 
+    iproute-tc*
+  )
+
+  for i in ${packages[@]};do
+      yum install $i  --skip-broken -y
+  done
 fi
 bash offline/bin/amd64/download-binary-online.sh
 hostnamectl set-hostname master1
