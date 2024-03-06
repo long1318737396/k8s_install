@@ -1,4 +1,4 @@
-apt install conntrack socat ipvsadm ipset git telnet dnsutils nfs-kernel-server nfs-common bash-completion iptables wget -y
+apt update && apt install conntrack socat ipvsadm ipset git telnet dnsutils nfs-kernel-server nfs-common bash-completion iptables wget -y
 yum install conntrack socat ipvsadm ipset git telnet dns-utils nfs-utils bash-completion  wget -y
 bash offline/bin/amd64/download-binary-online.sh
 hostnamectl set-hostname master1
