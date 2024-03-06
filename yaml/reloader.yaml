@@ -13,7 +13,7 @@ metadata:
     heritage: "Helm"
     app.kubernetes.io/managed-by: "Helm"
   name: reloader-reloader
-  namespace: default
+  namespace: environment
 ---
 # Source: reloader/templates/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -104,7 +104,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: reloader-reloader
-    namespace: default
+    namespace: environment
 ---
 # Source: reloader/templates/deployment.yaml
 apiVersion: apps/v1
