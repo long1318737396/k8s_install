@@ -96,7 +96,9 @@ helm  upgrade --install loki ./loki-stack --namespace  environment --create-name
     --set loki.service.type=ClusterIP \
     --set loki.persistence.enabled=true \
     --set loki.persistence.size=10Gi \
-    --set loki.persistence.storageClassName=nfs-client
+    --set loki.persistence.storageClassName=nfs-client \
+    --set promtail.image.tag=2.9.5 \
+    --set loki.image.tag=2.9.5
 
 
 

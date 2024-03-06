@@ -11,6 +11,7 @@ quay.io/prometheus-operator/prometheus-operator:v0.71.2
 docker.io/rancher/local-path-provisioner:v0.0.26
 docker.io/grafana/grafana:10.3.3
 docker.io/grafana/loki:2.9.5
+docker.io/grafana/promtail:2.9.5
 registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.10.1
 registry.k8s.io/prometheus-adapter/prometheus-adapter:v0.11.2
 registry.k8s.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
