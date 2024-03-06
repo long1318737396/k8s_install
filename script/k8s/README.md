@@ -2,8 +2,15 @@
 kubeadm reset --force
 ipvsadm -C
 rm -rf $HOME/.kube/config
-Config service: http://apollo-service-pro-apollo-configservice.environment:30012
-Admin service: http://apollo-service-pro-apollo-adminservice.environment:8090
-Apollo Portal： http://192.168.1.196:30011
-用户名：apollo， 密码：admin
+
+kubectl delete crd alertmanagerconfigs.monitoring.coreos.com
+kubectl delete crd alertmanagers.monitoring.coreos.com
+kubectl delete crd podmonitors.monitoring.coreos.com
+kubectl delete crd probes.monitoring.coreos.com
+kubectl delete crd prometheusagents.monitoring.coreos.com
+kubectl delete crd prometheuses.monitoring.coreos.com
+kubectl delete crd prometheusrules.monitoring.coreos.com
+kubectl delete crd scrapeconfigs.monitoring.coreos.com
+kubectl delete crd servicemonitors.monitoring.coreos.com
+kubectl delete crd thanosrulers.monitoring.coreos.com
 ```

@@ -1,3 +1,4 @@
+{{- $kubeTargetVersion := default .Capabilities.KubeVersion.GitVersion .Values.kubeTargetVersionOverride }}
 {{- if .Values.alertmanager.enabled }}
 apiVersion: v1
 kind: Service
@@ -32,6 +33,9 @@ spec:
     - {{ $cidr }}
   {{- end }}
 {{- end }}
+{{- if ne .Values.alertmanager.service.type "ClusterIP" }}
+  externalTrafficPolicy: {{ .Values.alertmanager.service.externalTrafficPolicy }}
+{{- end }}
   ports:
   - name: {{ .Values.alertmanager.alertmanagerSpec.portName }}
   {{- if eq .Values.alertmanager.service.type "NodePort" }}
@@ -40,11 +44,25 @@ spec:
     port: {{ .Values.alertmanager.service.port }}
     targetPort: {{ .Values.alertmanager.service.targetPort }}
     protocol: TCP
+  - name: reloader-web
+    {{- if semverCompare ">=1.20.0-0" $kubeTargetVersion }}
+    appProtocol: http
+    {{- end }}
+    port: 8080
+    targetPort: reloader-web
 {{- if .Values.alertmanager.service.additionalPorts }}
 {{ toYaml .Values.alertmanager.service.additionalPorts | indent 2 }}
 {{- end }}
   selector:
-    app: alertmanager
-    alertmanager: {{ template "kube-prometheus-stack.fullname" . }}-alertmanager
+    app.kubernetes.io/name: alertmanager
+    alertmanager: {{ template "kube-prometheus-stack.alertmanager.crname" . }}
+{{- if .Values.alertmanager.service.sessionAffinity }}
+  sessionAffinity: {{ .Values.alertmanager.service.sessionAffinity }}
+{{- end }}
+{{- if eq .Values.alertmanager.service.sessionAffinity "ClientIP" }}
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: {{ .Values.alertmanager.service.sessionAffinityConfig.clientIP.timeoutSeconds }}
+{{- end }}
   type: "{{ .Values.alertmanager.service.type }}"
 {{- end }}

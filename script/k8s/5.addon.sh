@@ -69,12 +69,23 @@ fi
 
 #prometheus安装
 
-kubectl apply --server-side -f kube-prometheus/manifests/setup
-# kubectl wait \
-# 	--for condition=Established \
-# 	--all CustomResourceDefinition \
-# 	--namespace=monitoring
-kubectl apply -f kube-prometheus/manifests/
+helm upgrade --install --cleanup-on-fail  prometheus -n environment ./kube-prometheus-stack --create-namespace \
+  --set grafana.adminPassword=rkCHu(fubrpK~xxu_9 \
+  --set grafana.service.type=NodePort \
+  --set grafana.service.nodePort=32765 \
+  --set grafana.persistence.enabled=true \
+  --set grafana.persistence.storageClassName=nfs-client \
+  --set grafana.persistence.size=10Gi \
+  --set alertmanager.service.type=NodePort \
+  --set alertmanager.service.nodePort=30903 \
+  --set alertmanager.alertmanagerSpec.storage.volumeClaimTemplate.spec.storageClassName=nfs-client \
+  --set alertmanager.alertmanagerSpec.storage.volumeClaimTemplate.spec.resources.requests.storage=10Gi \
+  --set prometheus.service.type=NodePort \
+  --set prometheus.service.nodePort=30090 \
+  --set prometheus.prometheusSpec.replicas=1 \
+  --set prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.storageClassName=nfs-client \
+  --set prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.resources.requests.storage=10Gi
+   
 
 
 
@@ -82,7 +93,7 @@ kubectl apply -f kube-prometheus/manifests/
 #helm  install grafana yaml/loki/grafana --namespace  environment 
 helm  upgrade --install loki ./loki-stack --namespace  environment --create-namespace \
     --set promtail.enabled=false \
-    --set loki.service.type=NodePort \
+    --set loki.service.type=ClusterIP \
     --set loki.persistence.enabled=true \
     --set loki.persistence.size=10Gi \
     --set loki.persistence.storageClassName=nfs-client

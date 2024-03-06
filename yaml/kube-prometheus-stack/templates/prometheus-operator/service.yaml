@@ -2,11 +2,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "kube-prometheus-stack.fullname" . }}-operator
+  name: {{ template "kube-prometheus-stack.operator.fullname" . }}
   namespace: {{ template "kube-prometheus-stack.namespace" . }}
   labels:
-    app: {{ template "kube-prometheus-stack.name" . }}-operator
-{{ include "kube-prometheus-stack.labels" . | indent 4 }}
+    {{- include "kube-prometheus-stack.prometheus-operator.labels" . | nindent 4 }}
 {{- if .Values.prometheusOperator.service.labels }}
 {{ toYaml .Values.prometheusOperator.service.labels | indent 4 }}
 {{- end }}
@@ -30,6 +29,9 @@ spec:
   {{- range $cidr := .Values.prometheusOperator.service.loadBalancerSourceRanges }}
     - {{ $cidr }}
   {{- end }}
+{{- end }}
+{{- if ne .Values.prometheusOperator.service.type "ClusterIP" }}
+  externalTrafficPolicy: {{ .Values.prometheusOperator.service.externalTrafficPolicy }}
 {{- end }}
   ports:
   {{- if not .Values.prometheusOperator.tls.enabled }}

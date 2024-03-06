@@ -1,3 +1,4 @@
+{{- $kubeTargetVersion := default .Capabilities.KubeVersion.GitVersion .Values.kubeTargetVersionOverride }}
 {{- if .Values.prometheus.enabled }}
 apiVersion: v1
 kind: Service
@@ -32,6 +33,9 @@ spec:
     - {{ $cidr }}
   {{- end }}
 {{- end }}
+{{- if ne .Values.prometheus.service.type "ClusterIP" }}
+  externalTrafficPolicy: {{ .Values.prometheus.service.externalTrafficPolicy }}
+{{- end }}
   ports:
   - name: {{ .Values.prometheus.prometheusSpec.portName }}
     {{- if eq .Values.prometheus.service.type "NodePort" }}
@@ -39,6 +43,12 @@ spec:
     {{- end }}
     port: {{ .Values.prometheus.service.port }}
     targetPort: {{ .Values.prometheus.service.targetPort }}
+  - name: reloader-web
+    {{- if semverCompare "> 1.20.0-0" $kubeTargetVersion }}
+    appProtocol: http
+    {{- end }}
+    port: {{ .Values.prometheus.service.reloaderWebPort }}
+    targetPort: reloader-web
   {{- if .Values.prometheus.thanosIngress.enabled }}
   - name: grpc
     {{- if eq .Values.prometheus.service.type "NodePort" }}
@@ -50,11 +60,21 @@ spec:
 {{- if .Values.prometheus.service.additionalPorts }}
 {{ toYaml .Values.prometheus.service.additionalPorts | indent 2 }}
 {{- end }}
+  publishNotReadyAddresses: {{ .Values.prometheus.service.publishNotReadyAddresses }}
   selector:
-    app: prometheus
-    prometheus: {{ template "kube-prometheus-stack.fullname" . }}-prometheus
+    {{- if .Values.prometheus.agentMode }}
+    app.kubernetes.io/name: prometheus-agent
+    {{- else }}
+    app.kubernetes.io/name: prometheus
+    {{- end }}
+    operator.prometheus.io/name: {{ template "kube-prometheus-stack.prometheus.crname" . }}
 {{- if .Values.prometheus.service.sessionAffinity }}
   sessionAffinity: {{ .Values.prometheus.service.sessionAffinity }}
+{{- end }}
+{{- if eq .Values.prometheus.service.sessionAffinity "ClientIP" }}
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: {{ .Values.prometheus.service.sessionAffinityConfig.clientIP.timeoutSeconds }}
 {{- end }}
   type: "{{ .Values.prometheus.service.type }}"
 {{- end }}
