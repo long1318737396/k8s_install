@@ -157,7 +157,7 @@ spec:
     targetPort: 80
     nodePort: 32766
 EOF
-
+kubectl apply -f /root/kuboard-svc.yaml
 echo "restart kubelet"
 
 systemctl restart kubelet
