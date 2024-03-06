@@ -961,13 +961,13 @@ grafana:
   ## Timezone for the default dashboards
   ## Other options are: browser or a specific timezone, i.e. Europe/Luxembourg
   ##
-  defaultDashboardsTimezone: utc
+  defaultDashboardsTimezone: Asia/Shanghai
 
   ## Editable flag for the default dashboards
   ##
   defaultDashboardsEditable: true
 
-  adminPassword: rkCHu(fubrpK~xxu_9
+  adminPassword: rkCHufubrpK~xxu_9
 
   rbac:
     ## If true, Grafana PSPs will be created

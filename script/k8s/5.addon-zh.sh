@@ -71,16 +71,18 @@ fi
 #prometheus安装
 
 helm upgrade --install --cleanup-on-fail  prometheus -n environment ./kube-prometheus-stack --create-namespace \
-  --set grafana.adminPassword=rkCHu(fubrpK~xxu_9 \
+  --set grafana.adminPassword=rkCHufubrpK~xxu_9 \
   --set grafana.service.type=NodePort \
   --set grafana.service.nodePort=32765 \
   --set grafana.persistence.enabled=true \
   --set grafana.persistence.storageClassName=nfs-client \
   --set grafana.persistence.size=10Gi \
+  --set grafana.defaultDashboardsTimezone=Asia/Shanghai \
   --set alertmanager.service.type=NodePort \
   --set alertmanager.service.nodePort=30903 \
   --set alertmanager.alertmanagerSpec.storage.volumeClaimTemplate.spec.storageClassName=nfs-client \
   --set alertmanager.alertmanagerSpec.storage.volumeClaimTemplate.spec.resources.requests.storage=10Gi \
+  --set prometheusOperator.admissionWebhooks.patch.image.registry=k8s.dockerproxy.com \
   --set prometheus.service.type=NodePort \
   --set prometheus.service.nodePort=30090 \
   --set prometheus.prometheusSpec.replicas=1 \

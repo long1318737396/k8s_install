@@ -69,7 +69,7 @@ spec:
           image: docker.io/oliver006/redis_exporter:latest
           env:
             - name: REDIS_PASSWORD
-              value: X(tgsO0pPnzfNRQCC
+              value: XtgsO0pPnzfNRQCC
             - name: TZ
               value: Asia/Shanghai
           securityContext:
