@@ -85,6 +85,11 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+sed -i 's#registry.k8s.io/pause:3.9#registry.aliyuncs.com/google_containers/pause:3.9#' /etc/containerd/config.toml
+systemctl daemon-reload
+systemctl restart containerd
+
+
 bash script/k8s/2.kubeadm-install-zh.sh
 if [ $? -ne 0 ]; then
   echo "Command failed. Exiting..."

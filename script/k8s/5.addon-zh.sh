@@ -42,6 +42,7 @@ helm upgrade --install ingress-nginx ./ingress-nginx \
   --set controller.opentelemetry.enabled=false \
   --set controller.metrics.enabled=true \
   --set controller.allowSnippetAnnotations=true \
+  --set controller.admissionWebhooks.patch.image.registry=k8s.dockerproxy.com \
   --namespace environment --create-namespace
 
 # reloader.yaml安装
