@@ -17,3 +17,4 @@ nerdctl-full-1.7.4-linux-amd64.tar.gz
 skopeo-linux-amd64
 velero-v1.13.0-linux-amd64.tar.gz
 yq_linux_amd64
+jq_linux_amd64

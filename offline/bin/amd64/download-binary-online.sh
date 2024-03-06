@@ -53,6 +53,7 @@ skopeo_url="https://github.com/lework/skopeo-binary/releases/download/${skopeo_v
 yq_url="https://github.com/mikefarah/yq/releases/download/${yq_version}/yq_linux_${arch}"
 # curl  -k -L -C - -o minio  https://dl.min.io/server/minio/release/linux-amd64/minio
 # curl  -k -L -C - -o mc https://dl.min.io/client/mc/release/linux-amd64/mc
+jq_url="https://github.com/jqlang/jq/releases/download/jq-${jq_version}/jq-linux-${arch}"
 packages=(
   #$kernel_url
   #$runc_url

@@ -1,5 +1,11 @@
-apt update && apt install conntrack socat ipvsadm ipset git telnet dnsutils nfs-kernel-server nfs-common bash-completion iptables wget -y
-yum install conntrack socat ipvsadm ipset git telnet dns-utils nfs-utils bash-completion  wget -y
+if [ -f /etc/debian_version ]; then
+  apt update
+  apt install conntrack socat ipvsadm ipset git telnet dnsutils nfs-kernel-server nfs-common bash-completion iptables wget -y
+elif [ -f /etc/redhat-release ]; then
+  yum install conntrack socat ipvsadm ipset git telnet dns-utils nfs-utils bash-completion  wget -y
+else
+    yum install conntrack socat ipvsadm ipset git telnet dns-utils nfs-utils bash-completion  wget -y
+fi
 bash offline/bin/amd64/download-binary-online.sh
 hostnamectl set-hostname master1
 bash 2.init.sh

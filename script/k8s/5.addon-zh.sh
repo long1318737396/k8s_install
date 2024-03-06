@@ -34,8 +34,15 @@ kubectl apply -f experimental-install.yaml
 kubectl apply -f metallb-native.yaml
 
 # ingress安装
-
-kubectl apply -f deploy.yaml
+helm upgrade --install ingress-nginx ./ingress-nginx \
+  --set controller.hostNetwork=true \
+  --set controller.ingressClass=nginx \
+  --set controller.kind=DaemonSet \
+  --set controller.service.type=NodePort \
+  --set controller.opentelemetry.enabled=false \
+  --set controller.metrics.enabled=true \
+  --set controller.allowSnippetAnnotations=true \
+  --namespace environment --create-namespace
 
 # reloader.yaml安装
 
@@ -62,12 +69,23 @@ fi
 
 #prometheus安装
 
-kubectl apply --server-side -f kube-prometheus/manifests/setup
-# kubectl wait \
-# 	--for condition=Established \
-# 	--all CustomResourceDefinition \
-# 	--namespace=monitoring
-kubectl apply -f kube-prometheus/manifests/
+helm upgrade --install --cleanup-on-fail  prometheus -n environment ./kube-prometheus-stack --create-namespace \
+  --set grafana.adminPassword=rkCHu(fubrpK~xxu_9 \
+  --set grafana.service.type=NodePort \
+  --set grafana.service.nodePort=32765 \
+  --set grafana.persistence.enabled=true \
+  --set grafana.persistence.storageClassName=nfs-client \
+  --set grafana.persistence.size=10Gi \
+  --set alertmanager.service.type=NodePort \
+  --set alertmanager.service.nodePort=30903 \
+  --set alertmanager.alertmanagerSpec.storage.volumeClaimTemplate.spec.storageClassName=nfs-client \
+  --set alertmanager.alertmanagerSpec.storage.volumeClaimTemplate.spec.resources.requests.storage=10Gi \
+  --set prometheus.service.type=NodePort \
+  --set prometheus.service.nodePort=30090 \
+  --set prometheus.prometheusSpec.replicas=1 \
+  --set prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.storageClassName=nfs-client \
+  --set prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.resources.requests.storage=10Gi
+   
 
 
 
@@ -75,39 +93,40 @@ kubectl apply -f kube-prometheus/manifests/
 #helm  install grafana yaml/loki/grafana --namespace  environment 
 helm  upgrade --install loki ./loki-stack --namespace  environment --create-namespace \
     --set promtail.enabled=false \
-    --set loki.service.type=NodePort \
+    --set loki.service.type=ClusterIP \
     --set loki.persistence.enabled=true \
     --set loki.persistence.size=10Gi \
-    --set loki.persistence.storageClassName=nfs-client
+    --set loki.persistence.storageClassName=nfs-client \
+    --set promtail.image.tag=2.9.5 \
+    --set loki.image.tag=2.9.5
 
 
 
 
 #apollo安装
 helm upgrade --install --cleanup-on-fail apollo-service-pro \
-  --set configdb.host=1.1.1.1 \
-  --set configdb.dbName=ApolloConfigDB \
-  --set configdb.userName=sa \
-  --set configdb.password=123 \
+  --set configdb.host=${apollo_db_host} \
+  --set configdb.dbName=${apollo_configdb_name} \
+  --set configdb.userName=${apollo_db_username} \
+  --set configdb.password=${apollo_db_password} \
   --set configdb.service.enabled=true \
-  --set configdb.port=3306 \
+  --set configdb.port=${apollo_db_port} \
   --set configService.replicaCount=1 \
   --set adminService.replicaCount=1 \
   --set configService.containerPort=8080 \
-  --set configService.service.type=NodePort \
+  --set configService.service.type=ClusterIP \
   --set configService.service.port=30012 \
   --set configService.service.targetPort=8080 \
-  --set configService.service.nodePort=30012 \
   -n environment \
   ./apollo-service --create-namespace
 
 # 部署apollo-portal
 helm upgrade --install --cleanup-on-fail apollo-portal \
-  --set portaldb.host=1.1.1.1 \
-  --set portaldb.dbName=ApolloPortalDB \
-  --set portaldb.userName=sa \
-  --set portaldb.password=123 \
-  --set portaldb.port=3306 \
+  --set portaldb.host=${apollo_db_host} \
+  --set portaldb.dbName=${apollo_portdb_name} \
+  --set portaldb.userName=${apollo_db_username} \
+  --set portaldb.password=${apollo_db_password} \
+  --set portaldb.port=${apollo_db_port} \
   --set portaldb.service.enabled=true \
   --set config.envs="pro" \
   --set config.metaServers.pro=http://apollo-service-pro-apollo-configservice:30012 \

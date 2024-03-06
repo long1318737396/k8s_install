@@ -63,3 +63,4 @@ hubble_version=v0.13.0
 velero_version=v1.13.0
 skopeo_version=v1.14.2
 yq_version=v4.41.1
+jq_version=1.7.1
