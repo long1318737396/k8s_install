@@ -59,7 +59,8 @@ kubectl apply -f local-path-storage.yaml
 
 
 # nfs安装
-if [[ "$nfs_enabled"x == "true"x ]];then 
+if [ "$nfs_enabled"x = "true"x ];then
+  echo "helm install nfs-subdir-external-provisioner "$nfs_enabled"x="true"x "
   helm upgrade --install nfs-subdir-external-provisioner ./nfs-subdir-external-provisioner --namespace=environment --create-namespace \
     --set nfs.server="${nfs_server}" \
     --set nfs.path="${nfs_path}" \
