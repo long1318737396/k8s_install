@@ -74,10 +74,17 @@ else
 fi
 bash offline/bin/amd64/download-binary-online-zh.sh
 if [ $? -ne 0 ]; then
-  echo "Command failed. Exiting..."
+  echo "相关文件下载失败请检查"
   exit 1
 fi
 bash 2.init.sh
+
+bash script/k8s/8.nfs-install-zh.sh
+if [ $? -ne 0 ]; then
+  echo "nfs安装失败请检查"
+  exit 1
+fi
+
 
 bash 3.docker_install.sh
 if [ $? -ne 0 ]; then
@@ -92,7 +99,7 @@ systemctl restart containerd
 
 bash script/k8s/2.kubeadm-install-zh.sh
 if [ $? -ne 0 ]; then
-  echo "Command failed. Exiting..."
+  echo "kubeadm初始化失败请检查"
   exit 1
 fi
 hostnamectl set-hostname master1
@@ -106,7 +113,7 @@ if [ $? -eq 0 ]; then
 fi
 bash script/k8s/4.net-work.sh
 if [ $? -ne 0 ]; then
-  echo "Command failed. Exiting..."
+  echo "网络组件安装失败，请检查"
   exit 1
 fi
 bash script/k8s/5.addon-zh.sh

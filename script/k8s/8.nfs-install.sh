@@ -14,3 +14,4 @@ exportfs -ra
 systemctl enable rpcbind --now
 systemctl enable nfs-server
 systemctl start nfs-server
+showmount -e localhost
