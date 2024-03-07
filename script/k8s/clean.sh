@@ -1,3 +1,4 @@
+set -x
 kubeadm reset --force
 
 
@@ -33,7 +34,7 @@ rm -rf /usr/local/bin/etcd*
 rm -rf /data/kubernetes/docker
 rm -rf /data/kubernetes/containerd
 
-for i in package (
+package=(
     bin/buildctl
     bin/buildg
     bin/buildkitd
@@ -58,6 +59,7 @@ for i in package (
     bin/slirp4netns
     bin/tini
 )
+for i in ${package[@]}
 do
     rm -rf /usr/local/$i
 done
