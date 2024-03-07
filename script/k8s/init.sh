@@ -8,10 +8,9 @@ echo "$date_format"
 sed -i 's/.*swap.*/#&/' /etc/fstab
 swapoff -a && sysctl -w vm.swappiness=0
 sed -i 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
+
 systemctl stop firewalld
 systemctl disable firewalld
-systemctl stop ufw
-systemctl disable ufw
 
 tee /etc/modules-load.d/10-k8s-modules.conf <<EOF
 sunrpc
