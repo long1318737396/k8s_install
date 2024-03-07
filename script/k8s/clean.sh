@@ -30,7 +30,8 @@ rm -rf /usr/local/bin/docker*
 rm -rf /usr/local/bin/kube*
 rm -rf /usr/local/bin/crictl
 rm -rf /usr/local/bin/etcd*
-
+rm -rf /data/kubernetes/docker
+rm -rf /data/kubernetes/containerd
 
 for i in package (
     bin/buildctl
