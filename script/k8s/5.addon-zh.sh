@@ -61,7 +61,7 @@ kubectl apply -f local-path-storage.yaml
 # nfs安装
 if [[ "$nfs_enabled" == "true" ]];then 
     helm upgrade --install nfs-subdir-external-provisioner ./nfs-subdir-external-provisioner --namespace=environment --create-namespace \
-      --set nfs.server=${nfs_server} \
+      --set nfs.server="${nfs_server}" \
       --set nfs.path="${nfs_path}" \
       --set storageClass.name=nfs-client \
       --set image.repository=k8s.dockerproxy.com/sig-storage/nfs-subdir-external-provisioner \
