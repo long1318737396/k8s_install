@@ -63,7 +63,8 @@ if [[ "$nfs_enabled" == "true" ]]
         helm upgrade --install nfs-subdir-external-provisioner ./nfs-subdir-external-provisioner --namespace=environment --create-namespace \
             --set nfs.server=${nfs_server} \
             --set nfs.path="${nfs_path}" \
-            --set storageClass.name=nfs-client
+            --set storageClass.name=nfs-client \
+            --set-string nfs.mountOptions={"soft,timeo=600,intr,retry=5,retrans=2,proto=tcp,vers=3"}
 fi
 
 

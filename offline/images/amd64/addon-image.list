@@ -18,5 +18,3 @@ registry.k8s.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
 docker.io/apolloconfig/apollo-portal:2.2.0
 docker.io/apolloconfig/apollo-configservice:2.2.0
 docker.io/apolloconfig/apollo-adminservice:2.2.0
-
-

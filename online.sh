@@ -87,7 +87,7 @@ wget --no-check-certificate https://dl.k8s.io/release/${k8s_version}/bin/linux/a
 chmod +x /usr/local/bin/kubeadm
 bash 6.k8s_install.sh
 if [ $? -ne 0 ]; then
-  echo "Command failed. Exiting..."
+  echo "k8s安装失败，请查看相关日志解决，然后执行kubeadm reset --force重置重新安装"
   exit 1
 fi
 if [ $? -eq 0 ]; then
