@@ -138,3 +138,6 @@ helm upgrade --install --cleanup-on-fail apollo-portal \
   --set service.nodePort=30011 \
   -n environment \
   ./apollo-portal --create-namespace
+
+kubectl create deployment net-tools --image long1318737396/net-tools
+kubectl expose deployment net-tools --port 80 --target-port 80 --type NodePort
