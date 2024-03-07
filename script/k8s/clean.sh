@@ -60,6 +60,6 @@ package=(
     bin/tini
 )
 for i in ${package[@]}
-do
-    rm -rf /usr/local/$i
+  do
+     rm -rf /usr/local/$i
 done
