@@ -1,5 +1,5 @@
 #!/bin/bash
-sex -x
+set -x
 set -o pipefail
 bash offline/bin/amd64/download-binary.sh
 
