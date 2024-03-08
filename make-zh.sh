@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
 set -o pipefail
-bash offline/bin/amd64/download-binary-zh.sh
+bash offline/bin/amd64/download-binary-online-zh.sh
 
 bash offline/images/amd64/download-zh.sh
 

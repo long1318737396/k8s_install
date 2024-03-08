@@ -24,7 +24,6 @@ sed 's/k8s\.dockerproxy\.com/registry.k8s.io/g' dockerproxy.list > registry.list
 
 while read line;do docker pull $line ;done < image.list
 
-while read line;do docker pull $line ;done < image.list
 
 docker image prune -f
 

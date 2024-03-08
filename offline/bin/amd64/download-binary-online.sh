@@ -71,7 +71,7 @@ packages=(
   $kubernetes_server_url
   #$nginx_url
   #${cri_o_url}
-  #$harbor_url
+  $harbor_url
   $docker_compose_url
   $calicoctl_url
   $cilium_url
