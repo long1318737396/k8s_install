@@ -21,7 +21,7 @@ WORKDIR /app
 COPY  CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo
 RUN yum install -y createrepo python3-devel python3 gcc python3-createrepo_c libmodulemd git  
 RUN dnf install python3-gobject -y
-RUN git clone --branch modulemd-tools-0.11-1 https://github.com/rpm-software-management/modulemd-tools.git  \
+RUN git clone --branch modulemd-tools-0.11-1 https://mirror.ghproxy.com/https://github.com/rpm-software-management/modulemd-tools.git  \
     && cd modulemd-tools/repo2module/ \
     && python3 setup.py install --user 
 
