@@ -12,4 +12,4 @@ mv _output/images/* offline/images/amd64/
 
 
 cd ../
-tar -czvf k8s_install.tar.gz k8s_install/  --exclude=k8s_install/.git
+tar --exclude='k8s_install/.git' -czvf k8s_install.tar.gz k8s_install/
