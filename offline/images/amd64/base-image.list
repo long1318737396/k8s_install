@@ -4,7 +4,6 @@ registry.k8s.io/kube-scheduler:v1.29.2
 registry.k8s.io/kube-proxy:v1.29.2
 registry.k8s.io/coredns/coredns:v1.11.1
 registry.k8s.io/pause:3.9
-#registry.k8s.io/etcd:3.5.10-0
 registry.k8s.io/etcd:3.5.12-0
 registry.k8s.io/metrics-server/metrics-server:v0.7.0
 ghcr.io/kube-vip/kube-vip:v0.7.0
@@ -24,4 +23,3 @@ registry.k8s.io/ingress-nginx/controller:v1.9.6
 docker.io/library/nginx:latest
 registry.k8s.io/ingress-nginx/kube-webhook-certgen:v20231226-1a7112e06
 registry.cn-hongkong.aliyuncs.com/magictommy/kubespray:v1.29.2
-#registry.k8s.io/ingress-nginx/kube-webhook-certgen:v20221220-controller-v1.5.1-58-g787ea74b6

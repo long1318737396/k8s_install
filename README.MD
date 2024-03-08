@@ -1,4 +1,7 @@
-> 离线安装 | [在线](README_online.md)
+[离线包制作](docs/offline_zh.md)
+
+> 离线安装 | [在线安装](README_online.md)
+
 
 ## 将软件包上传至harbor服务器
 

@@ -6,7 +6,9 @@ source ../../../conf/config.sh
 exec > >(tee -a "$logfile") 2>&1
 echo "$date_format"
 
+packages_dir="../../../_output"
 
+mkdir -p ${packages_dir}/bin
 # https://github.com/containernetworking/plugins/releases/
 # https://github.com/containerd/containerd/releases/
 # https://github.com/containerd/nerdctl/releases
@@ -84,7 +86,7 @@ packages=(
 
 for package_url in "${packages[@]}"; do
   filename=$(basename "$package_url")
-  if curl  -k -L -C - -o "$filename" "$package_url"; then
+  if curl  -k -L -C - -o ${packages_dir}/bin/"$filename" "$package_url"; then
     echo "Downloaded $filename"
   else
     echo "Failed to download $filename"
