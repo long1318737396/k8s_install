@@ -82,6 +82,7 @@ packages=(
   ${base_url}/$velero_url
   ${base_url}/$skopeo_url
   ${base_url}/$yq_url
+  ${base_url}/$jq_url
 )
 
 for package_url in "${packages[@]}"; do
