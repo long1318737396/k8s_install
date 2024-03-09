@@ -8,7 +8,7 @@ echo "$date_format"
 
 cd ../../offline/bin/${arch}
 tar zxvf nerdctl-full-${nerdctl_full_version}-linux-${arch}.tar.gz -C /usr/local/
-cp /usr/local/lib/systemd/system/*.service /etc/systemd/system/
+/bin/cp /usr/local/lib/systemd/system/*.service /etc/systemd/system/
 systemctl enable buildkit containerd 
 
 echo "source <(nerdctl completion bash)" > /etc/profile.d/nerdctl.sh
@@ -31,7 +31,7 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 mkdir -p /opt/cni/bin
-cp /usr/local/libexec/cni/* /opt/cni/bin/
+/bin/cp /usr/local/libexec/cni/* /opt/cni/bin/
 
 
 echo "source <(crictl completion bash)" > /etc/profile.d/crictl.sh

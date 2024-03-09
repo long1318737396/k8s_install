@@ -79,6 +79,7 @@ packages=(
   $velero_url
   $skopeo_url
   $yq_url
+  $jq_url
 )
 
 for package_url in "${packages[@]}"; do
