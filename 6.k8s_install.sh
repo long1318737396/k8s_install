@@ -5,6 +5,7 @@ source conf/config.sh
 exec > >(tee -a "$logfile") 2>&1
 echo "$date_format"
 
+echo "$harbor_ip $harbor_hostname" >> /etc/hosts
 bash script/k8s/2.kubeadm-install.sh
 bash script/k8s/3.k8s-install.sh
 if [ $? -ne 0 ]; then
