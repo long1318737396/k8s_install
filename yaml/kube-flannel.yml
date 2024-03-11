@@ -150,6 +150,7 @@ spec:
         - name: EVENT_QUEUE_DEPTH
           value: "5000"
         image: docker.io/flannel/flannel:v0.24.2
+        imagePullPolicy: IfNotPresent
         name: kube-flannel
         resources:
           requests:
@@ -177,6 +178,7 @@ spec:
         command:
         - cp
         image: docker.io/flannel/flannel-cni-plugin:v1.4.0-flannel1
+        imagePullPolicy: IfNotPresent
         name: install-cni-plugin
         volumeMounts:
         - mountPath: /opt/cni/bin
@@ -188,6 +190,7 @@ spec:
         command:
         - cp
         image: docker.io/flannel/flannel:v0.24.2
+        imagePullPolicy: IfNotPresent
         name: install-cni
         volumeMounts:
         - mountPath: /etc/cni/net.d

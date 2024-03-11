@@ -67,6 +67,7 @@ spec:
               name: volume-localtime
         - name: redis-exporter
           image: docker.io/oliver006/redis_exporter:latest
+          imagePullPolicy: IfNotPresent
           env:
             - name: REDIS_PASSWORD
               value: XtgsO0pPnzfNRQCC
