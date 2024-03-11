@@ -63,9 +63,9 @@ cp ../k8s_install.tar.gz ./
 ```
 ## 配置config.sh
 
-对应高可用
+对于apiserver高可用:
 
-是否启用kube-vip，类似是否配置keepalived实现虚拟IP的高可用,如果是true，则必须配置loadbalancer_vip，如果是外部负载均衡需要设置为false，需要配置loadbalancer_vip为外部LB地址
+是否启用kube-vip，类似是否配置keepalived实现虚拟IP的高可用,如果是true，则必须配置loadbalancer_vip，如果是外部负载均衡需要设置为false，但也需要配置loadbalancer_vip为外部LB地址
 
 ```bash
 #参考conf/config_example.sh的说明配置conf/config.sh，建议所有信息一次性配置好，方便后面可以直接复用
@@ -125,8 +125,10 @@ token=`echo -n "admin:$harbor_admin_password" | base64`
 curl -k -X 'GET'   'https://myharbor.mtywcloud.com/api/v2.0/projects/library/repositories?page=1&page_size=100'   -H 'accept: application/json'   -H 'authorization: Basic "${token}"' |python3 -m json.tool|grep name
 ```
 
-## harbor上配置下载访问
-harbor服务器将会开启38088端口，以供其他服务器访问下载包
+## harbor服务器上配置下载访问
+
+harbor服务器将会开启38088端口，以供其他服务器下载离线包
+
 ```bash
 #导入nginx镜像
 nerdctl load -i offline/images/amd64/nginx.tar.gz
@@ -139,9 +141,9 @@ $harbor_ip:38088
 
 ## 配置nfs服务器
 
-登录nfs服务器，或者复用k8s节点的服务器和harbor服务器
+登录nfs服务器，或者复用k8s节点的服务器、harbor服务器
 
-nfs需要为后续的监控组件等提供持久化存储
+nfs需要为后续的监控组件、日志组件等提供持久化存储
 
 如果机器可以联网，可以在线安装所需的软件包
 ```bash
@@ -188,7 +190,7 @@ mount -t nfs 192.168.150.14:/data/nfs/k8s /test
 
 ## 登录master1的服务器
 
-- 初始化第一台master节点
+初始化第一台master节点
 
 ------------------------------
 当使用nfs存储时，k8s各个节点需要安装nfs客户端才能进行nfs挂载，离线安装需要找相应系统的软件源,因系统的差异性，本脚本无法集成，目前centos8测试是可以的，本rpm包提取自centos8，其他系统不确保100%安装成功
@@ -206,7 +208,8 @@ umount /test
 ```
 
 离线安装，安装失败则需要自行找nfs软件包安装，脚本会配置yum仓库为本地目录
-#主要安装k8s需要的软件包，conntrack socat nc等命令
+
+主要安装k8s需要的软件包，conntrack socat nc bash-completion等命令
 ```bash
 bash 1.yum_install.sh
 ```
