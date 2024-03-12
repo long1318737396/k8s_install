@@ -54,7 +54,8 @@ spec:
       priorityClassName: system-node-critical
       containers:
         - name: redis-signle
-          image: docker.io/library/redis:latest 
+          image: docker.io/library/redis:latest
+          imagePullPolicy: IfNotPresent
           command: ["redis-server"]
           args: ["/usr/local/etc/redis/redis.conf"]
           ports:

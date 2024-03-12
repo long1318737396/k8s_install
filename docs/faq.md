@@ -6,8 +6,8 @@
 
 ## 2.cilium使用vxaln部署
 
-如果遇到pod访问apiserver联通不上问题，可以使用vxlan模式部署
-[vxlan](../script/k8s/README.md)
+如果遇到pod访问apiserver联通不上问题，可以使用[vxlan](../script/k8s/README.md)模式部署
+
 
 之后重启cilium
 kubectl rollout restart ds -n kube-system cilium
@@ -265,3 +265,53 @@ spec:
         ports:
         - containerPort: 80
 ```
+
+## 对于nfs只能挂载node节点时的storageclass配置
+
+本脚本集成了对rancher local-path的sc，当遇到nfs只能挂到node宿主机目录时，可以修改local-path的cm变成nfs的映射地址，然后进行动态存储卷的挂载
+
+```bash
+kubectl edit cm -n local-path-storage local-path-config
+
+
+修改对应的paths路径为nfs映射宿主机的地址，这个时候安装loki以及prometheus需要将sc的名称改成nfs-client改成local-path
+
+ "nodePathMap":[
+            {
+                    "node":"DEFAULT_PATH_FOR_NON_LISTED_NODES",
+                    "paths":["/images/k8s"]
+            }
+            ]
+
+
+```
+然后重启local-path-controller
+```bash
+kubectl delete pod -n local-path-storage -l app=local-path-provisioner
+```
+
+## helm部署应用报错
+
+Error: UPGRADE FAILED: another operation (install/upgrade/rollback) is in progress
+
+主要是最近的一次部署结果是pending-upgrade 所以阻塞了我们的继续部署
+```bash
+helm  history  -n environment prometheus
+执行如下命令回退即可
+helm rollback -n environment prometheus 1 
+回退之后发现有pod启动报错，可以先卸载然后进行排查再安装
+```
+## grafana重启之后报错
+
+logger=provisioning t=2024-03-12T02:58:51.000830244Z level=error msg="Failed to provision data sources" error="Datasource provisioning error: datasource.yaml config is invalid. Only one datasource per organization can be marked as default"
+logger=provisioning t=2024-03-12T02:58:51.000854373Z level=error msg="Failed to provision data sources" error="Datasource provisioning error: datasource.yaml config is invalid. Only one datasource per organization can be marked as default"
+Error: ✗ Datasource provisioning error: datasource.yaml config is invalid. Only one datasource per organization can be marked as default
+
+```bash
+解决办法
+kubectl edit cm -n environment prometheus-kube-prometheus-grafana-datasource
+将下面的配置修改为
+orgID: 2
+然后重启grafana pod
+```
+

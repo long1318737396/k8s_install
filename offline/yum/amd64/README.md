@@ -1,3 +1,5 @@
+
+## 批量制作
 ```bash
 cd offline/yum/amd64/centos8
 vi pkg.list #查看包列表,添加需要的软件包
@@ -10,4 +12,19 @@ if [ $? -ne 0 ];then
     exit 1
 fi
 docker rm -f yum8
+```
+
+## 单个制作
+
+```bash
+dnf install dnf-plugin-downloadonly
+
+yum install --downloadonly --downloaddir=./nfs nfs-utils
+
+tar -czvf nfs-utils.tar.gz ./nfs
+
+上传目标主机之后解压
+tar -zxvf nfs-utils.tar.gz
+cd nfs
+dnf localinstall *.rpm
 ```

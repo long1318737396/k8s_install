@@ -8,6 +8,7 @@ k8s的各个节点需要访问harbor的443端口以及38088端口
 
 - 443 拉取镜像
 - 38088 拉取离线包
+- 服务器操作需使用root用户权限
 
 建议配置:
 - 1台harbor
@@ -336,13 +337,13 @@ kubectl get node -owide
 kubectl get cs
 ```
 安装addon组件
-默认会安装以下组件，可以根据需求进行增删改脚本文件位于 vi script/k8s/5.addon.sh
+默认会安装以下组件，可以根据需求进行增删改,脚本文件位于 vi script/k8s/5.addon.sh
 
 |           |                       |
 |     ---   |         ---           |
 |      组件名称     |   安装方式        |
 | metrics-server    |    yaml           |
-| gateway api       |    yaml           |
+| gateway api   crd    |    yaml           |
 | metallb-native    |    yaml           |
 |    ingress-nginx  |    helm           |
 | reloader          |    yaml         |
