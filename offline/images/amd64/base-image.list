@@ -17,7 +17,7 @@ quay.io/cilium/hubble-ui-backend:v0.13.0
 quay.io/cilium/hubble-ui:v0.13.0
 docker.io/library/redis:latest
 docker.io/oliver006/redis_exporter:latest
-docker.io/eipwork/kuboard:v3
+docker.io/eipwork/kuboard:v3.5.2.6
 docker.io/jimmidyson/configmap-reload:v0.5.0
 registry.k8s.io/ingress-nginx/controller:v1.9.6
 docker.io/library/nginx:latest

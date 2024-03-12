@@ -1,0 +1,55 @@
+#https://github.com/kubernetes-sigs/kubespray/blob/66eaba37758d5f49bccd6fb4028bb855a7ece994/roles/kubernetes/control-plane/templates/kubeadm-config.v1beta3.yaml.j2#L97
+
+- name: 创建kubeadm配置文件存放目录
+  file:
+    path: "{{ cluster_dir }}/kubeadm"
+    state: directory
+
+- name: 提取 etcd 主机组的 IP 地址
+  set_fact:
+    etcd_endpoints: []
+
+- name: 循环获取主机 IP 地址
+  set_fact:
+    etcd_endpoints: "{{ etcd_endpoints + ['https://' + hostvars[item]['ansible_host'] + ':2379'] }}"
+    loop: "{{ groups['etcd'] }}"
+
+
+
+- name: 创建kubeadm存放目录
+  template:
+    src: kubeadm-etcd-external.yaml.j2
+    dest: "{{ cluster_dir }}/kubeadm/kubeadm-etcd-external.yaml"
+    vars:
+      etcd_endpoints: "{{ etcd_endpoints }}"
+  when: etcd_install_type == "local"
+  delegate_to: "{{ groups['kube_control_plane'][0] }}"
+
+- name: 检查 containerd 是否正常运行
+  command: crictl ps
+  ignore_errors: true
+  register: crictl_output
+
+- name: 如果 containerd 未正常运行，则退出
+  fail:
+    msg: "containerd 未能正常运行"
+  when: crictl_output is failed
+  
+- name: 获取包信息
+  package_facts:
+  register: package_info
+
+- name: 检查 conntrack 包是否安装
+  fail:
+    msg: "conntrack 包未安装"
+  when: "'conntrack' not in package_info.packages or package_info.packages['conntrack'].state != 'installed'"
+
+- name: 检查 socat 包是否安装
+  fail:
+    msg: "socat 包未安装"
+  when: "'socat' not in package_info.packages or package_info.packages['socat'].state != 'installed'"
+
+- name: 检查 ipvsadm 包是否安装
+  fail:
+    msg: "ipvsadm 包未安装"
+  when: "'ipvsadm' not in package_info.packages or package_info.packages['ipvsadm'].state != 'installed'"

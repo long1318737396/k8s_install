@@ -1,0 +1,185 @@
+- name: 分发docker
+  copy:
+    src: "{{ package_base_dir }}/docker/{{ item }}"
+    dest: "{{ bin_dir }}/"
+    mode: 0755
+  loop:
+    - docker
+    - dockerd
+    - docker-init
+    - docker-proxy
+  
+
+- name: 分发nerdctl-full
+  copy:
+    src: "{{ package_base_dir }}/nerdctl_full/bin/{{ item }}"
+    dest: "{{ bin_dir }}/"
+    mode: 0755
+  with_items: 
+  - buildctl
+  - buildg
+  - buildkitd
+  - bypass4netns
+  - bypass4netnsd
+  - containerd
+  - containerd-fuse-overlayfs-grpc
+  - containerd-rootless-setuptool.sh
+  - containerd-rootless.sh
+  - containerd-shim-runc-v2
+  - containerd-stargz-grpc
+  - ctd-decoder
+  - ctr
+  - ctr-enc
+  - ctr-remote
+  - fuse-overlayfs
+  - ipfs
+  - nerdctl
+  - rootlessctl
+  - rootlesskit
+  - runc
+  - slirp4netns
+  - tini
+
+- name: 分发containerd_service
+  copy:
+    src: "{{ package_base_dir }}/nerdctl_full/lib/systemd/system/{{ item }}"
+    dest: "/etc/systemd/system/"
+  with_items: 
+  - buildkit.service
+  - containerd.service
+  - stargz-snapshotter.service
+
+
+- name: 分发cni插件
+  copy:
+    src: "{{ package_base_dir }}/nerdctl_full/libexec/cni"
+    dest: /opt/
+    
+- name: 分发crictl
+  copy:
+    src: "{{ package_base_dir }}/crictl"
+    dest: "{{ bin_dir }}/"
+    mode: 0755
+
+- name: 分发etcd
+  copy:
+    src: "{{ package_base_dir }}/etcd-{{ etcd_version }}-linux-{{ orch_arch }}/{{ item }}"
+    dest: "{{ bin_dir }}/"
+    mode: 0755
+  with_items: 
+  - etcd
+  - etcdctl
+  - etcdutl
+  
+
+- name: 分发cfssl
+  copy:
+    src: "{{ package_base_dir }}/cfssl_{{ cfssl_version }}_linux_{{ orch_arch }}"
+    dest: "{{ bin_dir }}/cfssl"
+    mode: 0755
+
+
+- name: 分发cfssljson
+  copy:
+    src: "{{ package_base_dir }}/cfssljson_{{ cfssl_version }}_linux_{{ orch_arch }}"
+    dest: "{{ bin_dir }}/cfssljson"
+    mode: 0755
+
+
+- name: 分发cfssl-certinfo
+  copy:
+    src: "{{ package_base_dir }}/cfssl-certinfo_{{ cfssl_version }}_linux_{{ orch_arch }}"
+    dest: "{{ bin_dir }}/cfssl-certinfo"
+    mode: 0755
+
+
+- name: 分发helm
+  copy:
+    src: "{{ package_base_dir }}/linux-{{ orch_arch }}/{{ item }}"
+    dest: "{{ bin_dir }}/"
+    mode: 0755
+  with_items: 
+  - helm
+  
+
+- name: 分发kubernetes-server
+  copy:
+    src: "{{ package_base_dir }}/kubernetes/server/bin/{{ item }}"
+    dest: "{{ bin_dir }}/"
+    mode: 0755
+  with_items: 
+  - kubectl
+  - kubeadm
+  - kubelet
+  
+
+- name: 分发docker-compose
+  copy:
+    src: "{{ package_base_dir }}/docker-compose-linux-{{ orch_platform }}"
+    dest: "{{ bin_dir }}/{{ item }}"
+    mode: 0755
+  with_items: 
+  - docker-compose
+  
+
+- name: 分发calicoctl
+  copy:
+    src: "{{ package_base_dir }}/calicoctl-linux-{{ orch_arch }}"
+    dest: "{{ bin_dir }}/{{ item }}"
+    mode: 0755
+  with_items: 
+  - calicoctl
+  
+
+- name: 分发cilium
+  copy:
+    src: "{{ package_base_dir }}/{{ item }}"
+    dest: "{{ bin_dir }}/{{ item }}"
+    mode: 0755
+  with_items: 
+  - cilium
+  
+
+- name: 分发hubble
+  copy:
+    src: "{{ package_base_dir }}/{{ item }}"
+    dest: "{{ bin_dir }}/{{ item }}"
+    mode: 0755
+  with_items: 
+  - hubble
+  
+
+- name: 分发velero
+  copy:
+    src: "{{ package_base_dir }}/velero-{{ velero_version }}-linux-{{ orch_arch }}"
+    dest: "{{ bin_dir }}/{{ item }}"
+    mode: 0755
+  with_items: 
+  - velero
+  
+
+- name: 分发skopeo
+  copy:
+    src: "{{ package_base_dir }}/skopeo-linux-{{ orch_arch }}"
+    dest: "{{ bin_dir }}/{{ item }}"
+    mode: 0755
+  with_items: 
+  - skopeo
+  
+
+- name: 分发yq
+  copy:
+    src: "{{ package_base_dir }}/yq_linux_{{ orch_arch }}"
+    dest: "{{ bin_dir }}/{{ item }}"
+    mode: 0755
+  with_items: 
+  - yq
+  
+
+- name: 分发jq
+  copy:
+    src: "{{ package_base_dir }}/jq-linux-{{ orch_arch }}"
+    dest: "{{ bin_dir }}/{{ item }}"
+    mode: 0755
+  with_items:
+  - jq

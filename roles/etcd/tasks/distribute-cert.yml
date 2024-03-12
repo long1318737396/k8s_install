@@ -1,0 +1,15 @@
+- name: 创建etcd证书存放目录
+  file:
+    path: "{{ cluster_dir }}/etcd/ssl/"
+    state: directory
+    mode: 0700
+
+- name: 分发etcd证书
+  copy: 
+    src: "{{ cluster_dir }}/etcd/ssl/{{ item }}"
+    dest: "{{ cluster_dir }}/etcd/ssl/{{ item }}"
+  with_items:
+  - etcd-ca.pem
+  - etcd-server.pem
+  - etcd-server-key.pem
+  tags: force_change_certs

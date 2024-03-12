@@ -1,0 +1,24 @@
+{
+    "CN": "etcd",
+    "hosts": [
+{% for host in groups['etcd'] %}
+    {% if hostvars[host]['ansible_host'] is defined %}
+        "{{ hostvars[host]['ansible_host'] }}",
+        {% endif %}
+        "{{ hostvars[host]['inventory_hostname'] }}",
+{% endfor %}
+        "127.0.0.1",
+        "0.0.0.0"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "CN",
+            "L": "BeiJing",
+            "ST": "BeiJing"
+        }
+    ]
+}

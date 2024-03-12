@@ -1,0 +1,7 @@
+custom_hosts: 
+  - 192.168.1.109 registry.mydomain.com
+  - 192.168.1.109 download.mydomain.com
+  - 192.168.1.109 yum7_repo.mydomain.com
+  - 192.168.1.109 yum8_repo.mydomain.com
+  - 192.168.1.109 apt_repo.mydomain.com
+  - 192.168.2.48 harbor-registry.mtywcloud.com

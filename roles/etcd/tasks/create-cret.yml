@@ -1,0 +1,51 @@
+- name: local | 分发cfssl
+  copy:
+    src: "{{ package_base_dir }}/cfssl_{{ cfssl_version }}_linux_{{ orch_arch }}"
+    dest: "{{ bin_dir }}/cfssl"
+    mode: 0755
+  delegate_to: localhost
+
+- name: local |  分发cfssljson
+  copy:
+    src: "{{ package_base_dir }}/cfssljson_{{ cfssl_version }}_linux_{{ orch_arch }}"
+    dest: "{{ bin_dir }}/cfssljson"
+    mode: 0755
+  delegate_to: localhost
+
+- name: local | 分发cfssl-certinfo
+  copy:
+    src: "{{ package_base_dir }}/cfssl-certinfo_{{ cfssl_version }}_linux_{{ orch_arch }}"
+    dest: "{{ bin_dir }}/cfssl-certinfo"
+    mode: 0755
+  delegate_to: localhost
+
+- name: local | 创建etcd存储的目录
+  file: 
+    path: "{{ cluster_dir }}/etcd/ssl" 
+    state: directory 
+    mode: 0700
+  delegate_to: localhost
+
+
+- name: local | 创建etcd证书请求
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src: "ca-config.json.j2", dest: "{{ cluster_dir }}/etcd/ssl/ca-config.json" }
+    - { src: "etcd-ca-csr.json.j2", dest: "{{ cluster_dir }}/etcd/ssl/etcd-ca-csr.json" }
+    - { src: "etcd-server-csr.json.j2", dest: "{{ cluster_dir }}/etcd/ssl/etcd-server-csr.json" }
+  run_once: true
+  delegate_to: localhost
+
+- name: local | 创建生成ca证书
+  shell: "cd {{ cluster_dir }}/etcd/ssl && {{ bin_dir }}/cfssl gencert \
+        -initca etcd-ca-csr.json | {{ bin_dir }}/cfssljson -bare etcd-ca -"
+  delegate_to: localhost
+
+- name: local | 创建 etcd服务器证书和私钥
+  shell: "cd {{ cluster_dir }}/etcd/ssl && {{ bin_dir }}/cfssl gencert -ca=etcd-ca.pem \
+         -ca-key=etcd-ca-key.pem -config=ca-config.json -profile=kubernetes etcd-server-csr.json | {{ bin_dir }}/cfssljson -bare etcd-server"
+  run_once: true
+  tags: force_change_certs
+  delegate_to: localhost

@@ -24,7 +24,7 @@ node_cidr_mask_size="25"
 #------------网络插件配置----------
 network_type="cilium"
 #------------其他配置-------------
-nfs_enabled="true"
+nfs_enabled=true
 nfs_server="192.168.150.14"
 nfs_path="/data/nfs/k8s"
 logfile=/var/log/k8s_install.log

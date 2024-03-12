@@ -1,0 +1,22 @@
+# WARNNING: clean 'etcd' nodes service & data
+- hosts:
+  - etcd
+  tasks:
+  - name: stop and disable etcd service
+    service:
+      name: etcd
+      state: stopped
+      enabled: no
+    ignore_errors: true
+
+  - name: remove files and dirs
+    file: name={{ item }} state=absent
+    with_items:
+    - "{{ etcd_dir }}"
+    - "{{ etcd_data_dir }}"
+    - "{{ etcd_backup_dir  }}"
+    - "/etc/systemd/system/etcd.service"
+    - "/etc/profile.d/etcdctl.sh"
+    - "/usr/local/bin/kube-scripts/etcd-backup.sh"
+    - "/etc/systemd/system/backup-etcd.service"
+    - "/etc/systemd/system/backup-etcd.timer"

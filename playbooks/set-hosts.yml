@@ -1,0 +1,14 @@
+- name: 分发自定义 hosts
+  hosts: k8s_cluster
+  tasks:
+    - name: 构建 hosts 条目
+      set_fact:
+        host_entries: "{{ host_entries | default([]) + [hostvars[item]['ansible_host']|default(item) + ' ' + item] }}"
+      loop: "{{ groups['all'] }}"
+    
+    - name: 插入自定义 hosts 到 /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        line: "{{ item }}"
+        insertafter: EOF
+      loop: "{{ host_entries }}"

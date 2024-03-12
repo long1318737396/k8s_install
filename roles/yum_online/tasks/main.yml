@@ -1,0 +1,8 @@
+# 基础软件在线安装
+- name: yum_online | centos8 
+  include_tasks: centos.yml
+  when: ansible_distribution is regex ("Rocky|openEuler|CentOS|OracleLinux|RedHat|Anolis|Kylin.*")
+
+- name: yum_online | debian 
+  include_tasks: debian.yml
+  when: ansible_distribution in [ 'Ubuntu','Debian' ]

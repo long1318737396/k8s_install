@@ -1,0 +1,111 @@
+---
+apiVersion: kubeadm.k8s.io/v1beta3
+bootstrapTokens:
+- groups:
+  - system:bootstrappers:kubeadm:default-node-token
+  token: abcdef.0123456789abcdef
+  ttl: 24h0m0s
+  usages:
+  - signing
+  - authentication
+kind: InitConfiguration
+certificateKey: 24dd608dcf62f3040e5ec3df4903739f02506f1b5bf1010e6167a8da9f8e569b
+localAPIEndpoint:
+  advertiseAddress: hostvars[groups['kube_control_plane'][0]]['ansible_host']
+  bindPort: 6443
+nodeRegistration:
+  criSocket: unix:///var/run/containerd/containerd.sock
+  imagePullPolicy: IfNotPresent
+---
+apiServer:
+  timeoutForControlPlane: 4m0s
+  extraArgs:
+    authorization-mode: Node,RBAC
+    default-not-ready-toleration-seconds: "300"
+    default-unreachable-toleration-seconds: "300"
+  certSANs:
+  - vip.k8s.local
+  - {{ loadbalancer_vip }} 
+  - 10.96.0.1  
+  - 127.0.0.1
+  {% for host in groups['kube_control_plane'] %}
+  - {{ hostvars[host]['ansible_host'] }}
+  - {{ host }}
+  {% endfor %}
+  - kubernetes
+  - kubernetes.default
+  - kubernetes.default.svc
+  - kubernetes.default.svc.cluster.local
+  extraVolumes:
+  - hostPath: /etc/localtime
+    mountPath: /etc/localtime
+    name: timezone
+    readOnly: true
+apiVersion: kubeadm.k8s.io/v1beta3
+certificatesDir: /etc/kubernetes/pki
+clusterName: kubernetes
+controllerManager: 
+  extraArgs:
+    node-cidr-mask-size: ${node_cidr_mask_size}
+  extraVolumes:
+  - hostPath: /etc/localtime
+    mountPath: /etc/localtime
+    name: timezone
+    readOnly: true
+dns: 
+  imageRepository: registry.k8s.io/coredns
+  imageTag: v1.11.1
+etcd:
+  external:
+    endpoints: 
+    {% for endpoint in etcd_endpoints %}
+      - {{ endpoint }}
+    {% endfor %}
+    caFile: {{ cluster_dir }}/etcd/ssl/etcd-ca.pem
+    certFile: {{ cluster_dir }}/etcd/ssl/etcd-server.pem
+    keyFile: {{ cluster_dir }}/etcd/ssl/etcd-server-key.pem
+imageRepository: registry.k8s.io
+kind: ClusterConfiguration
+kubernetesVersion: v1.29.2
+networking:
+  dnsDomain: cluster.local
+  serviceSubnet: {{ svc_dir }}
+  podSubnet: {{ pod_cidr }}
+scheduler:
+  extraVolumes:
+  - hostPath: /etc/localtime
+    mountPath: /etc/localtime
+    name: timezone
+    readOnly: true
+controlPlaneEndpoint: {{ loadbalancer_vip }}:6443
+---
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+kind: KubeProxyConfiguration
+mode: ipvs
+ipvs:
+  strictARP: true
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+cgroupDriver: systemd
+cpuManagerPolicy: none
+maxPods: 128
+podPidsLimit: 16384
+containerLogMaxSize: 100Mi
+containerLogMaxFiles: 10
+evictionHard:
+    imagefs.available: 15%
+    memory.available: 300Mi
+    nodefs.available: 10%
+    nodefs.inodesFree: 5%
+systemReserved:
+    cpu: 100m
+    memory: 1272Mi
+    pid: "1000"
+kubeReserved:
+    cpu: 100m
+    memory: 1272Mi
+    pid: "1000"
+serializeImagePulls: false
+rotateCertificates: true
+staticPodPath: /etc/kubernetes/manifests

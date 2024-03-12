@@ -1,0 +1,26 @@
+- name: 创建nerdctl_full文件件
+  file: 
+    path: "{{ package_base_dir }}/nerdctl_full"
+    state: directory
+  delegate_to: localhost
+
+- name: 解压nerdctl_full
+  unarchive: 
+    src: "{{ package_base_dir }}/nerdctl-full-{{ nerdctl_full_version }}-linux-{{ orch_arch }}.tar.gz"
+    dest: "{{ package_base_dir }}/nerdctl_full"
+  delegate_to: localhost
+
+- name: 解压文件
+  unarchive: 
+    src: "{{ package_base_dir }}/{{ item }}"
+    dest: "{{ package_base_dir }}"
+  with_items: 
+  - cilium-linux-{{ orch_arch }}.tar.gz
+  - crictl-{{ crictl_version }}-linux-{{ orch_arch }}.tar.gz
+  - etcd-{{ etcd_version }}-linux-{{ orch_arch }}.tar.gz
+  - helm-v{{ helm_version }}-linux-{{ orch_arch }}.tar.gz
+  - hubble-linux-{{ orch_arch }}.tar.gz
+  - kubernetes-server-linux-{{ orch_arch }}.tar.gz
+  - velero-{{ velero_version }}-linux-{{ orch_arch }}.tar.gz
+  - docker-{{ docker_version }}.tgz
+  delegate_to: localhost

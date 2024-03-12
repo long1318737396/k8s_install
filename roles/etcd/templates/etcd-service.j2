@@ -1,0 +1,14 @@
+[Unit]
+Description=Etcd Service
+Documentation=https://coreos.com/etcd/docs/latest/
+After=network.target
+
+[Service]
+Type=notify
+ExecStart=/usr/local/bin/etcd --config-file={{ cluster_dir }}/etcd/conf/config.yml
+Restart=on-failure
+RestartSec=10
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

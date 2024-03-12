@@ -1,0 +1,63 @@
+- name: 创建containerd目录
+  file:
+    path: /etc/containerd
+    state: directory
+
+- name: 生成containerd的配置文件
+  template:
+    src: containerd.toml.j2
+    dest: /etc/containerd/config.toml
+
+- name: 设置crictl命令行自动补全
+  shell: "echo 'source <(crictl completion bash)' > /etc/profile.d/crictl.sh"
+
+- name: 配置crictl.yaml
+  template:
+    src: crictl.yaml.j2
+    dest: /etc/crictl.yaml
+
+- name: 创建buildkit目录
+  file:
+    path: /etc/buildkit
+    state: directory
+
+- name: 配置buildkitd.toml
+  template:
+    src: buildkitd.toml.j2
+    dest: /etc/nerdctl/nerdctl.toml
+
+- name: 配置containerd的自定义证书目录
+  file:
+    path: "/etc/containerd/certs.d/{{ harbor_hostname }}"
+    state: directory
+
+- name: 配置containerd的自定义证书信任
+  template:
+    src: hosts.toml.j2
+    dest: /etc/containerd/certs.d/{{ harbor_hostname }}/hosts.toml
+
+- name: 启动containerd
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  with_items:
+    - containerd
+    - buildkitd
+
+- name: 配置nerdctl
+  file:
+    path: /etc/nerdctl
+    state: directory
+
+- name: 拷贝nerdctl配置文件
+  template:
+    src: nerdctl.toml.j2
+    dest: /etc/nerdctl/nerdctl.toml
+
+- name: 配置nerdctl 命令行自动补全
+  shell: "echo 'source <(nerdctl completion bash)' > /etc/profile.d/nerdctl.sh"
+
+- name: 配置habor域名解析到各个主机
+  shell: |
+    echo "{{ harbor_ip }} {{ harbor_hostname }}" >> /etc/hosts

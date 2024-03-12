@@ -1,0 +1,56 @@
+tee /etc/systemd/system/backup-etcd.service <<EOF
+# /etc/systemd/system/backup-etcd.service
+[Unit]
+Description=Backup ETCD
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/kube-scripts/etcd-backup.sh
+EOF
+cat > /usr/local/bin/kube-scripts/etcd-backup.sh <<EOF
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+ETCDCTL_PATH='{{ bin_dir }}/etcdctl'
+ENDPOINTS='https://127.0.0.1:2379'
+ETCD_DATA_DIR="/var/lib/etcd"
+BACKUP_DIR="{{ etcd_backup_dir }}/etcd-$(date +%Y-%m-%d-%H-%M-%S)"
+KEEPBACKUPNUMBER='6'
+ETCDBACKUPSCIPT='/usr/local/bin/kube-scripts'
+
+ETCDCTL_CERT="{{ cluster_dir }}/etcd/ssl/etcd-server.pem"
+ETCDCTL_KEY="{{ cluster_dir }}/etcd/ssl/etcd-server-key.pem"
+ETCDCTL_CA_FILE="{{ cluster_dir }}/etcd/ssl/etcd-ca.pem"
+
+[ ! -d \$BACKUP_DIR ] && mkdir -p \$BACKUP_DIR
+
+sleep 3
+
+{
+export ETCDCTL_API=3;\$ETCDCTL_PATH --endpoints="\$ENDPOINTS" snapshot save \$BACKUP_DIR/snapshot.db \
+                                   --cacert="\$ETCDCTL_CA_FILE" \
+                                   --cert="\$ETCDCTL_CERT" \
+                                   --key="\$ETCDCTL_KEY"
+} > /dev/null 
+
+sleep 3
+
+cd \$BACKUP_DIR/../ && ls -lt |awk '{if(NR > '\$KEEPBACKUPNUMBER'){print "rm -rf "\$9}}'|sh
+EOF
+
+chmod +x /usr/local/bin/kube-scripts/etcd-backup.sh
+
+tee /etc/systemd/system/backup-etcd.timer <<EOF
+# /etc/systemd/system/backup-etcd.timer
+[Unit]
+Description=Timer to backup ETCD
+[Timer]
+OnCalendar=*-*-* 02:00:00
+Unit=backup-etcd.service
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl enable backup-etcd.service --now
+systemctl enable backup-etcd.timer --now

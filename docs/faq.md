@@ -314,4 +314,25 @@ kubectl edit cm -n environment prometheus-kube-prometheus-grafana-datasource
 orgID: 2
 然后重启grafana pod
 ```
+## ingress的灰度发布和蓝绿发布
 
+https://help.aliyun.com/zh/ack/ack-managed-and-ack-dedicated/user-guide/use-the-nginx-ingress-controller-for-canary-releases-and-blue-green-deployments-1?spm=a2c4g.11186623.0.0.6220a14eCXghvj
+
+## kuboard单独部署
+
+kuboard 通过docker单独部署
+```bash
+sudo docker run -d \
+  --restart=unless-stopped \
+  --name=kuboard \
+  -p 80:80/tcp \
+  -p 10081:10081/tcp \
+  -e KUBOARD_ENDPOINT="http://内网IP:80" \
+  -e KUBOARD_AGENT_SERVER_TCP_PORT="10081" \
+  -v /root/kuboard-data:/data \
+  eipwork/kuboard:v3.5.2.6
+  # 也可以使用镜像 swr.cn-east-2.myhuaweicloud.com/kuboard/kuboard:v3 ，可以更快地完成镜像下载。
+  # 请不要使用 127.0.0.1 或者 localhost 作为内网 IP \
+  # Kuboard 不需要和 K8S 在同一个网段，Kuboard Agent 甚至可以通过代理访问 Kuboard Server \
+
+```

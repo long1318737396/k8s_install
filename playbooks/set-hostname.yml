@@ -1,0 +1,6 @@
+- name: 设置主机名
+  hosts: k8s_cluster
+  tasks:
+    - name: 设置主机名为清单中的主机名
+      hostname:
+        name: "{{ inventory_hostname }}"

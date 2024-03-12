@@ -1,0 +1,45 @@
+- name: yum_offline | centos8
+  copy:
+    src: /kubespray/offline/yum/{{ orch_arch }}/centos8/rpms.tar.gz
+    dest: /opt/rpms.tar.gz
+
+- name: yum_offline_unarchive centos8
+  unarchive:
+    src: /opt/rpms.tar.gz 
+    dest:  /opt
+    remote_src: yes
+
+
+- name: Backup Yum configuration file
+  shell: mv /etc/yum.repos.d /etc/yum.repos.d_bak_old_$(date +"%Y-%m-%d-%H-%M-%S") && mkdir /etc/yum.repos.d
+
+
+- name: Enable local Yum repository
+  yum_repository:
+    name: local_repo
+    description: Local Yum Repository
+    baseurl: file:///opt/rpms  # 本地仓库的文件夹路径
+    state: present
+    enabled: yes
+
+- name: 安装基础软件包
+  yum: 
+    name: 
+    - jq                              # 轻量JSON处理程序
+    - unzip
+    - htop
+    - curl                            # 基础工具
+    - wget
+    - iotop
+    - ipset                           # ipvs 模式需要
+    - socat                           # 用于port forwarding
+    - sysstat
+    - ipvsadm                         # ipvs 模式需要
+    - nmap-ncat                       # 使用lb时进行端口判断时会用到
+    - nfs-utils                       # 挂载nfs 共享文件需要 (创建基于 nfs的 PV 需要)
+    - net-tools
+    - libseccomp
+    - conntrack-tools                 # ipvs 模式需要
+    - bash-completion                 # bash命令补全工具，需要重新登录服务器生效
+    state: latest
+  ignore_errors: true

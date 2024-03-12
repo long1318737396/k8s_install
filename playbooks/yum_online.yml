@@ -1,0 +1,13 @@
+- hosts: 
+  - k8s_cluster
+  roles:
+    - role: yum_online
+      when: yum_online_install == true
+
+- hosts:
+  - k8s_cluster
+  roles:
+    - role: yum_offline
+      when: 
+      - yum_online_install == false
+      - ansible_distribution is regex ("Rocky|openEuler|CentOS|UOS|OracleLinux|RedHat|Anolis|Kylin.*")

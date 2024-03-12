@@ -1,0 +1,31 @@
+
+- name: 设置 python 解释器
+  set_fact:
+    # Kylin需要开启(https://blog.csdn.net/yy4545/article/details/125652470)
+    ansible_python_interpreter: /usr/bin/python3
+  when: ansible_distribution is regex ("Kylin.*")
+
+- block:
+  - name: 判断 firewalld 是否安装
+    shell: >
+      systemctl is-active firewalld || echo "not be found"
+    register: firewalld_already_installed
+  
+  - name: 禁用防火墙
+    service:
+      name: firewalld
+      state: stopped
+      enabled: no
+    when: firewalld_already_installed.stdout == "active"
+  when: "firewalld_disabled | default(True) | bool"
+
+
+- name: 临时关闭 selinux
+  shell: "setenforce 0"
+  failed_when: false
+
+- name: 永久关闭 selinux
+  lineinfile:
+    dest: /etc/selinux/config
+    regexp: "^SELINUX="
+    line: "SELINUX=disabled"

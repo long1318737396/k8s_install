@@ -1,0 +1,10 @@
+- name: Copy script to the remote host
+  hosts: k8s_cluster
+  tasks:
+    - name: Copy the local script to the remote host
+      copy:
+        src: ../script/k8s/clean.sh
+        dest: /tmp
+        mode: 0755  # 设置脚本的执行权限
+    - name: Execute the script on the remote host
+      shell: bash /tmp/clean.sh

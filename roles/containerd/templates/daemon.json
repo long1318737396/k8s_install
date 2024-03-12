@@ -1,0 +1,13 @@
+{
+    "exec-opts": ["native.cgroupdriver=systemd"],
+    "insecure-registries" : ["myharbor.mtywcloud.com"],
+    "log-driver": "json-file",
+    "data-root": "${docker_data_root}",
+    "log-opts": {
+        "max-size": "100m",
+        "max-file": "10"
+    },
+    "bip": "169.254.123.1/24",
+    "registry-mirrors": ["https://xbrfpgqk.mirror.aliyuncs.com"],
+    "live-restore": true
+}

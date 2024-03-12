@@ -1,0 +1,19 @@
+- name: 创建备份脚本目录
+  file:
+    path: /usr/local/bin/kube-scripts
+    state: directory
+  delegate_to: "{{ groups['etcd'][0] }}"
+
+
+- name: 渲染备份脚本
+  template:
+    src: etcd-backup.sh.j2
+    dest: "{{ cluster_dir }}/etcd/etcd-backup.sh"
+  delegate_to: "{{ groups['etcd'][0] }}"
+
+
+
+- name: 执行脚本
+  script: "{{ cluster_dir }}/etcd/etcd-backup.sh"
+  delegate_to: "{{ groups['etcd'][0] }}"
+

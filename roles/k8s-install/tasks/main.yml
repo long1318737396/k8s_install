@@ -1,0 +1,66 @@
+- name: 创建kubelet服务目录
+  file: 
+    path: /etc/systemd/system/kubelet.service.d
+    state: directory 
+
+- name: 创建kubelet服务文件
+  template:
+    src: kubelet.service.j2
+    dest: /etc/systemd/system/kubelet.service
+
+- name: 创建kubelet服务文件
+  template:
+    src: 10-kubeadm.conf.j2
+    dest: /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+
+- name: 启动kubelet服务
+  service:
+    name: kubelet
+    state: started
+    enabled: yes
+
+- name: 创建kubelet的命令行自动补全
+  shell: |
+    "echo 'source <(kubectl completion bash)' > /etc/profile.d/kubectl.sh"
+    "echo 'source <(kubeadm completion bash)' > /etc/profile.d/kubeadm.sh
+
+- name: 初始化第一台master节点
+  include_tasks: first-master.yml
+
+- name: 创建静态目录
+  file: 
+    path: /etc/kubernetes/manifests
+    state: directory
+  when: kube_vip_enable == true
+
+- name: 配置kube-vip
+  template:
+    src: kube-vip.yaml.j2
+    dest: /etc/kubernetes/manifests/kube-vip.yaml
+  when: 
+  - kube_vip_enable == true
+  delegate_to: "{{ groups['kube_control_plane'][0] }}"
+
+- name: 初始化第一台master节点
+  command: kubeadm init --config={{ cluster_dir }}/kubeadm/kubeadm-etcd-external.yaml --upload-certs --v=5
+  register: kubeadm_init_status
+
+- name: 检查 kubeadm 初始化状态
+  debug:
+    msg: "kubeadm 初始化成功"
+  when: kubeadm_init_status.rc == 0
+
+- name: 创建 kube 配置目录
+  command: mkdir -p $HOME/.kube
+  become: true
+  when: kubeadm_init_status.rc == 0
+
+- name: 复制 admin.conf 到用户目录
+  command: /bin/cp /etc/kubernetes/admin.conf $HOME/.kube/config
+  become: true
+  when: kubeadm_init_status.rc == 0
+
+- name: 更改 kube/config 文件权限
+  command: sudo chown $(id -u):$(id -g) $HOME/.kube/config
+  become: true
+  when: kubeadm_init_status.rc == 0

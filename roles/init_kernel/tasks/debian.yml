@@ -1,0 +1,13 @@
+- block:
+  - name: 判断 ufw 是否安装
+    shell: >
+      systemctl is-active ufw | grep active || echo "not be found"
+    register: ufw_already_installed
+  
+  - name: 禁用防火墙
+    service:
+      name: ufw
+      state: stopped
+      enabled: no
+    when: ufw_already_installed.stdout == "active"
+  when: "firewalld_disabled | default(True) | bool"

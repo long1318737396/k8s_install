@@ -1,0 +1,6 @@
+export ETCDCTL_API=3
+alias etcdctl="{{ bin_dir }}/etcdctl \
+	--cacert={{ cluster_dir }}/etcd/ssl/etcd-ca.pem \
+	--cert={{ cluster_dir }}/etcd/ssl/etcd-server.pem \
+	--key={{ cluster_dir }}/etcd/ssl/etcd-server-key.pem \
+	--endpoints={% for host in groups['etcd'] %}https://{{ hostvars[host]['ansible_host'] }}:2379{% if not loop.last %},{% endif %}{% endfor %}"

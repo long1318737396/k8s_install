@@ -84,7 +84,7 @@ spec:
           value: "http://${ipaddr}:80"
         - name: KUBOARD_AGENT_SERVER_TCP_PORT
           value: "10081"
-      image: 'eipwork/kuboard:v3'
+      image: 'eipwork/kuboard:v3.5.2.6'
       imagePullPolicy: IfNotPresent
       livenessProbe:
         failureThreshold: 3

@@ -1,0 +1,72 @@
+#平台配置
+#amd64配置
+orch_arch: amd64
+orch_platform: x86_64
+#arm64配置
+#orch_arch: arm64
+#orch_platform: aarch64
+
+#harbor相关信息配置，主要是分发到k8s集群中做自定义host以及信任自签名证书
+harbor_ip: 192.168.150.14
+harbor_hostname: myharbor.mtywcloud.com
+
+# nfs配置，此处主要是为K8s做持久化使用，并不会安装nfs
+nfs_enabled: "true"
+nfs_server: "192.168.150.14"
+nfs_path: "/data/nfs/k8s"
+
+
+#containerd配置
+containerd_data_dir: /data/kubernetes/containerd
+
+
+#etcd配置
+#etcd安装方式，local或者kubeadm
+etcd_install_type: "local"
+##etcd的存储目录
+etcd_data_dir: '/data/kubernetes/etcd'
+##存放etcd的证书和配置文件的目录
+#ssl存放位置为/etc/kubernetes/etcd/ssl
+#conf存放位置为/etc/kubernetes/etcd/conf
+etcd_dir: '{{ cluster_dir }}/etcd'
+##etcd的备份目录
+etcd_backup_dir: /data/backup/k8s/etcd
+
+#k8s安装包配置,在线安装置为true，离线需设置为false，离线只使用centos，并不会100%成功，失败则需手动安装
+yum_online_install: true
+
+
+
+#k8s配置
+#使用外部lb时，配置loadbalancer_vip,如果使用keepalived则kube_vip_enable需配置为true，并且loadbalancer_vip、kube_vip_eth参数也必须配置
+loadbalancer_vip: 
+kube_vip_enable: true
+kube_vip_eth: "ens160"
+master1_ip: 192.168.150.10
+master2_ip: 192.168.150.11
+master3_ip: 192.168.150.12
+pod_cidr: "10.244.0.0/16"
+svc_cidr: "10.96.0.0/20"
+node_cidr_mask_size: "25"
+#目前只支持cilium和calico
+network_type: "cilium"
+kubernetesVersion: v1.29.2
+
+# apollo安装配置
+apollo_db_host: 1.1.1.1
+apollo_db_username: sa
+apollo_db_password: test
+apollo_db_port: 3306
+apollo_configdb_name: ApolloConfigDB
+apollo_portdb_name: ApolloPortalDB
+
+
+
+
+#基础信息配置
+## 离线安装包目录
+package_base_dir: "/kubespray/offline/bin/{{ orch_arch }}"
+## 二进制分发目录
+bin_dir: /usr/local/bin
+## 配置文件分发目录
+cluster_dir: /etc/kubernetes
