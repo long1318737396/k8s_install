@@ -49,3 +49,6 @@ while read line;do result=$(echo "$line" | awk -F'[/:]' '{ print $(NF-1) }'); do
 while read line;do result=$(echo "$line" | awk -F'[/:]' '{ print $(NF-1) }'); docker save -o ${packages_dir}/images/$result.tar.gz $line;done <addon-image.list
 
 docker save -o ${packages_dir}/images/ingress-nginx-controller.tar.gz registry.k8s.io/ingress-nginx/controller:v1.9.6
+docker pull ghcr.dockerproxy.com/stakater/reloader:v1.0.69
+docker tag ghcr.dockerproxy.com/stakater/reloader:v1.0.69 ghcr.io/stakater/reloader:v1.0.69
+docker save -o ${packages_dir}/images/reloader.tar.gz ghcr.io/stakater/reloader:v1.0.69
