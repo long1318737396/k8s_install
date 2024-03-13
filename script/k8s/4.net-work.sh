@@ -31,6 +31,8 @@ if [[ "$network_type" == "calico" ]]
     elif [[ "$network_type" == "cilium" ]]
         then
             cd ../../../yaml;
+            # gateway api安装
+            kubectl apply -f experimental-install.yaml;
             helm upgrade --install cilium ./cilium --namespace=kube-system  --version 1.15.1 \
                 --set routingMode=native \
                 --set kubeProxyReplacement=strict \

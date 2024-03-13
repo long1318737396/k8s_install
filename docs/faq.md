@@ -10,7 +10,9 @@
 
 
 之后重启cilium
+
 kubectl rollout restart ds -n kube-system cilium
+
 kubectl rollout restart deployment -n kube-system cilium-operator
 
 ## 3.prometheus采集外部主机
@@ -177,6 +179,39 @@ spec:
           volumeMounts:
             - name: dshm
               mountPath: /dev/shm
+```
+
+## pod磁盘限制
+
+以下配置当pod磁盘使用超过1G时，就会被kill，然后新起pod
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-container
+        image: my-image
+        volumeMounts:
+          - name: my-empty-dir
+            mountPath: /mnt/data
+        resources:
+          limits:
+            ephemeral-storage: 1Gi
+      volumes:
+      - name: my-empty-dir
+        emptyDir:
+          sizeLimit: 1Gi
 ```
 
 ## ecapture抓https数据包

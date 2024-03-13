@@ -27,8 +27,6 @@ kubectl create ns environment
 #metrics-server安装
 kubectl apply -f components.yaml
 
-# gateway api安装
-kubectl apply -f experimental-install.yaml
 
 #二层LB安装
 kubectl apply -f metallb-native.yaml
@@ -60,10 +58,24 @@ kubectl apply -f local-path-storage.yaml
 # nfs安装
 if [[ "$nfs_enabled" == "true" ]]
     then 
-        helm upgrade --install nfs-subdir-external-provisioner ./nfs-subdir-external-provisioner --namespace=environment --create-namespace \
+        helm upgrade --install nfs-subdir-external-provisioner-retain ./nfs-subdir-external-provisioner --namespace=environment --create-namespace \
             --set nfs.server=${nfs_server} \
             --set nfs.path="${nfs_path}" \
-            --set storageClass.name=nfs-client \
+            --set storageClass.name=nfs-eworld-retain \
+            --set storageClass.reclaimPolicy=Retain \
+            --set storageClass.defaultClass=true \
+            --set-string nfs.mountOptions={"soft,timeo=600,intr,retry=5,retrans=2,proto=tcp,vers=3"}
+fi
+
+
+if [[ "$nfs_enabled" == "true" ]]
+    then 
+        helm upgrade --install nfs-subdir-external-provisioner-delete ./nfs-subdir-external-provisioner --namespace=environment --create-namespace \
+            --set nfs.server=${nfs_server} \
+            --set nfs.path="${nfs_path}/delete" \
+            --set storageClass.name=nfs-eworld-delete \
+            --set storageClass.reclaimPolicy=Delete \
+            --set storageClass.defaultClass=false \
             --set-string nfs.mountOptions={"soft,timeo=600,intr,retry=5,retrans=2,proto=tcp,vers=3"}
 fi
 
@@ -75,18 +87,18 @@ helm upgrade --install --cleanup-on-fail  prometheus -n environment ./kube-prome
   --set grafana.service.type=NodePort \
   --set grafana.service.nodePort=32765 \
   --set grafana.persistence.enabled=true \
-  --set grafana.persistence.storageClassName=nfs-client \
+  --set grafana.persistence.storageClassName=nfs-eworld-retain \
   --set grafana.persistence.size=10Gi \
   --set grafana.defaultDashboardsTimezone=Asia/Shanghai \
   --set alertmanager.service.type=NodePort \
   --set alertmanager.service.nodePort=30903 \
-  --set alertmanager.alertmanagerSpec.storage.volumeClaimTemplate.spec.storageClassName=nfs-client \
+  --set alertmanager.alertmanagerSpec.storage.volumeClaimTemplate.spec.storageClassName=nfs-eworld-retain \
   --set alertmanager.alertmanagerSpec.storage.volumeClaimTemplate.spec.resources.requests.storage=10Gi \
   --set prometheusOperator.admissionWebhooks.patch.image.tag=v20231226-1a7112e06 \
   --set prometheus.service.type=NodePort \
   --set prometheus.service.nodePort=30090 \
   --set prometheus.prometheusSpec.replicas=1 \
-  --set prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.storageClassName=nfs-client \
+  --set prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.storageClassName=nfs-eworld-retain \
   --set prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.resources.requests.storage=10Gi
    
 
@@ -99,7 +111,7 @@ helm  upgrade --install loki ./loki-stack --namespace  environment --create-name
     --set loki.service.type=ClusterIP \
     --set loki.persistence.enabled=true \
     --set loki.persistence.size=10Gi \
-    --set loki.persistence.storageClassName=nfs-client \
+    --set loki.persistence.storageClassName=nfs-eworld-retain \
     --set promtail.image.tag=2.9.5 \
     --set loki.image.tag=2.9.5
 
@@ -141,3 +153,4 @@ helm upgrade --install --cleanup-on-fail apollo-portal \
 
 kubectl create deployment net-tools --image long1318737396/net-tools
 kubectl expose deployment net-tools --port 80 --target-port 80 --type NodePort
+kubectl patch deployment net-tools -p '{"spec":{"template":{"spec":{"containers":[{"name":"net-tools","imagePullPolicy":"IfNotPresent"}]}}}}'
