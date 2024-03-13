@@ -72,7 +72,7 @@ if [[ "$nfs_enabled" == "true" ]]
     then 
         helm upgrade --install nfs-subdir-external-provisioner-delete ./nfs-subdir-external-provisioner --namespace=environment --create-namespace \
             --set nfs.server=${nfs_server} \
-            --set nfs.path="${nfs_path}/delete" \
+            --set nfs.path="${nfs_path}"/delete \
             --set storageClass.name=nfs-eworld-delete \
             --set storageClass.reclaimPolicy=Delete \
             --set storageClass.defaultClass=false \
@@ -108,6 +108,8 @@ helm upgrade --install --cleanup-on-fail  prometheus -n environment ./kube-prome
 #helm  install grafana yaml/loki/grafana --namespace  environment 
 helm  upgrade --install loki ./loki-stack --namespace  environment --create-namespace \
     --set promtail.enabled=false \
+    --set grafana.sidecar.datasources.enabled=false \
+    --set loki.isDefault=false \
     --set loki.service.type=ClusterIP \
     --set loki.persistence.enabled=true \
     --set loki.persistence.size=10Gi \
