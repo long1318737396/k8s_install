@@ -1,7 +1,10 @@
-custom_hosts: 
-  - 192.168.1.109 registry.mydomain.com
-  - 192.168.1.109 download.mydomain.com
-  - 192.168.1.109 yum7_repo.mydomain.com
-  - 192.168.1.109 yum8_repo.mydomain.com
-  - 192.168.1.109 apt_repo.mydomain.com
-  - 192.168.2.48 harbor-registry.mtywcloud.com
+#harbor的IP地址，然后远端机器从harbor下载离线包
+harbor_ip: 192.168.1.10
+#下载的端口
+download_port: 38088
+#远端机器是通过curl下载离线包
+download_type: curl
+#离线包存储的位置
+destination_dir: /
+#在线安装k8s所需软件包: conntrack socat tc nfs-utils等的方式，如果离线配置为false
+yum_online_install: true

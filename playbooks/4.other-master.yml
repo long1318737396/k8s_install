@@ -1,0 +1,6 @@
+- name: 其他master节点加入集群
+  hosts: "{{ groups['kube_control_plane'][1:] }}"
+  tasks:
+    - name: 其他master节点加入集群
+      script: {{destination_dir}}/k8s_install/7.join_master.sh
+      

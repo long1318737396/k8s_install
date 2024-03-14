@@ -1,6 +1,12 @@
 [离线包制作](docs/offline_zh.md)
 
-> 离线安装 | [在线安装](README_online.md)
+[在线安装](README_online.md)  
+
+[基于ansible离线部署](docs/ansible.md)
+
+> 离线安装
+
+
 
 ## 部署需求
 软件包可以放在harbor服务器，或者上传至各个服务器上，
@@ -132,10 +138,11 @@ harbor服务器将会开启38088端口，以供其他服务器下载离线包
 
 ```bash
 #导入nginx镜像
-nerdctl load -i offline/images/amd64/nginx.tar.gz
-nerdctl compose up -d
+docker load -i offline/images/amd64/nginx.tar.gz
+docker load -i offline/images/amd64/kubespray.tar.gz
+docker-compose up -d
 #确保启动成功
-nerdctl compose ps 
+docker-compose ps 
 #访问如下地址可以查看本地代理出去的软件包
 $harbor_ip:38088
 ```

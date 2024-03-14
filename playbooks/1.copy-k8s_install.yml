@@ -1,0 +1,27 @@
+- name: 从各个节点下载k8s离线包
+  hosts: k8s_cluster
+  tasks:
+    - name: 通过curl下载k8s离线包
+      get_url:
+        url: "http://{{ harbor_ip }}:{{ download_port }}/k8s_install.tar.gz"
+        dest: "{{ destination_dir  }}"
+        timeout: 10
+      when: download_type == "curl"
+
+    - name: 通过copy下载k8s离线包
+      copy:
+        src: "k8s_install.tar.gz"
+        dest: "{{ destination_dir  }}"
+      when: download_type == "copy"
+
+    - name: 解压k8s离线包
+      unarchive:
+        src: "{{ destination_dir }}/k8s_install.tar.gz"
+        dest: "{{ destination_dir  }}"
+        remote_src: yes
+      
+    - name: copy | conf/config.sh
+      copy:
+        src: conf/config.sh
+        dest: {{ destination_dir }}/k8s_install/conf/config.sh
+        force: yes
