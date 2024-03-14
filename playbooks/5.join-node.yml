@@ -2,5 +2,5 @@
   hosts: kube_node
   tasks:
     - name: 其他node节点加入集群
-      script: {{destination_dir}}/k8s_install/8.join_node.sh
+      shell: "/bin/bash {{destination_dir}}/k8s_install/8.join_node.sh"
       

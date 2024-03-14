@@ -41,14 +41,18 @@ ls -l k8s_install.tar.gz
 
 通过ansible将文件分发到各个节点上
 ```bash
-docker exec kubespray ansible-playbook -i inventory/inventory.ini playbooks/1.copy_k8s_install.yml
+docker exec kubespray ansible-playbook -i inventory/inventory.ini playbooks/1.copy-k8s-install.yml
 ```
 
 ## 安装k8s集群
 
-初始化第一台master节点
+运行时安装
 ```bash
 docker exec kubespray ansible-playbook -i inventory/inventory.ini playbooks/2.env.yml
+```
+
+初始化第一台master节点
+```bash
 docker exec kubespray ansible-playbook -i inventory/inventory.ini playbooks/3.fist-master-install.yml
 ```
 
@@ -59,7 +63,7 @@ docker exec kubespray ansible-playbook -i inventory/inventory.ini playbooks/4.ot
 
 加入node节点
 ```bash
-docker exec kubespray ansible-playbook -i inventory/inventory.ini playbooks/5.add-node.yml
+docker exec kubespray ansible-playbook -i inventory/inventory.ini playbooks/5.join-node.yml
 ```
 
 安装组件

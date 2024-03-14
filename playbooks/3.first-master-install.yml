@@ -2,4 +2,17 @@
   hosts: "{{ groups['kube_control_plane'][0] }}"
   tasks:
     - name: 初始化第一台master节点
-      script: {{destination_dir}}/k8s_install/6.k8s_install.sh
+      shell: "/bin/bash {{destination_dir}}/k8s_install/6.k8s_install.sh"
+      register: script_output
+
+    - name: Print script output
+      debug:
+        var: script_output.stdout_lines
+    
+    - name: kubectl生成结果
+      shell: "kubectl get nodes -o wide"
+      register: kubectl_output
+    
+    - naeme: Print kubectl output
+      debug:
+        var: kubectl_output.stdout_lines
