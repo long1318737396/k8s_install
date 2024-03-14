@@ -124,4 +124,3 @@ kubeReserved:
     pid: "1000"
 serializeImagePulls: false
 rotateCertificates: true
-staticPodPath: /etc/kubernetes/manifests
