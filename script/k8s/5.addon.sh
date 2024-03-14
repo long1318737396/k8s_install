@@ -60,7 +60,7 @@ if [[ "$nfs_enabled" == "true" ]]
     then 
         helm upgrade --install nfs-subdir-external-provisioner-retain ./nfs-subdir-external-provisioner --namespace=environment --create-namespace \
             --set nfs.server=${nfs_server} \
-            --set nfs.path="${nfs_path}" \
+            --set nfs.path=${nfs_path} \
             --set storageClass.name=nfs-eworld-retain \
             --set storageClass.reclaimPolicy=Retain \
             --set storageClass.defaultClass=true \
@@ -72,7 +72,7 @@ if [[ "$nfs_enabled" == "true" ]]
     then 
         helm upgrade --install nfs-subdir-external-provisioner-delete ./nfs-subdir-external-provisioner --namespace=environment --create-namespace \
             --set nfs.server=${nfs_server} \
-            --set nfs.path="${nfs_path}"/delete \
+            --set nfs.path=${nfs_path}/delete \
             --set storageClass.name=nfs-eworld-delete \
             --set storageClass.reclaimPolicy=Delete \
             --set storageClass.defaultClass=false \

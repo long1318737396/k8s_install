@@ -8,4 +8,5 @@ echo "$date_format"
 
 cat ../../conf/kubeadm-join-node.yaml | sed "s:\${loadbalancer_vip}:${loadbalancer_vip}:g" |tee kubeadm-join-node.yaml
 
+mkdir -p /etc/kubernetes/manifests
 kubeadm join --config kubeadm-join-node.yaml --v 5

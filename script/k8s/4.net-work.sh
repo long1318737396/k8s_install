@@ -23,7 +23,7 @@ chmod +x /usr/local/bin/hubble
 tar -zxvf cilium-linux-${arch}.tar.gz
 /bin/cp cilium /usr/local/bin/
 chmod +x /usr/local/bin/cilium
-
+cilium completion bash > /etc/bash_completion.d/cilium
 
 if [[ "$network_type" == "calico" ]]
     then
@@ -36,32 +36,32 @@ if [[ "$network_type" == "calico" ]]
             helm upgrade --install cilium ./cilium --namespace=kube-system  --version 1.15.1 \
                 --set routingMode=native \
                 --set kubeProxyReplacement=strict \
-                --set bandwidthManager.enabled=true \
+                --set bandwidthManager.enabled=false \
                 --set ipam.mode=kubernetes \
                 --set k8sServiceHost=${loadbalancer_vip} \
                 --set k8sServicePort=6443 \
                 --set ipv4NativeRoutingCIDR=${pod_cidr} \
-                --set operate.pprof=true \
-                --set operate.prometheus.enabled=true \
-                --set prometheus.enabled=true \
-                --set pprof.enabled=true \
+                --set operate.pprof=false \
+                --set operate.prometheus.enabled=false \
+                --set prometheus.enabled=false \
+                --set pprof.enabled=false \
                 --set nodePort.enabled=true \
-                --set monitor.enabled=true \
-                --set hubble.relay.enabled=true \
-                --set hubble.relay.prometheus.enabled=true \
-                --set hubble.relay.pprof.enabled=true \
-                --set hubble.ui.enabled=true \
+                --set monitor.enabled=false \
+                --set hubble.relay.enabled=false \
+                --set hubble.relay.prometheus.enabled=false \
+                --set hubble.relay.pprof.enabled=false \
+                --set hubble.ui.enabled=false \
                 --set hubble.ui.service.type=NodePort \
                 --set hubble.metrics.enabled="{dns:query;ignoreAAAA,drop,tcp,flow,icmp,http}" \
-                --set hubble.metrics.dashboards.enabled=true \
+                --set hubble.metrics.dashboards.enabled=false \
                 --set ingressController.enabled=true \
                 --set debug.enabled=false \
                 --set operator.replicas=1 \
                 --set bpf.masquerade=true \
                 --set autoDirectNodeRoutes=true \
-                --set gatewayAPI.enabled=true \
+                --set gatewayAPI.enabled=false \
                 --set ingressController.enabled=true \
                 --set ingressController.service.type=NodePort \
-                --set egressGateway.enabled=true 
+                --set egressGateway.enabled=false 
 
     fi

@@ -23,6 +23,8 @@ apiServer:
     authorization-mode: Node,RBAC
     default-not-ready-toleration-seconds: "300"
     default-unreachable-toleration-seconds: "300"
+    service-node-port-range: 30000-32767
+    profiling: "false"
   certSANs:
   - vip.k8s.local
   - ${loadbalancer_vip} # VIP 地址
@@ -49,6 +51,7 @@ clusterName: kubernetes
 controllerManager: 
   extraArgs:
     node-cidr-mask-size: ${node_cidr_mask_size}
+    profiling: "false"
   extraVolumes:
   - hostPath: /etc/localtime
     mountPath: /etc/localtime
@@ -73,6 +76,7 @@ etcd:
     extraArgs:
       quota-backend-bytes: "32768000000"
       auto-compaction-mode: periodic
+      listen-metrics-urls: "http://0.0.0.0:2381"
 imageRepository: registry.k8s.io
 kind: ClusterConfiguration
 kubernetesVersion: v1.29.2
@@ -81,6 +85,9 @@ networking:
   serviceSubnet: ${svc_dir}
   podSubnet: ${pod_cidr}
 scheduler:
+  extraArgs:
+    profiling: "false"
+    v: "3"
   extraVolumes:
   - hostPath: /etc/localtime
     mountPath: /etc/localtime
