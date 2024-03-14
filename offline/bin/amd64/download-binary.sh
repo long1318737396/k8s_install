@@ -53,6 +53,7 @@ hubble_url="https://github.com/cilium/hubble/releases/download/${hubble_version}
 velero_url="https://github.com/vmware-tanzu/velero/releases/download/${velero_version}/velero-${velero_version}-linux-${arch}.tar.gz"
 skopeo_url="https://github.com/lework/skopeo-binary/releases/download/${skopeo_version}/skopeo-linux-${arch}"
 yq_url="https://github.com/mikefarah/yq/releases/download/${yq_version}/yq_linux_${arch}"
+curl -L -o kubeadm https://github.com/long1318737396/k8s_install/releases/download/v1.29.2/kubeadm
 # curl  -k -L -C - -o minio  https://dl.min.io/server/minio/release/linux-amd64/minio
 # curl  -k -L -C - -o mc https://dl.min.io/client/mc/release/linux-amd64/mc
 jq_url="https://github.com/jqlang/jq/releases/download/jq-${jq_version}/jq-linux-${arch}"

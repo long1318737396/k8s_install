@@ -17,7 +17,7 @@ ETCDCTL_CA_FILE="/etc/kubernetes/pki/etcd/ca.crt"
 
 [ ! -d $BACKUP_DIR ] && mkdir -p $BACKUP_DIR
 
-export ETCDCTL_API=2;$ETCDCTL_PATH backup --data-dir $ETCD_DATA_DIR --backup-dir $BACKUP_DIR
+#export ETCDCTL_API=2;$ETCDCTL_PATH backup --data-dir $ETCD_DATA_DIR --backup-dir $BACKUP_DIR
 
 sleep 3
 
