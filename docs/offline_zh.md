@@ -10,10 +10,10 @@
 
 ```bash
 #海外机器
-bash make.sh
+bash make.sh --arch=amd64
 
 #国内机器
-# bash make-zh.sh
+# bash make-zh.sh --arch=amd64
 ```
 
 ## 100年证书制作

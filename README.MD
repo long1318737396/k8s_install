@@ -375,6 +375,8 @@ bash 9.addon_install.sh
 bash etcd_backup.sh
 ```
 
+## 配置集群备份
+
 ## 搭建集群时脚本会关闭节点上防火墙，集群搭建完毕后会使用到如下表列出的端口 [端口](docs/port.md)
 
 ## 查看grafana以及kuboard等默认密码 [密码](docs/admin.md)

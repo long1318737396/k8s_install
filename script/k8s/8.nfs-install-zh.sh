@@ -7,6 +7,11 @@ exec > >(tee -a "$logfile") 2>&1
 echo "$date_format"
 
 
+mkdir -p ${nfs_path}
+chmod -R 777 ${nfs_path}
+echo "${nfs_path} *(rw,sync,no_root_squash,no_subtree_check)" | sudo tee -a /etc/exports
+exportfs -ra
+showmount -e localhost
 
 if [ -f /etc/debian_version ]; then
   systemctl enable nfs-kernel-server
@@ -22,8 +27,3 @@ else
   systemctl start nfs-server
 fi
 
-mkdir -p ${nfs_path}
-chmod -R 777 ${nfs_path}
-echo "${nfs_path} *(rw,sync,no_root_squash,no_subtree_check)" | sudo tee -a /etc/exports
-exportfs -ra
-showmount -e localhost
