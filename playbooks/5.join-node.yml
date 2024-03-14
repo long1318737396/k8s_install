@@ -3,4 +3,8 @@
   tasks:
     - name: 其他node节点加入集群
       shell: "/bin/bash {{destination_dir}}/k8s_install/8.join_node.sh"
-      
+      register: join_node
+    
+    - name: 打印join结果
+      debug:
+        var: join_node.stdout_lines

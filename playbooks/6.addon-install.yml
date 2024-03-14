@@ -3,3 +3,8 @@
   tasks:
     - name: 组件安装
       shell: "/bin/bash {{destination_dir}}/k8s_install/9.addon_install.sh"
+      register: addon_install
+    
+    - name: 打印addon_install
+      debug:
+        var: addon_install.stdout_lines

@@ -13,6 +13,6 @@
       shell: "kubectl get nodes -o wide"
       register: kubectl_output
     
-    - naeme: Print kubectl output
+    - name: Print kubectl output
       debug:
         var: kubectl_output.stdout_lines

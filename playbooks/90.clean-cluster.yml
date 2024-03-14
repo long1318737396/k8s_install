@@ -1,0 +1,10 @@
+- name: 从各个节点清除相关安装包
+  hosts: k8s_cluster
+  tasks:
+    - name: 清除相关目录
+      shell:  "/bin/bash {{destination_dir}}/k8s_install/script/k8s/clean.sh"
+      register: clean
+    
+    - name: 打印clean
+      debug:
+        var: clean.stdout_lines

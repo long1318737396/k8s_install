@@ -53,7 +53,7 @@ docker exec kubespray ansible-playbook -i inventory/inventory.ini playbooks/2.en
 
 初始化第一台master节点
 ```bash
-docker exec kubespray ansible-playbook -i inventory/inventory.ini playbooks/3.fist-master-install.yml
+docker exec kubespray ansible-playbook -i inventory/inventory.ini playbooks/3.first-master-install.yml
 ```
 
 加入其他master节点
