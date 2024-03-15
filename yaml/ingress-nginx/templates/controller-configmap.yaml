@@ -13,6 +13,12 @@ metadata:
   name: {{ include "ingress-nginx.controller.fullname" . }}
   namespace: {{ include "ingress-nginx.namespace" . }}
 data:
+  max-worker-connections: "65536"
+  proxy-connect-timeout: "10"
+  reuse-port: "true"
+  ssl-redirect: "false"
+  upstream-keepalive-timeout: "900"
+  allow-backend-server-header: "true"
   allow-snippet-annotations: "{{ .Values.controller.allowSnippetAnnotations }}"
 {{- if .Values.controller.addHeaders }}
   add-headers: {{ include "ingress-nginx.namespace" . }}/{{ include "ingress-nginx.fullname" . }}-custom-add-headers
