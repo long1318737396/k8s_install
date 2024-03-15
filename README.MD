@@ -107,7 +107,7 @@ loadbalancer_vip=172.16.10.206        #kube-vip的虚拟IP
 kube_vip_eth="ens192"                  #kube-vip使用的网卡，启用kube-vip则必须配置
 node_cidr_mask_size="25"            #每个节点所分配的网段掩码
 #------------网络插件配置----------
-network_type="cilium"               #网络插件类型
+network_type="cilium"               #网络插件类型cilium,calico
 #------------其他配置-------------
 nfs_enabled="true"   #是否部署nfs stroageclass,主要提供k8s的持久化存储
 nfs_server="192.168.1.12"  #nfs服务器地址
@@ -117,6 +117,13 @@ date_format=$(date +"%Y-%m-%d %H:%M:%S")
 #---------cpu架构配置------------
 arch="amd64"  #arm64
 arch1="x86_64"  #aarch64
+#----------apollo安装配置------------
+apollo_db_host=1.1.1.1  #数据库地址
+apollo_db_username=sa   #数据库用户名
+apollo_db_password=test  #数据库密码
+apollo_db_port=3306      #数据库端口 
+apollo_configdb_name=ApolloConfigDB #apollo configdb数据库名称
+apollo_portdb_name=ApolloPortalDB   #apollo portaldb数据库名称
 ```
 
 ## 安装harbor
