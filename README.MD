@@ -25,6 +25,12 @@ k8s的各个节点需要访问harbor的443端口以及38088端口
 - centos8
 - 建议内核版本>=5.10
 
+网络插件:
+- 默认是cilium的native-routing-eBPF-Host-Routing，如果不支持则需要vxlan模式
+- 对于centos7等系统，则必须升级内核版本，否则会导致bpf挂载不上
+
+- [部署模式详细介绍](https://github.com/HFfleming/k8s-network-learning/blob/main/cilium-cni/Native-Routing-with-eBPF-hostRouting.md)
+
 ## 部署架构
 
 ```
@@ -437,7 +443,7 @@ bash 8.join_node.sh
 上面加入加入之后肯定也是失败的，因为token过期了，需要重新生成token，再次加入
 
 ```bash
-master1节点拿取加入master的token
+master1节点拿取加入node的token
 kubeadm token create --print-join-command --ttl=1h
 ```
 
