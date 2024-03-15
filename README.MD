@@ -375,7 +375,105 @@ bash 9.addon_install.sh
 bash etcd_backup.sh
 ```
 
-## 配置集群备份
+## 开启集群备份
+
+## 后期节点的扩容
+### master节点扩容
+
+替换master节点，需要将其他master节点加入到集群中，然后移除旧的master节点
+```bash
+#配置master4服务器的hosts解析
+hostnamectl set-hostname master4
+harbor_ip=192.168.150.14
+curl -L -o k8s_install.tar.gz $harbor_ip:38088/k8s_install.tar.gz
+tar -zxvf k8s_install.tar.gz
+cd k8s_install
+#修改配置文件，可以复用在harbor安装时的配置文件
+vi conf/config.sh
+#依次执行
+#离线安装k8s所需软件包，某些安装失败则需要自行找相应软件包安装，脚本会配置yum本地目录做为仓库
+bash 1.yum_install.sh
+bash 2.init.sh
+bash 3.docker_install.sh
+bash offline/images/amd64/load.sh
+bash 7.join_master.sh
+```
+这个时候加入已有集群肯定是失败的，因为token过期了，需要重新生成token，再次加入
+
+```bash
+#重置本节点
+kubeadm --reset --force
+```
+
+在master1节点拿取加入master的token
+```bash
+#可以使用下面命令生成新证书上传，这里会打印出certificate key，后面会用到
+CERT_KEY=`kubeadm init phase upload-certs --upload-certs|tail -1`
+# 其中 --ttl=0 表示生成的 token 永不失效. 如果不带 --ttl 参数, 那么默认有效时间为24小时. 在24小时内, 可以无数量限制添加 worker.
+echo `kubeadm token create --print-join-command --ttl=1h` " --control-plane --certificate-key $CERT_KEY --v=5"
+# 拿到上面打印的命令在需要添加的节点上执行
+```
+
+### node节点扩容
+
+
+```bash
+#配置node4服务器的hosts解析
+hostnamectl set-hostname node4
+harbor_ip=192.168.150.14
+curl -L -o k8s_install.tar.gz $harbor_ip:38088/k8s_install.tar.gz
+tar -zxvf k8s_install.tar.gz
+cd k8s_install
+#修改配置文件，可以复用在harbor安装时的配置文件
+vi conf/config.sh
+#依次执行
+#离线安装k8s所需软件包，某些安装失败则需要自行找相应软件包安装，脚本会配置yum本地目录做为仓库
+bash 1.yum_install.sh
+bash 2.init.sh
+bash 3.docker_install.sh
+bash offline/images/amd64/load.sh
+bash 8.join_node.sh
+```
+上面加入加入之后肯定也是失败的，因为token过期了，需要重新生成token，再次加入
+
+```bash
+master1节点拿取加入master的token
+kubeadm token create --print-join-command --ttl=1h
+```
+
+```bash
+#重置本节点
+kubeadm reset --force
+# 拿到上面打印的命令在需要添加的节点上执行
+```
+
+## 移除master节点
+
+```bash
+kubectl drain <master-node-name> --ignore-daemonsets --delete-emptydir-data --force
+kubectl delete node <master-node-name>
+```
+
+移除etcd
+
+```bash
+由于etcd是堆叠部署的
+如果旧的master移除，etcd不需要，则需要进行移除
+alias etcdctl="ETCDCTL_API=3 /usr/local/bin/etcdctl --endpoints=https://127.0.0.1:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key"
+
+
+etcdctl member list #获取成员ID
+etcdctl member remove ${memberID}
+etcdctl endpoint status --cluster --write-out=table #检查
+etcdctl endpoint health --cluster --write-out=table #确保当前集群正常
+```
+
+## 移除node节点
+
+```bash
+kubectl drain <node-name> --ignore-daemonsets --delete-emptydir-data --force
+kubectl delete node <node-name>
+```
 
 ## 搭建集群时脚本会关闭节点上防火墙，集群搭建完毕后会使用到如下表列出的端口 [端口](docs/port.md)
 
