@@ -36,7 +36,7 @@ if [[ "$network_type" == "calico" ]]
             helm upgrade --install cilium ./cilium --namespace=kube-system  --version 1.15.1 \
                 --set routingMode=native \
                 --set kubeProxyReplacement=strict \
-                --set bandwidthManager.enabled=false \
+                --set bandwidthManager.enabled=true \
                 --set ipam.mode=kubernetes \
                 --set k8sServiceHost=${loadbalancer_vip} \
                 --set k8sServicePort=6443 \
@@ -52,7 +52,7 @@ if [[ "$network_type" == "calico" ]]
                 --set hubble.relay.pprof.enabled=false \
                 --set hubble.ui.enabled=false \
                 --set hubble.ui.service.type=NodePort \
-                --set hubble.metrics.enabled="{dns:query;ignoreAAAA,drop,tcp,flow,icmp,http}" \
+                --set hubble.metrics.enabled="" \
                 --set hubble.metrics.dashboards.enabled=false \
                 --set ingressController.enabled=true \
                 --set debug.enabled=false \
@@ -62,6 +62,8 @@ if [[ "$network_type" == "calico" ]]
                 --set gatewayAPI.enabled=false \
                 --set ingressController.enabled=true \
                 --set ingressController.service.type=NodePort \
-                --set egressGateway.enabled=false 
-
+                --set egressGateway.enabled=false \
+                --set l2announcements.enabled=true \
+                --set k8sClientRateLimit.qps=100 \
+                --set k8sClientRateLimit.burst=200 
     fi
