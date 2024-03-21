@@ -138,7 +138,7 @@ echo "$harbor_ip $harbor_hostname" >> /etc/hosts #配置本地hosts解析测试h
 #确保正常之后登录测试
 docker login $harbor_hostname --username admin --password $harbor_admin_password
 #加载镜像,并上传镜像
-bash 5.load_images.sh
+bash 5.load_image.sh
 #确保harbor的镜像上传成功
 token=`echo -n "admin:$harbor_admin_password" | base64`
 #不修改默认情况下是YWRtaW46UzZhZzRLWEdT
