@@ -1,0 +1,5 @@
+docker.io/envoyproxy/envoy:distroless-v1.29.2
+docker.io/envoyproxy/gateway-dev:72c0cc7
+docker.io/envoyproxy/gateway:v1.0.0
+docker.io/envoyproxy/envoy:distroless-v1.29.2
+docker.io/envoyproxy/gateway-dev:72c0cc7

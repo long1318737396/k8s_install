@@ -48,4 +48,6 @@ helm pull ingress-nginx/ingress-nginx --untar
 helm pull metallb/metallb --untar
 helm pull minio-operator/operator --untar
 helm pull openebs/openebs --untar
+helm pull oci://docker.io/envoyproxy/gateway-helm --version v1.0.0 --untar
 #helm install flannel --set podCidr="10.244.0.0/16" --namespace kube-flannel flannel/flannel
+#helm install eg oci://docker.io/envoyproxy/gateway-helm --version v1.0.0 -n envoy-gateway-system --create-namespace
