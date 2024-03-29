@@ -26,6 +26,9 @@ tar -zxvf cilium-linux-${arch}.tar.gz
 chmod +x /usr/local/bin/cilium
 cilium completion bash > /etc/bash_completion.d/cilium
 
+/bin/cp jq-linux-${arch} /usr/local/bin/jq
+chmod +x /usr/local/bin/jq
+
 cat ../../conf/kubeadm-control-plane-join.yaml | sed "s:\${loadbalancer_vip}:${loadbalancer_vip}:g" |tee kubeadm-control-plane-join.yaml
 
 

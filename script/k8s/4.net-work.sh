@@ -25,6 +25,9 @@ tar -zxvf cilium-linux-${arch}.tar.gz
 chmod +x /usr/local/bin/cilium
 cilium completion bash > /etc/bash_completion.d/cilium
 
+/bin/cp jq-linux-${arch} /usr/local/bin/jq
+chmod +x /usr/local/bin/jq
+
 if [[ "$network_type" == "calico" ]]
     then
         kubectl apply -f ../../../yaml/calico.yaml 
