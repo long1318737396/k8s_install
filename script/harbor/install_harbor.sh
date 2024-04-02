@@ -6,7 +6,14 @@ source ../../conf/config.sh
 exec > >(tee -a "$logfile") 2>&1
 echo "$date_format"
 
-cp ../../offline/bin/${arch}/harbor-offline-installer-${harbor_version}.tgz ./
+/bin/cp ../../offline/bin/${arch}/jq-linux-${arch} /usr/local/bin/jq
+chmod +x /usr/local/bin/jq
+
+/bin/cp ../../offline/bin/${arch}/skopeo-linux-${arch} /usr/local/bin/skopeo
+
+chmod +x /usr/local/bin/skopeo
+
+/bin/cp ../../offline/bin/${arch}/harbor-offline-installer-${harbor_version}.tgz ./
 tar -zxvf harbor-offline-installer-${harbor_version}.tgz 
 cd harbor
 source ../../../conf/config.sh
