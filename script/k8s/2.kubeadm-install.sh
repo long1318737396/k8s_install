@@ -13,7 +13,7 @@ tar -zxvf velero-${velero_version}-linux-${arch}.tar.gz
 /bin/cp velero-${velero_version}-linux-${arch}/velero /usr/local/bin/
 chmod +x /usr/local/bin/velero
 
-/bin/cp ../../offline/bin/${arch}/skopeo-linux-${arch} /usr/local/bin/skopeo
+/bin/cp skopeo-linux-${arch} /usr/local/bin/skopeo
 
 chmod +x /usr/local/bin/skopeo
 
