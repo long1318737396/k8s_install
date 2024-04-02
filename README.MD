@@ -382,6 +382,11 @@ kubectl get cs
 bash 9.addon_install.sh
 ```
 
+允许ingress-nginx-controller容忍调度到master节点上
+```bash
+kubectl patch daemonset -n environment ingress-nginx-controller --type json -p '[{"op": "add", "path": "/spec/template/spec/tolerations", "value": [{"key": "node-role.kubernetes.io/control-plane", "effect": "NoSchedule"}]}]'
+```
+
 ## 根据需要开启etcd备份
 
 ```bash
