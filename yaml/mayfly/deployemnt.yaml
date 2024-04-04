@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mayfly-go
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mayfly-go
+  template:
+    metadata:
+      labels:
+        app: mayfly-go
+    spec:
+      containers:
+      - name: mayfly-go
+        image: ccr.ccs.tencentyun.com/mayfly/mayfly-go:v1.7.4
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 18888
+        volumeMounts:
+        - name: config-volume
+          mountPath: /mayfly/config.yml
+          subPath: config.yml
+        - name: hostpath-volume
+          mountPath: /opt/sql/mayfly-go.sqlite
+          readOnly: true
+      volumes:
+      - name: config-volume
+        configMap:
+          name: mayfly
+          items:
+          - key: config.yml
+            path: config.yml
+      - name: hostpath-volume
+        hostPath:
+          path: /opt/sql/mayfly-go.sqlite
+          type: File
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - master1

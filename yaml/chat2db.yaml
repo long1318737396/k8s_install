@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat2db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat2db
+  template:
+    metadata:
+      labels:
+        app: chat2db
+    spec:
+      containers:
+      - name: chat2db
+        image: docker.io/chat2db/chat2db:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: host-path
+          mountPath: /root/.chat2db
+      volumes:
+      - name: host-path
+        hostPath:
+          path: /opt/.chat2db
+          type: DirectoryOrCreate
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - node1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat2db
+spec:
+  selector:
+    app: chat2db
+  ports:
+    - protocol: TCP
+      port: 10824
+      targetPort: 10824
+      nodePort: 32764
+  type: NodePort

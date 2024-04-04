@@ -71,7 +71,7 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: REDIS_PASSWORD
-              value: XtgsO0pPnzfNRQCC
+              value: X(tgsO0pPnzfNRQCC
             - name: TZ
               value: Asia/Shanghai
           securityContext:
