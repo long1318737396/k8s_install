@@ -267,7 +267,7 @@ curl -v -k -X 'POST' \
     "override": true,
     "speed": 0,
     "src_registry": {
-      "id": 4
+      "id": 1
     },
     "trigger": {
       "trigger_settings": {},
@@ -296,7 +296,7 @@ curl -v -k -X 'POST' \
   -H "authorization: Basic ${token}" \
   -H 'Content-Type: application/json' \
   -d '{
-  "policy_id": 13
+  "policy_id": 1
 }'
 ```
 
@@ -306,4 +306,16 @@ curl -v -k -X 'GET' \
   "${harbor_domain}/api/v2.0/replication/executions?page=1&page_size=10" \
   -H 'accept: application/json' \
   -H "authorization: Basic ${token}"
+```
+
+## 根据需要修改为定时同步
+
+登录harbor管理页面，点击左侧的系统管理-->复制管理，选中对应的策略，点击操作-->编辑
+
+将触发模式改成定时
+
+配置Cron表达式: 例如每10分钟同步一次:
+
+```bash
+0 */10 * * * *
 ```

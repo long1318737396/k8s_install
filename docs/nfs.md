@@ -36,7 +36,4 @@ cd k8s_install
 #确认配置文件，可以直接复制安装harbor时的配置文件
 vi conf/config.sh
 bash script/k8s/8.nfs-install.sh
-#挂载测试
-mkdir /test
-mount -t nfs 192.168.150.14:/data/nfs/k8s /test
 ```

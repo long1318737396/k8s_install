@@ -61,6 +61,11 @@ cat ../../../conf/kubelet.service | sed "s:/usr/bin:${kubeadm_dir}:g" |tee /etc/
 mkdir -p /etc/systemd/system/kubelet.service.d
 cat ../../../conf/10-kubeadm.conf | sed "s:/usr/bin:${kubeadm_dir}:g" | tee /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 
+mkdir -p /etc/kubernetes/audit-policy/
+cat ../../../conf/audit-policy.yaml | tee /etc/kubernetes/audit-policy/audit-policy.yaml
+
+mkdir -p /var/log/audit
+
 systemctl enable --now kubelet
 echo "source <(kubectl completion bash)" > /etc/profile.d/kubectl.sh
 echo "source <(kubeadm completion bash)" > /etc/profile.d/kubeadm.sh
