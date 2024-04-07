@@ -18,10 +18,14 @@ if [ -f /etc/debian_version ]; then
   systemctl restart nfs-kernel-server
 
 elif [ -f /etc/redhat-release ]; then
+  systemctl stop firewalld
+  systemctl disable firewalld
   systemctl enable rpcbind --now
   systemctl enable nfs-server
   systemctl start nfs-server
 else
+  systemctl stop firewalld
+  systemctl disable firewalld
   systemctl enable rpcbind --now
   systemctl enable nfs-server
   systemctl start nfs-server

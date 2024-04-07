@@ -22,9 +22,10 @@ if [ -f /etc/debian_version ]; then
     iproute-tc
     iptables
     curl
+    python3
   )
   for i in ${packages[@]};do
-      apt install $i   -y
+      apt install $i   -yq --no-install-recommends
   done
 elif [ -f /etc/redhat-release ]; then
   packages=(
@@ -46,6 +47,7 @@ elif [ -f /etc/redhat-release ]; then
     mtr
     nftables
     iproute-tc
+    python3
   )
 
   for i in ${packages[@]};do
@@ -71,6 +73,7 @@ else
     mtr
     nftables
     iproute-tc
+    python3
   )
 
   for i in ${packages[@]};do
