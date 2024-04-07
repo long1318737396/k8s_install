@@ -155,7 +155,7 @@ chronyc sources -v
 
 ### 3.安装基础软件包
 
-每台服务器需要安装以下软件包
+- 每台服务器需要安装以下软件包
 
 ```bash
 packages=(
@@ -180,6 +180,10 @@ for i in ${packages[@]};do
   yum install $i  --skip-broken -y
 done
 ```
+
+- **如果无法在线安装，参考离线制作rpm包，然后上传目标服务器进行安装** 
+
+[rpm包获取指南](./docs/rpm_offline.md)
 
 ### 4.安装指南
 
