@@ -20,12 +20,12 @@ data:
         cert-file: ./default.pem
     jwt:
       # jwt key，不设置默认使用随机字符串
-      key: 
+      key: QgZlcVGDOM1gwYeYyJvgCphefaxVgM0e
       # 过期时间单位分钟
       expire-time: 1440
     # 资源密码aes加密key
     aes:
-      key: %koD_~9sQU63Y!@TndG
+      key: 7bc5418eefd50402ef39107274891fbe
     # 若存在mysql配置，优先使用mysql
     #mysql:
     #  # 自动升级数据库

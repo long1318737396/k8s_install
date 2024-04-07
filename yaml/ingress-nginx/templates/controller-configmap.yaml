@@ -20,6 +20,7 @@ data:
   upstream-keepalive-timeout: "900"
   allow-backend-server-header: "true"
   worker-processes: "4"
+  log-format-upstream: '{"nginx_timestamp":"$time_iso8601","clientip":"$remote_addr","nginx_host":"$server_addr","host":"$http_host","request":"$request","url":"$request_uri","upstreamhost":"$upstream_addr","status":"$status","upstream_status":"$upstream_status","body_bytes_sent":"$body_bytes_sent","request_time":"$request_time","upstream_response_time":"$upstream_response_time","xff":"$http_x_forwarded_for","referer":"$http_referer","http_user_agent":"$http_user_agent","request_length":"$request_length","request_method":"$request_method"}'
   allow-snippet-annotations: "{{ .Values.controller.allowSnippetAnnotations }}"
 {{- if .Values.controller.addHeaders }}
   add-headers: {{ include "ingress-nginx.namespace" . }}/{{ include "ingress-nginx.fullname" . }}-custom-add-headers

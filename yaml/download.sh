@@ -18,7 +18,7 @@ helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo add metallb https://metallb.github.io/metallb
 helm repo add minio-operator https://operator.min.io
 helm repo add openebs https://openebs.github.io/charts
-
+helm repo add netdata https://netdata.github.io/helmchart/
 
 wget https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/experimental-install.yaml
 wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/baremetal/deploy.yaml
@@ -49,5 +49,7 @@ helm pull metallb/metallb --untar
 helm pull minio-operator/operator --untar
 helm pull openebs/openebs --untar
 helm pull oci://docker.io/envoyproxy/gateway-helm --version v1.0.0 --untar
+helm pull netdata/netdata --untar
+#helm upgrade --set parent.database.volumesize=4Gi --set service.type=NodePort netdata netdata/netdata
 #helm install flannel --set podCidr="10.244.0.0/16" --namespace kube-flannel flannel/flannel
 #helm install eg oci://docker.io/envoyproxy/gateway-helm --version v1.0.0 -n envoy-gateway-system --create-namespace

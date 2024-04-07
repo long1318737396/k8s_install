@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -x
 # 获取脚本所在目录的绝对路径
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -7,7 +7,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 mkdir -p /opt/sql
-/bin/cp mayfly-go.sqllite /opt/sql/mayfly-go.sqllite
+/bin/cp mayfly-go.sqlite /opt/sql/mayfly-go.sqlite
 
 kubectl apply -f mayfly-configmap.yaml
 kubectl apply -f deployment.yaml

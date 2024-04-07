@@ -1,12 +1,16 @@
-## 基于ansible离线部署
+# 基于ansible离线部署
 
 ## 需求
 
 需要知道各个服务器节点的账号密码，且需root账户
 
-## 安装好harbor和nfs
+操作都是在harbor服务器上执行ansible playbook，切勿复用master节点否则会导致任务执行失败
 
-[安装参考](../README.md)
+## 以安装好harbor和nfs
+
+[harbor安装](./harbor.md)
+
+[nfs安装](./nfs.md)
 
 
 ## 启动ansible容器
@@ -14,7 +18,7 @@
 在安装harbor之后，会在harbor服务器上配置下载访问
 
 ```bash
-#确认kubespray容器启动是否正常
+#在harbor服务器上确认kubespray和nginx容器启动是否正常
 docker-compose ps
 ```
 

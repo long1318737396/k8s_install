@@ -9,5 +9,5 @@
 | 443              | admin |  S6ag4KXGS  |           来自config.sh配置文件             | harbor               |
 | 32379            | 无    |  X(tgsO0pPnzfNRQCC  |                       | redis              |
 | 30011            | apollo |  admin  |                       | apollo              |
-|  30903    |       |         |         不涉及               |           alertmanager          |
-|   30090   |       |         |          不涉及              |            prometheus        |
+|  30903    |       |         |                        |           alertmanager          |
+|   30090   |       |         |                        |            prometheus        |
