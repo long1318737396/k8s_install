@@ -2,7 +2,7 @@
 
 登录kuboard
 
-打开浏览器使用master1节点ip+30766登录 kuboard web页面,[查看kuboard默认密码](./admin.md)
+打开浏览器使用master1节点ip+32766登录 kuboard web页面,[查看kuboard默认密码](./admin.md)
 
               
 ```mermaid
