@@ -6,15 +6,15 @@
 
 ## 2.cilium使用vxaln部署
 
-如果遇到pod访问apiserver联通不上问题，可以使用[vxlan](../script/k8s/README.md)模式部署
+如果遇到pod访问apiserver联通不上问题，可以使用[vxlan](./cilium_vxlan.md)模式部署
 
+之后重启cilium和coredns
 
-之后重启cilium
-
+```bash
 kubectl rollout restart ds -n kube-system cilium
-
 kubectl rollout restart deployment -n kube-system cilium-operator
-
+kubectl rollout restart deployment -n kube-system coredns
+```
 ## 3.prometheus采集外部主机
 
 相应IP和端口替换成真实IP和端口
@@ -148,8 +148,6 @@ calicoctl patch felixconfiguration default --patch='{"spec": {"bpfExternalServic
 
 ## 基于istio的灰度发布
 
-https://www.yuque.com/tiancaiyihao/ormg6p/csubkbg4z1l80fbb?singleDoc# 《基于istio进行灰度发布》
-
 
 ## 实现容器间共享内存
 
@@ -184,7 +182,8 @@ spec:
 ## pod磁盘限制
 
 以下配置当pod磁盘使用超过1G时，就会被kill，然后新起pod
-```
+
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -215,6 +214,7 @@ spec:
 ```
 
 ## ecapture抓https数据包
+
 ```bash
 wget https://github.com/gojue/ecapture/releases/download/v0.7.3/ecapture-v0.7.3-linux-x86_64.tar.gz
 tar -zxvf ecapture-v0.7.3-linux-x86_64.tar.gz
@@ -270,7 +270,9 @@ kubectl get secrets cls-access -o yaml
 TOKEN=$(kubectl get secret cls-access -o jsonpath='{.data.token}'|base64 -d)
 ```
 
-```请求测试
+请求测试
+
+```bash
 curl --header "Authorization: Bearer $TOKEN" --insecure  -X GET https://10.0.0.105:10250/metrics
 curl --header "Authorization: Bearer $TOKEN" --insecure  -X GET https://10.0.0.105:10250/metrics/cadvisor
 ```
@@ -321,6 +323,7 @@ kubectl edit cm -n local-path-storage local-path-config
 
 ```
 然后重启local-path-controller
+
 ```bash
 kubectl delete pod -n local-path-storage -l app=local-path-provisioner
 ```

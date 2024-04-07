@@ -1,8 +1,14 @@
 ```bash
 cilium的vxlan模式
+# 卸载以安装的cilium
+
+helm uninstall cilium -n kube-system
+
+
+cd yaml
 
 #修改apiserver地址和pod对应的地址段
-helm upgrade --install cilium cilium/cilium --namespace=kube-system  --version 1.15.1 \
+helm upgrade --install cilium ./cilium --namespace=kube-system  --version 1.15.1 \
   --set tunnelProtocol=vxlan \
   --set routingMode=tunnel \
   --set kubeProxyReplacement=strict \
