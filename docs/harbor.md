@@ -62,6 +62,9 @@ apollo_portdb_name=ApolloPortalDB   #apollo portaldb数据库名称
 
 ## 安装harbor
 
+登录harbor服务器
+
+如果使用非443端口，则阅读[关于harbor使用非443端口](#anchor_name)
 ```bash
 # 依次执行
 bash 1.yum_install_online.sh
@@ -71,7 +74,8 @@ bash 4.harbor_install.sh
 #确保harbor安装成功
 
 source conf/config.sh
-echo "$harbor_ip $harbor_hostname" >> /etc/hosts #配置本地hosts解析测试harbor的访问
+#配置本地hosts解析，测试harbor的访问
+echo "$harbor_ip $harbor_hostname" >> /etc/hosts
 #确保正常之后登录测试
 docker login $harbor_hostname --username admin --password $harbor_admin_password
 #确保harbor的镜像上传成功
@@ -80,7 +84,7 @@ token=`echo -n "admin:$harbor_admin_password" | base64`
 curl -k -X 'GET'   'https://myharbor.mtywcloud.com/api/v2.0/projects/library/repositories?page=1&page_size=100'   -H 'accept: application/json'   -H 'authorization: Basic "${token}"' |python3 -m json.tool|grep name
 ```
 
-## harbor服务器上配置下载访问
+## harbor服务器开启下载访问
 
 harbor服务器将会开启38088端口，以供其他服务器下载离线包
 
@@ -95,13 +99,15 @@ docker-compose ps
 $harbor_ip:38088
 ```
 
-## 使用非443端口
+<a id="anchor_name"></a>
+
+## 关于harbor使用非443端口
 
 如果当前环境harbor无需使用https
 ```bash
 vi script/harbor/harbor_pre.yml
 ```
-注销掉相关https配置，然后再安装harbor
+则部署时需要注销掉相关https配置，然后再安装harbor
 
 ```bash
 https:
@@ -113,9 +119,10 @@ https:
 ```
 
 k8s集群安装之后
-各个节点拉取harbor上的镜像需要配置如下:
+各个节点需要执行以下操作:
 
 8082端口替换为实际的端口
+harbor_hostname替换为实际的域名
 ```bash
 mkdir -p /etc/containerd/certs.d/${harbor_hostname}:8082
 ```
