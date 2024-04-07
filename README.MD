@@ -216,7 +216,7 @@ done
 
 ## 配置kuboard
 
-[kuboard可视化操作配置](./docs/kuboard.md)
+[kuboard上添加集群](./docs/kuboard.md)
 
 ## 后期节点操作
 
@@ -233,12 +233,16 @@ done
 
 
 
-## 搭建集群时脚本会关闭节点上防火墙，集群搭建完毕后会使用到如下表列出的端口 [端口](docs/port.md)
+## 搭建集群时脚本会关闭节点上防火墙，集群搭建完毕后会使用到如下表列出的端口
 
-## 查看grafana以及kuboard等默认密码 [密码](docs/admin.md)
+[端口查看](docs/port.md)
 
-## etcd常见命令 [etcd](docs/etcd.md)
+## 查看grafana以及kuboard等默认密码
 
-## kubectl常见命令 [kubectl](docs/kubectl.md)
+[密码查看](docs/admin.md)
 
-## faq [faq](docs/faq.md)
+##  [etcd](docs/etcd.md)常见命令
+
+## [kubectl](docs/kubectl.md) 常见命令 
+
+## [faq](docs/faq.md)

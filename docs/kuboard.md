@@ -2,16 +2,12 @@
 
 登录kuboard
 
-打开浏览器使用master1节点 ip+30766 登录 kuboard web页面,[点击查看kuboard默认登录密码](./admin.md)
+打开浏览器使用master1节点ip+30766登录 kuboard web页面,[查看kuboard默认密码](./admin.md)
 
               
-点击添加集群————>输入
 
-```mermaid
 graph LR
-A[方形] -->B(圆角)
-    B --> C{条件a}
-    C -->|a=1| D[结果1]
-    C -->|a=2| E[结果2]
-    F[横向流程图]
-```
+A[登录kuboard] -->B(输入名称)
+    A -->C(输入描述)
+    A -->D(选择KubeConfig)
+    D -->E(贴入master1节点的kubeconfig)
