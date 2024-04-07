@@ -25,7 +25,7 @@ apiServer:
     default-unreachable-toleration-seconds: "300"
     service-node-port-range: 30000-32767
     profiling: "false"
-    audit-policy-file: /etc/kubernetes/audit-policy/apiserver-audit-policy.yaml
+    audit-policy-file: /etc/kubernetes/audit-policy/audit-policy.yaml
     audit-log-path: "/var/log/audit/kube-apiserver-audit.log"
     audit-log-maxage: "30"
     audit-log-maxbackup: "10"

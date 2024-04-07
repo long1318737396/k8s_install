@@ -86,7 +86,10 @@
 
 ### 2. 配置ntp服务
 
-  每台服务器做好时间同步
+
+假设只有harbor可以通外网，harbor做为ntp服务器，其他节点通过harbor同步时间
+
+harbor配置
 ```bash
 # 服务端
 # apt install chrony -y
@@ -104,8 +107,10 @@ logdir /var/log/chrony
 EOF
 
 systemctl restart chronyd ; systemctl enable chronyd
+```
 
-# 客户端
+客户端配置
+```bash
 # apt install chrony -y
 yum install chrony -y
 cat > /etc/chrony.conf << EOF 
@@ -122,7 +127,8 @@ systemctl restart chronyd ; systemctl enable chronyd
 
 #使用客户端进行验证
 chronyc sources -v
-
+```
+```text
 # 参数解释
 #
 # pool ntp.aliyun.com iburst
@@ -153,39 +159,7 @@ chronyc sources -v
 # 指定日志文件存放目录。
 ```
 
-### 3.安装基础软件包
-
-- 每台服务器需要安装以下软件包
-
-```bash
-packages=(
-    wget
-    curl
-    vim
-    conntrack
-    socat
-    ipvsadm
-    ipset
-    telnet
-    nfs-utils
-    unzip
-    tar
-    bash-completion
-    tcpdump
-    mtr
-    iproute-tc
-)
-
-for i in ${packages[@]};do
-  yum install $i  --skip-broken -y
-done
-```
-
-- **如果无法在线安装，参考离线制作rpm包，然后上传目标服务器进行安装** 
-
-[rpm包获取指南](./docs/rpm_offline.md)
-
-### 4.安装指南
+### 3.安装指南
 
 
 **网络插件**
@@ -195,20 +169,23 @@ done
 软件包可以放在harbor服务器，或者直接上传至各个服务器上
 
 
-[4.1 harbor安装](docs/harbor.md)
+[3.1 harbor安装](docs/harbor.md)
 
-[4.2 nfs安装](docs/nfs.md)
+[3.2 nfs安装](docs/nfs.md)
 
 
 集群安装，以下三选一
 
-[4.3.1 单master节点集群手动部署](docs/master.md)
+[离线rpm包安装](./docs/rpm_offline.md)
 
-[4.3.2 多master高可用集群手动部署](docs/master_ha.md)
+[3.3.1 单master节点集群手动部署](docs/master.md)
 
-[4.3.3 ansible自动化部署](docs/ansible.md)
+[3.3.2 多master高可用集群手动部署](docs/master_ha.md)
 
+[3.3.3 ansible自动化部署](docs/ansible.md)
 
+[3.4 组件安装](./docs/addon.md)
+ 
 ## 根据需要开启etcd备份
 
 [etcd备份指南](./docs/etcd_backup.md)

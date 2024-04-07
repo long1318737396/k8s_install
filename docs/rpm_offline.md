@@ -45,6 +45,11 @@ chmod -R  755  /data/ftp/rpms/v10-sp3-docker-lance-${BUILD_NUMBER}
 echo "请在/data/ftp/rpms/v10-sp3-docker-lance-${BUILD_NUMBER}拿去软件包"
 ```
 
+### 拷贝至目标服务器上进行安装
+
+```bash
+yum localinstall *.rpm
+```
 
 ### 制作关于Ubuntu22.04的deb软件包
 
@@ -69,4 +74,10 @@ docker cp ubuntu22.04-${BUILD_NUMBER}:/ubuntu22.04-${BUILD_NUMBER}.tar.gz ./
 chmod -R 755 /data/ftp/debs/ubuntu22.04-${BUILD_NUMBER}
 echo "请在/data/ftp/debs/ubuntu22.04-${BUILD_NUMBER}拿取软件包"
 docker rm -f ubuntu22.04-${BUILD_NUMBER}
+```
+
+### 拷贝至目标服务器上进行安装
+
+```bash
+dpkg -i *.deb
 ```

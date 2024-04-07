@@ -4,7 +4,7 @@
 
 2、外部负载均衡需要支持回模式，如果不支持建议采用kube-vip + 虚拟IP形式
 
-## 2.cilium使用vxaln部署
+## 2.cilium使用vxlan部署
 
 如果遇到pod访问apiserver联通不上问题，可以使用[vxlan](./cilium_vxlan.md)模式部署
 
