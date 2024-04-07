@@ -56,7 +56,7 @@ cd k8s_install
 #修改配置文件，可以复用在harbor安装时的配置文件
 vi conf/config.sh
 #依次执行
-#离线安装k8s所需软件包，某些安装失败则需要自行找相应软件包安装，脚本会配置yum本地目录做为仓库
+#安装k8s所需软件包
 bash 1.yum_install_online.sh
 bash 2.init.sh
 bash 3.docker_install.sh
@@ -79,7 +79,7 @@ cd k8s_install
 #修改配置文件，可以复用在harbor安装时的配置文件
 vi conf/config.sh
 #依次执行
-#离线安装k8s所需软件包，某些安装失败则需要自行找相应软件包安装，脚本会配置yum本地目录做为仓库
+#安装k8s所需软件包
 bash 1.yum_install_online.sh
 bash 2.init.sh
 bash 3.docker_install.sh

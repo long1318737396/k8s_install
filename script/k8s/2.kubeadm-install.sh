@@ -12,6 +12,7 @@ cd ../../offline/bin/${arch}
 tar -zxvf velero-${velero_version}-linux-${arch}.tar.gz
 /bin/cp velero-${velero_version}-linux-${arch}/velero /usr/local/bin/
 chmod +x /usr/local/bin/velero
+velero completion bash > /etc/bash_completion.d/velero
 
 /bin/cp skopeo-linux-${arch} /usr/local/bin/skopeo
 

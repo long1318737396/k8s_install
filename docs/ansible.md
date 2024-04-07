@@ -6,7 +6,7 @@
 
 操作都是在harbor服务器上执行ansible playbook，切勿复用master节点否则会导致任务执行失败
 
-## 以安装好harbor和nfs
+## 已安装好harbor和nfs
 
 [harbor安装](./harbor.md)
 

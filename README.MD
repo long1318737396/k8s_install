@@ -207,10 +207,7 @@ k8s的各个节点需要访问harbor的443端口以及38088端口
 
 ## 根据需要开启etcd备份
 
-
-```bash
-bash etcd_backup.sh
-```
+[etcd备份指南](./docs/etcd_backup.md)
 
 ## 根据需要开启集群备份
 

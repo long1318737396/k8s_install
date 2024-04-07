@@ -18,6 +18,8 @@ ip_vs
 ip_vs_rr
 ip_vs_wrr
 ip_vs_sh
+ip_vs_lc
+ip_vs_wlc
 br_netfilter
 nf_conntrack
 nf_nat
