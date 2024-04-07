@@ -374,3 +374,23 @@ sudo docker run -d \
   # Kuboard 不需要和 K8S 在同一个网段，Kuboard Agent 甚至可以通过代理访问 Kuboard Server \
 
 ```
+
+## pod抓包
+
+pod必须处于运行状态，否则无法进行抓包
+
+```bash
+#查看pod所在节点，以epis-api为例
+kubectl get pod -n eworldcloud -o wide |grep epis-api
+#登录pod所在节点
+#查看pod的容器ID
+nerdctl ps|grep epis-api
+#查看进程ID
+nerdctl inspect ${conatainer_id}|grep -i pid
+#进入容器的网络命名空间
+nsenter -t ${pid} -n
+#确认IP地址是否是pod的IP
+ip addr
+#抓包
+tcdump -i any -w /tmp/dump.pcap
+```

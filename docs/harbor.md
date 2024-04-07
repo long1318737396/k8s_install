@@ -64,7 +64,9 @@ apollo_portdb_name=ApolloPortalDB   #apollo portaldb数据库名称
 
 登录harbor服务器
 
-如果使用非443端口，则阅读[关于harbor使用非443端口](#anchor_name)
+默认harbor安装使用https，如果使用非443端口，则阅读[关于harbor使用非443端口](#anchor_name)
+
+如果harbor走了外部代理，则阅读[关于harbor使用外部代理](#anchor_name1)
 ```bash
 # 依次执行
 bash 1.yum_install_online.sh
@@ -122,6 +124,7 @@ k8s集群安装之后
 各个节点需要执行以下操作:
 
 8082端口替换为实际的端口
+
 harbor_hostname替换为实际的域名
 ```bash
 mkdir -p /etc/containerd/certs.d/${harbor_hostname}:8082
@@ -147,6 +150,16 @@ systemctl daemon-load
 systemctl restart containerd
 ```
 
+<a id="anchor_name1"></a>
+
+## 关于harbor使用外部代理
+
+```bash
+vi script/harbor/harbor_pre.yml
+
+取消注释，并配置正确的代理地址，然后安装harbor
+# external_url: https://reg.mydomain.com:8433
+```
 
 ## 配置harbor镜像同步
 
