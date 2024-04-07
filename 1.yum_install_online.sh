@@ -2,26 +2,26 @@ if [ -f /etc/debian_version ]; then
   apt update
    packages=(
     wget
-    vim 
+    vim
     conntrack
     socat
-    ipvsadm 
+    ipvsadm
     ipset
-    nmap 
-    telnet 
-    dnsutils  
+    nmap
+    telnet
+    dnsutils
+    net-tools
     nfs-kernel-server
     nfs-common
     unzip
     tar
-    bash-completion 
+    bash-completion
     tcpdump
     mtr
-    nftables 
+    nftables
     iproute-tc
     iptables
     curl
-    git
   )
   for i in ${packages[@]};do
       apt install $i   -y
@@ -29,21 +29,22 @@ if [ -f /etc/debian_version ]; then
 elif [ -f /etc/redhat-release ]; then
   packages=(
     wget
-    vim 
+    vim
     conntrack
     socat
-    ipvsadm 
+    ipvsadm
     ipset
-    nmap 
-    telnet 
-    bind-utils  
-    nfs-utils 
+    nmap
+    telnet
+    net-tools
+    bind-utils
+    nfs-utils
     unzip
     tar
-    bash-completion 
+    bash-completion
     tcpdump
     mtr
-    nftables 
+    nftables
     iproute-tc
   )
 
@@ -53,21 +54,22 @@ elif [ -f /etc/redhat-release ]; then
 else
     packages=(
     wget
-    vim 
-    conntrack 
+    vim
+    conntrack
     socat
-    ipvsadm 
+    ipvsadm
     ipset
-    nmap 
-    telnet 
-    bind-utils  
-    nfs-utils 
+    nmap
+    telnet
+    net-tools
+    bind-utils
+    nfs-utils
     unzip
     tar
-    bash-completion 
+    bash-completion
     tcpdump
     mtr
-    nftables 
+    nftables
     iproute-tc
   )
 
