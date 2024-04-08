@@ -1,11 +1,13 @@
 ## 通过docker拉取需要的rpm、deb软件包
 
-
+假设harbor可以连接公网，rpm离线包在harbor上制作，然后拷贝到其他服务器上进行安装
 
 ### 制作关于anolisos8.8的rpm软件包
 
+
+
 ```bash
-export BUILD_NUMBER=20230801
+export BUILD_NUMBER=20240401
 pkg=(curl vim conntrack socat ipvsadm ipset telnet nfs-utils unzip tar bash-completion tcpdump mtr iproute-tc)
 mkdir -p /data/ftp/rpms/anolisos8.8-${BUILD_NUMBER}
 cd /data/ftp/rpms/anolisos8.8-${BUILD_NUMBER}
@@ -27,7 +29,7 @@ echo "请在/data/ftp/rpms/anolisos8.8-${BUILD_NUMBER}拿去软件包"
 ### 制作关于麒麟v10 sp3的rpm软件包
 
 ```bash
-export BUILD_NUMBER=20230801
+export BUILD_NUMBER=20240401
 pkg=(curl vim conntrack socat ipvsadm ipset telnet nfs-utils unzip tar bash-completion tcpdump mtr iproute-tc)
 mkdir -p /data/ftp/rpms/v10-sp3-docker-lance-${BUILD_NUMBER}
 cd /data/ftp/rpms/v10-sp3-docker-lance-${BUILD_NUMBER}
@@ -47,15 +49,16 @@ echo "请在/data/ftp/rpms/v10-sp3-docker-lance-${BUILD_NUMBER}拿去软件包"
 
 ### 拷贝至目标服务器上进行安装
 
+解压之后进行安装
 ```bash
-yum localinstall *.rpm
+for i in `ls 20240401`;do yum localinstall 20240401/$i/*.rpm;done
 ```
 
 ### 制作关于Ubuntu22.04的deb软件包
 
 ```bash
-export BUILD_NUMBER=20230801
-pkg=(curl vim conntrack socat ipvsadm ipset telnet nfs-server nfs-common unzip tar bash-completion tcpdump mtr)
+export BUILD_NUMBER=20240401
+pkg=(curl vim conntrack socat ipvsadm ipset telnet nfs-server iptables nfs-common unzip tar bash-completion tcpdump mtr)
 mkdir -p /data/ftp/debs/ubuntu22.04-${BUILD_NUMBER}
 cd /data/ftp/debs/ubuntu22.04-${BUILD_NUMBER}
 docker run -d --name ubuntu22.04-${BUILD_NUMBER} ubuntu:22.04 sleep infinity

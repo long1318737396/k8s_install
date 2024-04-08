@@ -201,11 +201,15 @@ curl -v -k -X 'POST' \
 
 - 配置远程仓库
 
-修改以下参数为远程仓库的账户密码
+修改以下参数远程仓库的账户密码
 
 access_key: "string"
 
 access_secret: "string"
+
+url: "string"
+
+**如果远程仓库非harbor，则需要配置type为docker-registry**
 
 ```bash
 curl -v -k -X 'POST' \
@@ -220,7 +224,7 @@ curl -v -k -X 'POST' \
     "type": "basic"
   },
   "name": "harbor_remote",
-  "url": "https://harbor.mtywcloud.com",
+  "url": "string",
   "insecure": true,
   "type": "harbor",
   "description": "镜像仓库同步"
@@ -263,7 +267,7 @@ curl -v -k -X 'POST' \
         "value": "eworldcloudbase202403/**"
       }
     ],
-    "name": "sync-tianyiyun",
+    "name": "sync-demo",
     "override": true,
     "speed": 0,
     "src_registry": {
@@ -287,7 +291,7 @@ curl -v -k -X 'GET' \
 
 ### 执行同步
 
-policyid: 13替换成上面获取的ID
+policyid: 1替换成上面获取的ID
 
 ```bash
 curl -v -k -X 'POST' \
@@ -319,3 +323,4 @@ curl -v -k -X 'GET' \
 ```bash
 0 */10 * * * *
 ```
+![harbor](./images/harbor1.png)

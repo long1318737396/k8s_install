@@ -109,7 +109,7 @@ EOF
 systemctl restart chronyd ; systemctl enable chronyd
 ```
 
-客户端配置
+其他服务器配置
 ```bash
 # apt install chrony -y
 yum install chrony -y
@@ -174,9 +174,11 @@ chronyc sources -v
 [3.2 nfs安装](docs/nfs.md)
 
 
-集群安装，以下三选一
+**集群安装，以下三选一**
 
-[离线rpm包安装](./docs/rpm_offline.md)
+如果各个节点没有yum仓库，可以通过有公网的站点拉取rpm包，然后拷贝到目标服务器上进行安装
+
+[关于离线rpm包拉取](./docs/rpm_offline.md)
 
 [3.3.1 单master节点集群手动部署](docs/master.md)
 

@@ -8,9 +8,10 @@ echo "$date_format"
 
 
 
-mkdir -p ${nfs_path}
+mkdir -p ${nfs_path}/delete
 chmod -R 777 ${nfs_path}
 echo "${nfs_path} *(rw,sync,no_root_squash,no_subtree_check)" | sudo tee -a /etc/exports
+echo "${nfs_path}/delete *(rw,sync,no_root_squash,no_subtree_check)" | sudo tee -a /etc/exports
 exportfs -ra
 
 if [ -f /etc/debian_version ]; then

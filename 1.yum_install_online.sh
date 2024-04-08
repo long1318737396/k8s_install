@@ -19,10 +19,11 @@ if [ -f /etc/debian_version ]; then
     tcpdump
     mtr
     nftables
-    iproute-tc
+    iotop
     iptables
     curl
     python3
+    iputils-ping
   )
   for i in ${packages[@]};do
       apt install $i   -yq --no-install-recommends
@@ -48,6 +49,7 @@ elif [ -f /etc/redhat-release ]; then
     nftables
     iproute-tc
     python3
+    iotop
   )
 
   for i in ${packages[@]};do
@@ -74,6 +76,7 @@ else
     nftables
     iproute-tc
     python3
+    iotop
   )
 
   for i in ${packages[@]};do
