@@ -158,3 +158,5 @@ kubectl expose deployment net-tools --port 80 --target-port 80 --type NodePort
 kubectl patch deployment net-tools -p '{"spec":{"template":{"spec":{"containers":[{"name":"net-tools","imagePullPolicy":"IfNotPresent"}]}}}}'
 
 kubectl apply -f chat2db.yaml
+
+kubectl apply -f mayfly/deployment.yaml

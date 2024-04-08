@@ -10,5 +10,6 @@
 | 32379            | 无    |  X(tgsO0pPnzfNRQCC  |                       | redis              |
 | 30011            | apollo |  admin  |                       | apollo              |
 |   32764   |   ch2db    |    ch2db     |                        |            web端数据库管理工具       |
+|   32763   |   admin    |    admin123.    |                        |            web端redis管理工具       |
 |  30903    |       |         |                        |           alertmanager          |
 |   30090   |       |         |                        |            prometheus        |

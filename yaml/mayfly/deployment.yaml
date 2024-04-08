@@ -1,7 +1,9 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mayfly-go
+  namespace: environment
 spec:
   replicas: 1
   selector:
@@ -14,28 +16,10 @@ spec:
     spec:
       containers:
       - name: mayfly-go
-        image: ccr.ccs.tencentyun.com/mayfly/mayfly-go:v1.7.4
+        image: registry.cn-hangzhou.aliyuncs.com/magictommy/mayfly-go-redis-web:v1.7.4
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 18888
-        volumeMounts:
-        - name: config-volume
-          mountPath: /mayfly/config.yml
-          subPath: config.yml
-        - name: hostpath-volume
-          mountPath: /opt/sql/mayfly-go.sqlite
-          readOnly: true
-      volumes:
-      - name: config-volume
-        configMap:
-          name: mayfly
-          items:
-          - key: config.yml
-            path: config.yml
-      - name: hostpath-volume
-        hostPath:
-          path: /opt/sql/mayfly-go.sqlite
-          type: File
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -44,4 +28,19 @@ spec:
               - key: kubernetes.io/hostname
                 operator: In
                 values:
-                - master1
+                - node1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mayfly-go
+  namespace: environment
+spec:
+  selector:
+    app: mayfly-go
+  ports:
+    - protocol: TCP
+      port: 18888
+      targetPort: 18888
+      nodePort: 32763
+  type: NodePort
