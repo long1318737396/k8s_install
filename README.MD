@@ -194,7 +194,7 @@ chronyc sources -v
 
 ## 根据需要开启集群备份
 
-[集群备份指南](./docs/cluster_backup.md)
+[单节点单硬盘集群备份指南](./docs/minio-single.md)
 
 
 ## 配置kuboard

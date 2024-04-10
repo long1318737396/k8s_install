@@ -13,10 +13,10 @@ minio_datadir=/minio
 mkdir /etc/default
 /bin/cp ../../conf/minio.config /etc/default/minio
 
-sed -i "s/minio_datadir/${minio_datadir}/g" /etc/default/minio
+sed -i "s@minio_datadir@${minio_datadir}@g" /etc/default/minio
 
 groupadd -r minio-user
 useradd -M -r -g minio-user minio-user
 chown minio-user:minio-user ${minio_datadir}
 
-systemctl start minio.service --enable
+systemctl enable  minio.service --now
