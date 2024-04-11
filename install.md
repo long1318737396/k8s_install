@@ -9,4 +9,4 @@
   * [2.7 etcd备份](./docs/etcd_backup.md)
   * [2.8 集群备份](./docs/k8s_backup.md)
   * [2.9 节点扩缩容](./docs/scale.md)
-
+  * [2.10 集群faq](./docs/k8s_faq.md)
