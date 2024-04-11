@@ -130,7 +130,26 @@ velero schedule pause environment
 #恢复定时任务
 velero schedule unpause environment
 ```
+
+集群恢复测试
+
+假如删除某个ingress规则
+
+```bash
+#创建测试应用
+kubectl create ingress -n environment test --rule=/=nginx:80
+#备份一次
+velero backup create environment1 --include-namespaces=environment
+#删除ingress规则
+kubectl delete ingress -n environment test
+velero restore create --from-backup environment
+#根据返回结果查看
+velero restore get
+velero restore describe environment1-
+kubectl get ingress -n environment
+```
+
 ----------------------------------------------------------------------------
-*引用*
+*参考*
 
 https://velero.io/docs/main/contributions/minio/
