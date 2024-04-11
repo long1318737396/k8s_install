@@ -502,5 +502,3 @@ kubectl delete node <node-name>
 ## kubectl常见命令 [kubectl](docs/kubectl.md)
 
 ## faq [faq](docs/faq.md)
-
-

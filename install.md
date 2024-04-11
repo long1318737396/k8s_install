@@ -1,0 +1,12 @@
+* [1.概述](./docs/introduce.md)
+* [2.k8s集群部署](./docs/install_mode.md)
+  * [2.1 部署规划](./docs/install_plan.md)
+  * [2.2 时间同步配置](./docs/ntp.md)
+  * [2.3 harbor安装](./docs/harbor.md)
+  * [2.4 nfs安装](./docs/nfs.md)
+  * [2.5 k8s集群安装](./docs/k8s.md)
+  * [2.6 基础组件安装](./docs/addon.md)
+  * [2.7 etcd备份](./docs/etcd_backup.md)
+  * [2.8 集群备份](./docs/k8s_backup.md)
+  * [2.9 节点扩缩容](./docs/scale.md)
+
