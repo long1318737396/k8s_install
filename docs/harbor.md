@@ -1,6 +1,11 @@
 ## 将软件包上传至harbor服务器
 
 ```bash
+
+#如果传输有限制，可以将软件包进行切割，上传目标服务器之后再进行合并
+split -b 100M k8s_install.tar.gz k8s_install_part_
+cat k8s_install_part_* > k8s_install.tar.gz
+
 #软件包名称为k8s_install.tar.gz
 #然后进行解压
 tar -zxvf k8s_install.tar.gz
