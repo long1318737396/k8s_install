@@ -59,3 +59,6 @@ kubectl edit ds -n environment ingress-nginx-controller
 ```bash
 kubectl get pod -A -owide
 ```
+
+
+查看组件[默认密码](./admin.md)

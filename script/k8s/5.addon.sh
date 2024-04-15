@@ -160,3 +160,5 @@ kubectl patch deployment net-tools -p '{"spec":{"template":{"spec":{"containers"
 kubectl apply -f chat2db.yaml
 
 kubectl apply -f mayfly/deployment.yaml
+
+kubectl apply -f postwoman.yaml

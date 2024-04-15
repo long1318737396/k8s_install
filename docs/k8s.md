@@ -2,6 +2,7 @@
 - 默认是cilium的native-routing-eBPF-Host-Routing，对于云服务如果不支持则需要[vxlan模式](./cilium_vxlan.md),或者使用calico
 - 对于centos7等系统，则必须升级内核版本，否则会导致bpf挂载不上
 
+- 脚本安装会关闭掉防火墙，如需开放端口，请参考[端口开放](./port.md)
 
 **集群安装，以下三选一**
 
