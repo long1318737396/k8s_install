@@ -11,3 +11,5 @@
   * [2.9 集群备份](./docs/k8s_backup.md)
   * [2.10 节点扩缩容](./docs/scale.md)
   * [2.11 集群faq](./docs/k8s_faq.md)
+  * [2.12 kubectl常用命令](./docs/kubectl.md)
+  * [2.13 etcd常用命令](./docs/etcd.md)
