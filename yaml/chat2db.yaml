@@ -23,6 +23,13 @@ spec:
         volumeMounts:
         - name: host-path
           mountPath: /root/.chat2db
+        resource:
+          limits:
+            memory: "2000Mi"
+            cpu: "500m"
+          requests:
+            memory: "200Mi"
+            cpu: "100m"
       volumes:
       - name: host-path
         hostPath:

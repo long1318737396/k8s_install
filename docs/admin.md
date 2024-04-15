@@ -11,5 +11,6 @@
 | 30011            | apollo |  admin  |                       | apollo              |
 |   32764   |   ch2db    |    ch2db     |                        |            web端数据库管理工具       |
 |   32763   |   admin    |    admin123.    |                        |            web端redis管理工具       |
+|   32762   |       |        |                        |            web端postman接口调用       |
 |  30903    |       |         |                        |           alertmanager          |
 |   30090   |       |         |                        |            prometheus        |

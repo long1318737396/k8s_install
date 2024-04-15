@@ -14,6 +14,8 @@ cp ../k8s_install.tar.gz ./
 
 kube-vip，类似是否配置keepalived实现虚拟IP的高可用,如果是true，则必须配置loadbalancer_vip，如果是外部负载均衡需要设置为false，但也需要配置loadbalancer_vip为外部LB地址,**如果是单master节点，则kube-vip设置为false，loadbalancer_vip为master节点的IP地址**
 
+**数据库密码禁止包含@特殊符号**
+
 ```bash
 #参考conf/config_example.sh的说明配置conf/config.sh，建议所有信息一次性配置好，方便后面可以直接复用
 vi conf/config.sh
@@ -54,7 +56,7 @@ arch1="x86_64"  #aarch64
 #----------apollo安装配置------------
 apollo_db_host=1.1.1.1  #数据库地址
 apollo_db_username=sa   #数据库用户名
-apollo_db_password=test  #数据库密码
+apollo_db_password=test  #数据库密码，禁止包含@特殊符
 apollo_db_port=3306      #数据库端口 
 apollo_configdb_name=ApolloConfigDB #apollo configdb数据库名称
 apollo_portdb_name=ApolloPortalDB   #apollo portaldb数据库名称

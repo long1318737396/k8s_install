@@ -2,24 +2,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mayfly-go
+  name: postwomen
   namespace: environment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mayfly-go
+      app: postwomen
   template:
     metadata:
       labels:
-        app: mayfly-go
+        app: postwomen
     spec:
       containers:
-      - name: mayfly-go
-        image: registry.cn-hangzhou.aliyuncs.com/magictommy/mayfly-go-redis-web:v1.7.4
+      - name: postwomen
+        image: docker.io/liyasthomas/postwoman
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 18888
+        - containerPort: 3000
         resource:
           limits:
             memory: "2000Mi"
@@ -40,14 +40,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mayfly-go
+  name: postwomen
   namespace: environment
 spec:
   selector:
-    app: mayfly-go
+    app: postwomen
   ports:
     - protocol: TCP
-      port: 18888
-      targetPort: 18888
-      nodePort: 32763
+      port: 3000
+      targetPort: 3000
+      nodePort: 32762
   type: NodePort
