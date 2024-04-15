@@ -1,6 +1,6 @@
 ## 将软件包上传至harbor服务器
 
-- 部署需求，建议部署一个生产级的mysql数据库集群，初次体验可以使用[docker搭建mysql](#anchor_name3)进行体验
+- 部署需求，建议部署一个生产级的mysql数据库集群，初次体验可以使用[docker搭建mysql](#anchor_name3)
 
 ```bash
 
