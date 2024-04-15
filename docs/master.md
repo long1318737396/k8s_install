@@ -18,10 +18,6 @@ umount /test
 
 ## 登录master1服务器
 
-安装k8s需要的软件包: conntrack socat nc bash-completion等命令
-```bash
-bash 1.yum_install_online.sh
-```
 
 
 ```bash
@@ -34,6 +30,17 @@ cd k8s_install
 #修改配置文件，可以复用在harbor安装时的配置文件
 vi conf/config.sh
 #依次执行
+```
+
+安装k8s需要的软件包: conntrack socat nc bash-completion等命令
+
+假设已有rpm仓库，如果没有，则阅读[rpm离线安装](./rpm_offline.md)
+
+```bash
+bash 1.yum_install_online.sh
+```
+
+```bash
 #初始化内核参数
 bash 2.init.sh
 #安装容器运行时

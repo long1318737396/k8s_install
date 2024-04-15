@@ -29,6 +29,7 @@ fi
 
 配置nfs服务
 ```bash
+#假设nfs为单独的一台服务器，然后从harbor上拉取部署软件包
 harbor_ip=192.168.150.14
 curl -L -o k8s_install.tar.gz $harbor_ip:38088/k8s_install.tar.gz
 tar -zxvf k8s_install.tar.gz
