@@ -5,9 +5,16 @@
 
 **集群安装，以下三选一**
 
-如果各个节点没有yum仓库，可以通过有公网的站点拉取rpm包，然后拷贝到目标服务器上进行安装,harbor通外网的话可以通过harbor上拉取
+如果各个节点没有yum仓库，可以通过有公网的站点harbor拉取[rpm包](./rpm_offline.md)，然后拷贝到目标服务器上进行安装,或者本地挂载 full iso镜像，然后进行yum安装。
 
-[关于离线rpm包拉取](./rpm_offline.md)
+
+查看k8s必须要有的rpm依赖包,否则会导致k8s集群初始化失败，建议提取安装
+
+```bash
+cat 1.yum_install_online.sh
+```
+
+
 
 [单master节点集群手动部署](master.md)
 

@@ -1,5 +1,7 @@
 ## 将软件包上传至harbor服务器
 
+- 部署需求，建议部署一个生产级的mysql数据库集群，初次体验可以使用[docker搭建mysql](#anchor_name3)进行体验
+
 ```bash
 
 #如果传输有限制，可以将软件包进行切割，上传目标服务器之后再进行合并
@@ -60,8 +62,8 @@ arch="amd64"  #arm64
 arch1="x86_64"  #aarch64
 #----------apollo安装配置------------
 apollo_db_host=1.1.1.1  #数据库地址
-apollo_db_username=sa   #数据库用户名
-apollo_db_password=test  #数据库密码，禁止包含@特殊符
+apollo_db_username=root   #数据库用户名
+apollo_db_password=gAScb9jntD  #数据库密码，禁止包含@特殊符
 apollo_db_port=3306      #数据库端口 
 apollo_configdb_name=ApolloConfigDB #apollo configdb数据库名称
 apollo_portdb_name=ApolloPortalDB   #apollo portaldb数据库名称
@@ -74,6 +76,8 @@ apollo_portdb_name=ApolloPortalDB   #apollo portaldb数据库名称
 默认harbor安装使用https，如果使用非443端口，则阅读[关于harbor使用非443端口](#anchor_name)
 
 如果harbor走了外部代理，则阅读[关于harbor使用外部代理](#anchor_name1)
+
+
 ```bash
 # 依次执行
 bash 1.yum_install_online.sh
@@ -83,14 +87,22 @@ bash 4.harbor_install.sh
 #确保harbor安装成功
 
 source conf/config.sh
-#配置本地hosts解析，测试harbor的访问
-echo "$harbor_ip $harbor_hostname" >> /etc/hosts
 #确保正常之后登录测试
 docker login $harbor_hostname --username admin --password $harbor_admin_password
 #确保harbor的镜像上传成功
 token=`echo -n "admin:$harbor_admin_password" | base64`
 #不修改默认情况下是YWRtaW46UzZhZzRLWEdT
 curl -k -X 'GET'   'https://myharbor.mtywcloud.com/api/v2.0/projects/library/repositories?page=1&page_size=100'   -H 'accept: application/json'   -H 'authorization: Basic "${token}"' |python3 -m json.tool|grep name
+```
+
+**如果harbor安装过程拉取镜goharbor/prepare:v2.9.2一直卡住**
+
+这个镜像是起到检查作用，如果拉取一直失败，可以按下面方式解决
+```bash
+vi /etc/resolv.conf
+注释dns配置，暂停上网功能
+然后执行 bash 4.harbor_install.sh 重新安装
+harbor安装成功之后再改回来
 ```
 
 ## harbor服务器开启下载访问
@@ -144,9 +156,9 @@ vi /etc/containerd/certs.d/${harbor_hostname}:8082/hosts.toml
 写入以下配置
 
 ```bash
-server = "https://${harbor_hostname}:8082"
+server = "http://${harbor_hostname}:8082"
 
-[host."https://${harbor_hostname}:8082"]
+[host."http://${harbor_hostname}:8082"]
   capabilities = ["pull", "resolve", "push"]
   skip_verify = true
 ```
@@ -171,7 +183,7 @@ vi script/harbor/harbor_pre.yml
 ## 配置harbor镜像同步
 
 ### 信息配置
-本harbor的域名，以及账号密码
+本harbor的域名，以及账号密码和项目名称
 ```bash
 harbor_domain=https://myharbor.mtywcloud.com
 token=`echo -n "admin:S6ag4KXGS" | base64`
@@ -331,3 +343,65 @@ curl -v -k -X 'GET' \
 0 */10 * * * *
 ```
 ![harbor](./images/harbor1.png)
+
+
+## faq
+
+1、如果需要重启harbor，可以执行以下命令
+```bash
+cd script/harbor/harbor
+docker-compose down -v
+docker-compose up -d
+```
+2、使用自定义域名时，无法解析处理
+
+```bash
+# 在harbor的工作目录下
+# 停止容器
+cd script/harbor/harbor
+docker-compose down -v
+
+# 修改docker-compose.yml文件,在core和jobservice的最后添加extra_hosts。格式和/etc/hosts是相反的。
+# core对应harbor-core容器，jobservice对应harbor-jobservice容器
+# harbor-jobservice负责镜像复制工作，如果不修改后续的复制会失败。
+  vim docker-compose.yml
+  core:
+    image: goharbor/harbor-core:v2.5.5
+    container_name: harbor-core
+    ... ...
+    extra_hosts:
+      - "a.harbor.com:172.16.20.80"
+      - "b.harbor.com:172.16.20.81"
+  jobservice:
+    image: goharbor/harbor-jobservice:v2.5.5
+    container_name: harbor-jobservice
+    ... ...
+    extra_hosts:
+      - "a.harbor.com:172.16.20.80"
+      - "b.harbor.com:172.16.20.81"
+
+# 启动容器
+docker-compose up -d
+```
+
+<a id="anchor_name3"></a>
+
+3、通过docker搭建一个mysql，禁止用于用于生产环境
+
+
+```bash
+docker run -d --name some-mysql \
+    -v /data/mysql:/var/lib/mysql \
+    -e MYSQL_ROOT_PASSWORD=gAScb9jntD \
+    -e MYSQL_USER=sa \
+    -e MYSQL_PASSWORD=gAScb9jntD \
+    -p 3306:3306 \
+    mysql:8.0 \
+    --character-set-server=utf8mb4 \
+    --collation-server=utf8mb4_unicode_ci \
+    --max-allowed-packet=256M \
+    --innodb_log_file_size=1GB \
+    --innodb_buffer_pool_size=4GB \
+    --lower_case_table_names=1 \
+    --sql_mode=""
+```
