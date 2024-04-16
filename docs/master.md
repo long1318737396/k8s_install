@@ -19,6 +19,7 @@ umount /test
 ## 登录master1服务器
 
 
+**如果是单master节点，则kube-vip设置为false，loadbalancer_vip为master1节点的IP地址,master2和master3的IP地址也都写master1的IP地址即可**
 
 ```bash
 #配置master1服务器的hosts解析
@@ -31,6 +32,10 @@ cd k8s_install
 vi conf/config.sh
 #依次执行
 ```
+
+
+
+
 
 安装k8s需要的软件包: conntrack socat nc bash-completion等命令
 
