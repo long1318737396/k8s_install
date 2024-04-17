@@ -182,6 +182,8 @@ vi script/harbor/harbor_pre.yml
 
 ## 配置harbor镜像同步
 
+以下为api版配置，注意对应环境变量和字符串的修改，否则建议在[web端配置](./harbor_web.md)
+
 ### 信息配置
 本harbor的域名，以及账号密码和项目名称
 ```bash
@@ -300,6 +302,8 @@ curl -v -k -X 'POST' \
 ```
 
 ### 获取policyid
+
+查看最后一行，初次配置一般默认为1
 
 ```bash
 curl -v -k -X 'GET' \
