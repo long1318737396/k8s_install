@@ -63,3 +63,19 @@ for i in ${package[@]}
   do
      rm -rf /usr/local/$i
 done
+
+for i in `ps -ef |grep nginx|awk '{print $2}'`;do kill -9 $i;done
+for i in `df -Th|grep kubernet|awk '{print $NF}'`;do umount $i;done
+rm -rf /data/kubernetes/docker/
+rm -rf /data/harbor
+
+rm -rf /etc/exports
+rm -rf /data/nfs/k8s/
+
+rm -rf /data/usr
+
+rm -rf /etc/kubernetes
+
+rm -rf /etc/harbor
+
+ip addr delete 192.168.1.117/32 dev ens160
