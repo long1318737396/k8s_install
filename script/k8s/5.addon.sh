@@ -153,7 +153,7 @@ helm upgrade --install --cleanup-on-fail apollo-portal \
   -n environment \
   ./apollo-portal --create-namespace
 
-kubectl create deployment net-tools --image long1318737396/net-tools
+kubectl create deployment net-tools --image registry.cn-hangzhou.aliyuncs.com/magictommy/nginx:net-tools
 kubectl expose deployment net-tools --port 80 --target-port 80 --type NodePort
 kubectl patch deployment net-tools -p '{"spec":{"template":{"spec":{"containers":[{"name":"net-tools","imagePullPolicy":"IfNotPresent"}]}}}}'
 

@@ -18,7 +18,7 @@ registry.k8s.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
 docker.io/apolloconfig/apollo-portal:2.2.0
 docker.io/apolloconfig/apollo-configservice:2.2.0
 docker.io/apolloconfig/apollo-adminservice:2.2.0
-docker.io/long1318737396/net-tools:latest
+registry.cn-hangzhou.aliyuncs.com/magictommy/nginx:net-tools
 docker.io/chat2db/chat2db:latest
 registry.cn-hangzhou.aliyuncs.com/magictommy/mayfly-go-redis-web:v1.7.4
 docker.io/liyasthomas/postwoman:latest

@@ -394,3 +394,124 @@ ip addr
 #抓包
 tcdump -i any -w /tmp/dump.pcap
 ```
+
+## kubectl debug命令
+
+```bash
+#新启动一个pod进行调试，并调度在相同的节点
+kubectl debug -n kube-system coredns-76f75df574-6bcs9 -it --copy-to=my-debugger --image=long1318737396/net-tools --image-pull-policy=IfNotPresent --same-node=true --profile=legacy --container=mycontainer -- bash
+#调试完可以删除
+kubectl delete pod -n kube-system my-debugger
+#直接在目标pod进行调试
+kubectl debug -n kube-system coredns-76f75df574-6bcs9 -it --image=long1318737396/net-tools --image-pull-policy=IfNotPresent --profile=legacy  -- bash
+#调试节点
+kubectl debug node/node1 -it --image=long1318737396/net-tools --image-pull-policy=IfNotPresent -- bash
+#调试完可以删除
+kubectl delete pod node-debugger-node1-vgtn9
+```
+
+## coredns常见配置
+- 禁止CoreDNS对IPv6类型的AAAA记录查询返回
+
+```bash
+kubectl edit cm -n kube-system coredns
+
+  Corefile: |
+    .:53 {
+        errors
+        health {
+           lameduck 15s
+        }
+        #新增以下一行Template插件，其它数据请保持不变。
+        template IN AAAA .
+    
+    }
+```
+- 自定义hosts
+
+方式一:
+```bash
+kubectl edit cm -n kube-system coredns
+
+  Corefile: |
+    .:53 {
+        errors
+        health {
+           lameduck 15s
+        }
+        ready
+        
+        hosts {
+          127.0.0.1 www.example.com
+          fallthrough
+        }
+      
+        kubernetes cluster.local in-addr.arpa ip6.arpa {
+          pods insecure
+          fallthrough in-addr.arpa ip6.arpa
+          ttl 30
+        }
+        prometheus :9153
+        forward . /etc/resolv.conf {
+          prefer_udp
+        }
+        cache 30
+        loop
+        reload
+        loadbalance
+    }
+```
+方式二:
+
+kubectl edit deployment my-app -n my-namespace 添加如下配置
+```bash
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      hostAliases:
+      - ip: "192.168.1.100"
+        hostnames:
+        - "my.custom.domain"
+```
+
+- 特定域名使用自定义DNS服务器
+
+kubectl edit cm -n kube-system coredns
+
+```bash
+  Corefile: |
+    .:53 {
+        errors
+        health {
+           lameduck 15s
+        }
+        ready
+        kubernetes cluster.local in-addr.arpa ip6.arpa {
+          pods insecure
+          fallthrough in-addr.arpa ip6.arpa
+          ttl 30
+        }
+        prometheus :9153
+        forward . /etc/resolv.conf {
+          prefer_udp
+        }
+        cache 30
+        loop
+        reload
+        loadbalance
+    }
+    example.com:53 {
+        errors
+        cache 30
+        forward . 10.10.0.10 {
+        prefer_udp
+        }
+    }
+```
