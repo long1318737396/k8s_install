@@ -29,6 +29,12 @@
     - name:
       debug:
         var: unarchive_install.stdout_lines
+
+    - name: 解压bin zip
+      shell: "cd {{ destination_dir }}/k8s_install/ && unzip -j offline/bin/amd64/bin.zip -d offline/bin/amd64/"
+
+    - name: 解压images zip
+      shell: "cd {{ destination_dir }}/k8s_install/ && unzip -j offline/images/amd64/images.zip -d offline/images/amd64/" 
       
     - name: copy | conf/config.sh
       copy:

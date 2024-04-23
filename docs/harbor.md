@@ -12,6 +12,8 @@ cat k8s_install_part_* > k8s_install.tar.gz
 #然后进行解压
 tar -zxvf k8s_install.tar.gz
 cd k8s_install
+unzip -j offline/bin/amd64/bin.zip -d offline/bin/amd64/
+unzip -j offline/images/amd64/images.zip -d offline/images/amd64/
 #再次拷贝到本文件夹内，方便其他节点拉取
 cp ../k8s_install.tar.gz ./
 ```

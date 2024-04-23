@@ -29,6 +29,8 @@ harbor_ip=192.168.150.14
 curl -L -o k8s_install.tar.gz $harbor_ip:38088/k8s_install.tar.gz
 tar -zxvf k8s_install.tar.gz
 cd k8s_install
+unzip -j offline/bin/amd64/bin.zip -d offline/bin/amd64/
+unzip -j offline/images/amd64/images.zip -d offline/images/amd64/
 #修改配置文件，可以复用在harbor安装时的配置文件
 vi conf/config.sh
 #依次执行
@@ -62,6 +64,8 @@ harbor_ip=192.168.150.14
 curl -L -o k8s_install.tar.gz $harbor_ip:38088/k8s_install.tar.gz
 tar -zxvf k8s_install.tar.gz
 cd k8s_install
+unzip -j offline/bin/amd64/bin.zip -d offline/bin/amd64/
+unzip -j offline/images/amd64/images.zip -d offline/images/amd64/
 #修改配置文件，可以复用在harbor安装时的配置文件
 vi conf/config.sh
 #依次执行
@@ -84,6 +88,8 @@ harbor_ip=192.168.150.14
 curl -L -o k8s_install.tar.gz $harbor_ip:38088/k8s_install.tar.gz
 tar -zxvf k8s_install.tar.gz
 cd k8s_install
+unzip -j offline/bin/amd64/bin.zip -d offline/bin/amd64/
+unzip -j offline/images/amd64/images.zip -d offline/images/amd64/
 #修改配置文件，可以复用在harbor安装时的配置文件
 vi conf/config.sh
 #依次执行
@@ -106,6 +112,8 @@ harbor_ip=192.168.150.14
 curl -L -o k8s_install.tar.gz $harbor_ip:38088/k8s_install.tar.gz
 tar -zxvf k8s_install.tar.gz
 cd k8s_install
+unzip -j offline/bin/amd64/bin.zip -d offline/bin/amd64/
+unzip -j offline/images/amd64/images.zip -d offline/images/amd64/
 #修改配置文件，可以复用在harbor安装时的配置文件
 vi conf/config.sh
 #依次执行
@@ -129,6 +137,8 @@ harbor_ip=192.168.150.14
 curl -L -o k8s_install.tar.gz $harbor_ip:38088/k8s_install.tar.gz
 tar -zxvf k8s_install.tar.gz
 cd k8s_install
+unzip -j offline/bin/amd64/bin.zip -d offline/bin/amd64/
+unzip -j offline/images/amd64/images.zip -d offline/images/amd64/
 #修改配置文件，可以复用在harbor安装时的配置文件
 vi conf/config.sh
 #依次执行
