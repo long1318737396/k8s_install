@@ -130,9 +130,18 @@ $harbor_ip:38088
 ```bash
 vi script/harbor/harbor_pre.yml
 ```
-则部署时需要注销掉相关https配置，然后再安装harbor
+则部署时需要注销掉相关https配置，http.port改成自定义端口，然后再安装harbor
 
 ```bash
+hostname: ${harbor_hostname}
+
+# http related config
+http:
+  # port for http, default is 80. If https enabled, this port will redirect to https port
+  port: 80  #改成自定义端口
+
+# https related config
+#下面这几行加#可以进行注释
 https:
   # https port for harbor, default is 443
   port: 443
