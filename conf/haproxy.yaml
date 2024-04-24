@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: haproxy
+  namespace: kube-system
+  labels:
+    addonmanager.kubernetes.io/mode: Reconcile
+    k8s-app: kube-haproxy
+  annotations:
+    haproxy-cfg-checksum: "105b41ada1064ba25274f482d6100b8b29f1dfc8"
+spec:
+  hostNetwork: true
+  dnsPolicy: ClusterFirstWithHostNet
+  nodeSelector:
+    kubernetes.io/os: linux
+  priorityClassName: system-node-critical
+  containers:
+  - name: haproxy
+    image: docker.io/library/haproxy:2.8.2-alpine
+    imagePullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 25m
+        memory: 32M
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8081
+    readinessProbe:
+      httpGet:
+        path: /healthz
+        port: 8081
+    volumeMounts:
+    - mountPath: /usr/local/etc/haproxy/
+      name: etc-haproxy
+      readOnly: true
+  volumes:
+  - name: etc-haproxy
+    hostPath:
+      path: /etc/haproxy

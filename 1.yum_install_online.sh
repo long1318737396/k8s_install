@@ -24,6 +24,7 @@ if [ -f /etc/debian_version ]; then
     curl
     python3
     iputils-ping
+    netcat
   )
   for i in ${packages[@]};do
       apt install $i   -yq --no-install-recommends
@@ -50,6 +51,7 @@ elif [ -f /etc/redhat-release ]; then
     iproute-tc
     python3
     iotop
+    nc
   )
 
   for i in ${packages[@]};do
@@ -77,6 +79,7 @@ else
     iproute-tc
     python3
     iotop
+    nc
   )
 
   for i in ${packages[@]};do
