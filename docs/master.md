@@ -22,7 +22,7 @@ umount /test
 **如果是单master节点，则kube-vip设置为false，loadbalancer_vip为master1节点的IP地址,master2和master3的IP地址也都写master1的IP地址即可**
 
 ```bash
-#配置master1服务器的hosts解析
+#配置master1服务器的hostname
 hostnamectl set-hostname master1
 harbor_ip=192.168.150.14
 curl -L -o k8s_install.tar.gz $harbor_ip:38088/k8s_install.tar.gz
@@ -63,7 +63,7 @@ bash 6.k8s_install.sh
 - node1服务器加入到集群中
 
 ```bash
-#配置node1服务器的hosts解析
+#配置node1服务器的hostname
 hostnamectl set-hostname node1
 harbor_ip=192.168.150.14
 curl -L -o k8s_install.tar.gz $harbor_ip:38088/k8s_install.tar.gz
@@ -88,7 +88,7 @@ bash 8.join_node.sh
 - 参考node1服务器加入到集群中
 
 ```bash
-#配置node2服务器的hosts解析
+#配置node2服务器的hostname
 hostnamectl set-hostname node2
 harbor_ip=192.168.150.14
 curl -L -o k8s_install.tar.gz $harbor_ip:38088/k8s_install.tar.gz

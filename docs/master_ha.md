@@ -23,7 +23,7 @@ umount /test
 初始化第一台master节点，依次执行安装
 
 ```bash
-#配置master1服务器的hosts解析
+#配置master1服务器的hostname
 hostnamectl set-hostname master1
 harbor_ip=192.168.150.14
 curl -L -o k8s_install.tar.gz $harbor_ip:38088/k8s_install.tar.gz
@@ -58,7 +58,7 @@ bash 6.k8s_install.sh
 - master2加入到集群中
 
 ```bash
-#配置master2服务器的hosts解析
+#配置master2服务器的hostname
 hostnamectl set-hostname master2
 harbor_ip=192.168.150.14
 curl -L -o k8s_install.tar.gz $harbor_ip:38088/k8s_install.tar.gz
@@ -82,7 +82,7 @@ bash 7.join_master.sh
 - master3加入到集群中
 
 ```bash
-#配置master3服务器的hosts解析
+#配置master3服务器的hostname
 hostnamectl set-hostname master3
 harbor_ip=192.168.150.14
 curl -L -o k8s_install.tar.gz $harbor_ip:38088/k8s_install.tar.gz
@@ -106,7 +106,7 @@ bash 7.join_master.sh
 - node1加入到集群中
 
 ```bash
-#配置node1服务器的hosts解析
+#配置node1服务器的hostname
 hostnamectl set-hostname node1
 harbor_ip=192.168.150.14
 curl -L -o k8s_install.tar.gz $harbor_ip:38088/k8s_install.tar.gz
@@ -131,7 +131,7 @@ bash 8.join_node.sh
 - 参考node1加入到集群中
 
 ```bash
-#配置node2服务器的hosts解析
+#配置node2服务器的hostname
 hostnamectl set-hostname node2
 harbor_ip=192.168.150.14
 curl -L -o k8s_install.tar.gz $harbor_ip:38088/k8s_install.tar.gz

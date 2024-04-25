@@ -22,3 +22,5 @@ cat 1.yum_install_online.sh
 [多master高可用集群手动部署](master_ha.md)
 
 [ansible自动化部署](./ansible.md)
+
+[无vip的配置说明](./k8s_no_vip.md)
